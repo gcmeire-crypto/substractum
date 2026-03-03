@@ -3,826 +3,952 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Substractum</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Substractum — Plataforma de educacao reflexiva. Apps de estudo, e-books e recursos didaticos para educadores.">
+<title>Substractum — A essencia das coisas que importam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --w:    #F4F1ED;
-  --c:    #EAE4DC;
-  --b:    #DED7CD;
-  --s:    #C5BFB8;
-  --p2:   #6E645A;
-  --p3:   #A69F95;
-  --ink:  #38332E;
-  --muted:#A69F95;
-  --bd:   rgba(56,51,46,.11);
-  --bds:  rgba(56,51,46,.06);
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+   Paleta: pergaminho quente + ouro editorial
+   Fontes: Cormorant (display) + Raleway (UI)
+          + Libre Baskerville (corpo)
+═══════════════════════════════════════════ */
+:root {
+  --ink:       #1c1814;
+  --ink-2:     #2e2820;
+  --ink-3:     #4a3f34;
+  --gold:      #c9963c;
+  --gold-lt:   #e5b96a;
+  --gold-dim:  rgba(201,150,60,.13);
+  --sage:      #5e7a6a;
+  --sage-lt:   #7fa898;
+  --sage-dim:  rgba(94,122,106,.1);
+  --parch:     #f5f0e8;
+  --cream:     #ede7db;
+  --linen:     #e3dbd0;
+  --stone:     #9c8e80;
+  --stone-lt:  #bdb0a4;
+  --bd:        rgba(28,24,20,.1);
+  --bds:       rgba(28,24,20,.055);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--w);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+body{background:var(--parch);color:var(--ink);font-family:'Libre Baskerville',Georgia,serif;font-weight:400;line-height:1.7;overflow-x:hidden;}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.038'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9998;}
 
 /* ── NAV ── */
-nav{position:fixed;inset:0 0 auto;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(244,241,237,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--bds);z-index:200;transition:border-color .3s;}
-nav.sc{border-color:var(--bd);}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);text-decoration:none;letter-spacing:.04em;}
-.nav-links{display:flex;gap:28px;align-items:center;}
-.nav-links a{font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+#nav{position:fixed;inset:0 0 auto;height:58px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 52px;
+  background:rgba(245,240,232,.95);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--bds);z-index:500;transition:box-shadow .3s,border-color .3s;}
+#nav.sc{box-shadow:0 2px 20px rgba(28,24,20,.07);border-color:var(--bd);}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.2rem;font-weight:300;
+  color:var(--ink);text-decoration:none;letter-spacing:.05em;}
+.nav-logo em{font-style:italic;color:var(--gold);}
+.nav-links{display:flex;gap:30px;align-items:center;}
+.nav-links a{font-family:'Raleway',sans-serif;font-size:.63rem;font-weight:500;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--stone);
+  text-decoration:none;transition:color .2s;}
 .nav-links a:hover{color:var(--ink);}
-.nav-links a.active{color:var(--ink);}
-.ntog{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}
-.ntog span{display:block;width:20px;height:1px;background:var(--ink);transition:.3s;}
+.nav-cta{font-family:'Raleway',sans-serif;font-size:.63rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;padding:8px 18px;
+  background:var(--ink);color:var(--parch);text-decoration:none;
+  border:1px solid var(--ink);transition:all .2s;}
+.nav-cta:hover{background:transparent;color:var(--ink);}
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hbg span{display:block;width:20px;height:1px;background:var(--ink);transition:.3s;}
 
-/* ── HERO ── */
-.hero{min-height:100vh;padding-top:62px;display:grid;grid-template-columns:1fr 1fr;}
-.hero-l{padding:80px 60px 80px 48px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--bds);}
-.hero-r{padding:80px 48px 80px 60px;background:var(--b);display:flex;flex-direction:column;justify-content:center;}
-.h-tag{font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;opacity:0;animation:fu .8s ease .1s forwards;}
-.h-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,7vw,6rem);font-weight:300;line-height:1.05;letter-spacing:-.01em;color:var(--ink);margin-bottom:20px;opacity:0;animation:fu .9s ease .25s forwards;}
-.h-title em{font-style:italic;color:var(--p2);}
-.h-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--muted);margin-bottom:44px;opacity:0;animation:fu .9s ease .4s forwards;}
-.h-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;line-height:1.9;color:var(--p2);margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--bds);opacity:0;animation:fu .9s ease .55s forwards;}
-.h-nav{display:flex;gap:28px;flex-wrap:wrap;opacity:0;animation:fu .9s ease .7s forwards;}
-.h-nav a{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;}
-.h-nav a:hover{color:var(--ink);border-color:var(--ink);}
-.hero-r .h-tag{opacity:0;animation:fu .8s ease .4s forwards;}
-.sect-list{list-style:none;display:flex;flex-direction:column;}
-.sl-item{padding:26px 0;border-bottom:1px solid var(--bds);display:flex;gap:20px;opacity:0;animation:fu .6s ease forwards;}
-.sl-item:last-child{border-bottom:none;}
-.sl-item:nth-child(1){animation-delay:.4s;}
-.sl-item:nth-child(2){animation-delay:.55s;}
-.sl-item:nth-child(3){animation-delay:.7s;}
-.sl-item:nth-child(4){animation-delay:.85s;}
-.sl-num{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:var(--muted);width:20px;flex-shrink:0;padding-top:2px;}
-.sl-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;color:var(--ink);margin-bottom:3px;}
-.sl-desc{font-size:.76rem;color:var(--muted);line-height:1.5;}
+/* ── TYPE ── */
+.label{font-family:'Raleway',sans-serif;font-size:.6rem;font-weight:600;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--stone);}
+.s-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.s-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--bd);}
+.s-hl{font-family:'Cormorant',serif;font-size:clamp(2rem,4vw,3rem);
+  font-weight:300;line-height:1.12;color:var(--ink);margin-bottom:14px;}
+.s-hl em{font-style:italic;color:var(--gold);}
+.s-hl.inv{color:var(--parch);}
+.s-sub{font-family:'Libre Baskerville',serif;font-size:.9rem;
+  line-height:1.75;color:var(--stone);max-width:480px;}
 
 /* ── LAYOUT ── */
-.section{padding:88px 0;}
-.section.alt{background:var(--b);}
+.section{padding:92px 0;}
+.section.alt{background:var(--cream);}
+.section.mid{background:var(--linen);}
 .section.dark{background:var(--ink);}
-.wrap{max-width:1120px;margin:0 auto;padding:0 48px;}
-hr.line{border:none;border-top:1px solid var(--bds);}
-.s-tag{display:block;font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
-.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:14px;}
-.s-title em{font-style:italic;color:var(--p2);}
-.s-title.inv{color:var(--w);}
-.s-desc{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.8;color:var(--muted);}
-.s-head{margin-bottom:52px;}
-.div-line{width:48px;height:1px;background:var(--bd);margin:0 0 20px;}
-
-/* ── GRID ── */
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bds);}
-.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--bds);}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bds);}
-.cell{background:var(--w);padding:36px 32px;transition:background .22s;}
-.cell.onb{background:var(--b);}
-.cell:hover{background:var(--c);}
-.c-tag{display:block;font-size:.63rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-.c-badge{display:inline-block;font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--bd);border-radius:1px;margin-bottom:12px;color:var(--muted);}
-.c-badge.free{border-color:var(--p2);color:var(--p2);}
-.c-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);line-height:1.35;margin-bottom:10px;}
-.c-title em{font-style:italic;color:var(--p2);}
-.c-body{font-size:.84rem;color:var(--muted);line-height:1.65;margin-bottom:20px;}
-.c-price{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;display:block;margin-bottom:3px;}
-.c-pnote{font-size:.7rem;color:var(--muted);display:block;margin-bottom:18px;}
-.c-link{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);text-decoration:none;cursor:pointer;background:none;border:none;padding:0;display:inline-flex;align-items:center;gap:6px;transition:gap .2s,color .2s;}
-.c-link:hover{gap:12px;color:var(--ink);}
+.wrap{max-width:1140px;margin:0 auto;padding:0 52px;}
+.s-head-row{display:flex;align-items:flex-end;justify-content:space-between;
+  gap:32px;margin-bottom:56px;flex-wrap:wrap;}
+.divider{width:100%;height:1px;background:var(--bds);}
 
 /* ── BUTTONS ── */
-.btn{display:inline-block;font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:10px 24px;border-radius:1px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;}
-.btn-dk{background:var(--ink);color:var(--w);border-color:var(--ink);}
-.btn-dk:hover{background:var(--p2);}
+.btn{display:inline-flex;align-items:center;gap:8px;
+  font-family:'Raleway',sans-serif;font-size:.66rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;padding:12px 26px;
+  border:1px solid transparent;cursor:pointer;transition:all .2s;
+  text-decoration:none;white-space:nowrap;}
+.btn-dk{background:var(--ink);color:var(--parch);border-color:var(--ink);}
+.btn-dk:hover{background:var(--ink-3);color:var(--gold-lt);}
+.btn-gold{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700;}
+.btn-gold:hover{background:var(--gold-lt);}
 .btn-out{background:transparent;color:var(--ink);border-color:var(--bd);}
-.btn-out:hover{background:var(--c);border-color:var(--p3);}
-.btn-inv{background:var(--w);color:var(--ink);}
-.btn-inv:hover{background:var(--b);}
+.btn-out:hover{background:var(--cream);}
+.btn-inv{background:transparent;color:var(--parch);border-color:rgba(245,240,232,.22);}
+.btn-inv:hover{background:rgba(245,240,232,.07);border-color:rgba(245,240,232,.45);}
+.btn-sm{padding:8px 16px;font-size:.6rem;}
+.btn-sage{background:var(--sage);color:var(--parch);border-color:var(--sage);}
+.btn-sage:hover{background:var(--sage-lt);}
 
-/* ── TABS ── */
-.tab-bar{display:flex;border-bottom:1px solid var(--bds);margin-bottom:44px;}
-.tb{font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:1px solid transparent;padding:12px 22px 11px;cursor:pointer;transition:all .2s;margin-bottom:-1px;}
+/* ─────────────────────────────────────────
+   § 1  HERO
+   Por que primeiro: captura identidade em 3s.
+   Fundo escuro = autoridade editorial.
+   2 CTAs: App (conversão) + Plataforma (explorar).
+───────────────────────────────────────── */
+#hero{min-height:100vh;padding-top:58px;background:var(--ink);
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;
+  position:relative;overflow:hidden;}
+#hero::before{content:'';position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(255,255,255,.018) 80px),
+    repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.018) 80px);
+  pointer-events:none;}
+#hero::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 65% at 72% 50%,rgba(201,150,60,.07) 0%,transparent 70%);
+  pointer-events:none;}
+
+.hero-l{padding:72px 52px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
+.hero-r{padding:72px 48px 72px 32px;display:flex;flex-direction:column;
+  justify-content:center;position:relative;z-index:2;
+  border-left:1px solid rgba(255,255,255,.055);}
+
+.h-eyebrow{font-family:'Raleway',sans-serif;font-size:.56rem;font-weight:600;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:28px;opacity:0;animation:rise .6s ease .1s forwards;}
+.h-title{font-family:'Cormorant',serif;font-size:clamp(4rem,9vw,8rem);
+  font-weight:300;line-height:.9;letter-spacing:-.02em;color:var(--parch);
+  margin-bottom:20px;opacity:0;animation:rise .9s ease .2s forwards;}
+.h-title em{font-style:italic;color:var(--gold);}
+.h-rule{width:48px;height:1px;background:rgba(201,150,60,.45);
+  margin-bottom:22px;opacity:0;animation:rise .6s ease .38s forwards;}
+.h-text{font-family:'Libre Baskerville',serif;font-style:italic;font-size:1rem;
+  color:rgba(245,240,232,.5);line-height:1.8;margin-bottom:40px;max-width:420px;
+  opacity:0;animation:rise .8s ease .48s forwards;}
+.h-ctas{display:flex;gap:12px;flex-wrap:wrap;
+  opacity:0;animation:rise .8s ease .6s forwards;}
+
+.h-stats{display:flex;gap:28px;margin-top:40px;padding-top:28px;
+  border-top:1px solid rgba(255,255,255,.055);
+  opacity:0;animation:rise .7s ease .78s forwards;}
+.hs-item{text-align:center;}
+.hs-n{font-family:'Cormorant',serif;font-size:1.8rem;font-weight:300;color:var(--gold);line-height:1;}
+.hs-l{font-family:'Raleway',sans-serif;font-size:.56rem;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;color:rgba(245,240,232,.3);margin-top:4px;}
+
+/* right column — app cards */
+.hero-cards{display:flex;flex-direction:column;gap:10px;
+  opacity:0;animation:rise .9s ease .48s forwards;}
+.hc{display:flex;align-items:center;gap:16px;padding:18px 20px;
+  background:rgba(245,240,232,.04);border:1px solid rgba(245,240,232,.08);
+  text-decoration:none;transition:all .24s;cursor:pointer;}
+.hc:hover{background:rgba(245,240,232,.07);border-color:rgba(201,150,60,.28);transform:translateX(4px);}
+.hc-ico{width:42px;height:42px;border-radius:2px;display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.hc.flash .hc-ico{background:rgba(201,150,60,.1);}
+.hc.quiz .hc-ico{background:rgba(94,122,106,.12);}
+.hc.diary .hc-ico{background:rgba(245,240,232,.05);}
+.hc.plat .hc-ico{background:rgba(245,240,232,.05);}
+.hc-info{flex:1;}
+.hc-name{font-family:'Raleway',sans-serif;font-size:.72rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--parch);margin-bottom:2px;}
+.hc-desc{font-family:'Raleway',sans-serif;font-size:.66rem;font-weight:300;
+  color:rgba(245,240,232,.38);}
+.hc-badge{font-family:'Raleway',sans-serif;font-size:.5rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;
+  background:var(--gold);color:var(--ink);margin-left:8px;vertical-align:middle;}
+.hc-badge.wip{background:rgba(180,130,50,.15);color:rgba(201,150,60,.7);
+  border:1px solid rgba(201,150,60,.25);}
+.hc-arr{font-size:.85rem;color:rgba(201,150,60,.4);transition:color .2s;}
+.hc:hover .hc-arr{color:var(--gold);}
+
+.scroll-cue{position:absolute;bottom:30px;left:52px;display:flex;align-items:center;gap:8px;
+  opacity:0;animation:rise .6s ease 1.1s forwards;}
+.sc-line{width:36px;height:1px;background:rgba(201,150,60,.35);
+  animation:pulsc 2s ease 1.2s infinite;}
+@keyframes pulsc{0%,100%{transform:scaleX(1);opacity:.35}50%{transform:scaleX(.55);opacity:.8}}
+.sc-lbl{font-family:'Raleway',sans-serif;font-size:.56rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(201,150,60,.45);}
+
+/* ─────────────────────────────────────────
+   § 2  APPS EM DESTAQUE
+   Por que segundo: produto mais tangível.
+   Sem cadastro = zero fricção. Converte agora.
+───────────────────────────────────────── */
+.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--bd);}
+.ac{background:var(--parch);padding:52px 46px;position:relative;overflow:hidden;transition:background .25s;}
+.ac:hover{background:var(--cream);}
+.ac::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;
+  background:linear-gradient(to bottom,var(--gold),transparent);transition:height .45s ease;}
+.ac.quiz-card::before{background:linear-gradient(to bottom,var(--sage),transparent);}
+.ac:hover::before{height:100%;}
+.ac-tag{display:inline-block;font-family:'Raleway',sans-serif;font-size:.56rem;
+  font-weight:600;letter-spacing:.22em;text-transform:uppercase;padding:4px 10px;
+  border:1px solid;margin-bottom:22px;}
+.ac-tag.f{border-color:rgba(201,150,60,.3);color:var(--gold);}
+.ac-tag.q{border-color:rgba(94,122,106,.35);color:var(--sage);}
+.ac-hl{font-family:'Cormorant',serif;font-size:2.2rem;font-weight:300;
+  line-height:1.1;color:var(--ink);margin-bottom:10px;}
+.ac-hl em{font-style:italic;}
+.ac-sub{font-family:'Libre Baskerville',serif;font-size:.88rem;font-style:italic;
+  color:var(--stone);margin-bottom:26px;line-height:1.72;}
+.ac-feats{list-style:none;margin-bottom:32px;}
+.ac-feats li{font-family:'Raleway',sans-serif;font-size:.74rem;color:var(--ink-3);
+  padding:8px 0;border-bottom:1px solid var(--bds);display:flex;align-items:center;gap:11px;}
+.ac-feats li::before{content:'';width:16px;height:1px;flex-shrink:0;background:var(--gold);}
+.ac.quiz-card .ac-feats li::before{background:var(--sage);}
+.ac-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.ac-free{font-family:'Cormorant',serif;font-size:.88rem;font-style:italic;color:var(--stone);}
+
+/* ─────────────────────────────────────────
+   § 3  MANIFESTO — Voz e Autoridade
+   Por que antes dos e-books: constrói confiança
+   sem pedir nada. A voz autoral diferencia.
+───────────────────────────────────────── */
+#manifesto{background:var(--ink);padding:88px 0;position:relative;overflow:hidden;}
+#manifesto::before{content:'\201C';position:absolute;top:-60px;left:24px;
+  font-family:'Cormorant',serif;font-size:30rem;font-weight:600;
+  color:rgba(201,150,60,.035);line-height:1;pointer-events:none;user-select:none;}
+.mf-wrap{max-width:720px;margin:0 auto;text-align:center;padding:0 52px;position:relative;z-index:2;}
+.mf-q{font-family:'Cormorant',serif;font-size:clamp(1.6rem,3.2vw,2.5rem);
+  font-weight:300;font-style:italic;color:var(--parch);line-height:1.5;margin-bottom:24px;}
+.mf-q strong{font-weight:400;color:var(--gold-lt);}
+.mf-author{font-family:'Raleway',sans-serif;font-size:.62rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(156,142,128,.7);}
+.mf-cta{display:flex;justify-content:center;margin-top:36px;}
+
+/* ─────────────────────────────────────────
+   § 4  E-BOOKS — Isca Digital e Captura
+   Por que aqui: logo após a voz autoral,
+   o usuário quer mais. Oferecer valor antes
+   de vender captura e-mails qualificados.
+───────────────────────────────────────── */
+.eb-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bd);}
+.eb-card{background:var(--linen);padding:36px 30px;transition:background .22s;position:relative;overflow:hidden;}
+.eb-card:hover{background:var(--cream);}
+.eb-n{font-family:'Cormorant',serif;font-size:3.2rem;font-weight:300;
+  color:rgba(28,24,20,.06);line-height:1;margin-bottom:12px;}
+.eb-vol{font-family:'Raleway',sans-serif;font-size:.58rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--stone);margin-bottom:10px;}
+.eb-title{font-family:'Cormorant',serif;font-size:1.3rem;font-weight:300;
+  line-height:1.3;color:var(--ink);margin-bottom:10px;}
+.eb-title em{font-style:italic;color:var(--gold);}
+.eb-desc{font-family:'Raleway',sans-serif;font-size:.74rem;color:var(--stone);
+  line-height:1.65;margin-bottom:20px;}
+.eb-wip{display:inline-flex;align-items:center;gap:7px;font-family:'Raleway',sans-serif;
+  font-size:.56rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  padding:5px 12px;border:1px solid rgba(201,150,60,.28);color:rgba(180,130,50,.8);}
+.eb-wip::before{content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--gold);animation:blink 1.8s ease infinite;}
+@keyframes blink{0%,100%{opacity:.28}50%{opacity:1}}
+
+/* capture strip */
+.eb-strip{background:var(--ink);padding:36px 46px;display:flex;
+  align-items:center;gap:48px;flex-wrap:wrap;margin-top:2px;}
+.es-txt{flex:1;min-width:220px;}
+.es-hl{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:300;
+  font-style:italic;color:var(--parch);margin-bottom:5px;}
+.es-sub{font-family:'Raleway',sans-serif;font-size:.7rem;
+  color:rgba(156,142,128,.7);line-height:1.6;}
+.es-form{display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:260px;}
+.es-in{flex:1;min-width:170px;padding:11px 14px;
+  background:rgba(245,240,232,.05);border:1px solid rgba(245,240,232,.12);
+  color:var(--parch);font-family:'Raleway',sans-serif;font-size:.78rem;
+  outline:none;transition:border-color .2s;}
+.es-in::placeholder{color:rgba(245,240,232,.28);}
+.es-in:focus{border-color:rgba(201,150,60,.38);}
+.es-note{width:100%;font-family:'Raleway',sans-serif;
+  font-size:.6rem;color:rgba(245,240,232,.22);margin-top:3px;}
+
+/* ─────────────────────────────────────────
+   § 5  PRODUTOS — Catálogo de Conversão
+   Por que aqui: usuário percorreu todo o funil.
+   Tem confiança. Agora mostra o que comprar.
+   WIP honesto = credibilidade, não frustração.
+───────────────────────────────────────── */
+.tab-row{display:flex;border-bottom:1px solid var(--bd);margin-bottom:48px;}
+.tb{font-family:'Raleway',sans-serif;font-size:.63rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;padding:12px 22px;
+  border:none;background:none;cursor:pointer;color:var(--stone);
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
 .tb:hover{color:var(--ink);}
-.tb.on{color:var(--ink);border-bottom-color:var(--p2);}
-.tp{display:none;}
-.tp.on{display:block;}
+.tb.on{color:var(--ink);border-bottom-color:var(--gold);}
+.tp{display:none;}.tp.on{display:block;}
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--bd);}
+.pc{background:var(--parch);padding:30px 26px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;transition:background .2s;}
+.pc:hover{background:var(--cream);}
+.pc-wip{position:absolute;top:15px;right:-20px;
+  font-family:'Raleway',sans-serif;font-size:.48rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;padding:3px 30px;
+  background:rgba(180,130,50,.09);border:1px solid rgba(180,130,50,.24);
+  color:rgba(160,115,40,.82);transform:rotate(25deg);}
+.pc-wip.free{background:rgba(94,122,106,.09);border-color:rgba(94,122,106,.3);
+  color:var(--sage);}
+.pc-type{font-family:'Raleway',sans-serif;font-size:.56rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--stone);margin-bottom:12px;}
+.pc-title{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:300;
+  line-height:1.35;color:var(--ink);margin-bottom:8px;}
+.pc-title em{font-style:italic;color:var(--gold);}
+.pc-desc{font-family:'Raleway',sans-serif;font-size:.73rem;color:var(--stone);
+  line-height:1.64;flex:1;margin-bottom:18px;}
+.pc-badge{display:inline-block;font-family:'Raleway',sans-serif;font-size:.56rem;
+  font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid rgba(180,130,50,.3);color:rgba(160,115,40,.8);}
+.pc-badge.free{border-color:rgba(94,122,106,.35);color:var(--sage);}
 
-/* ── DIARY ── */
-.diary-wrap{display:grid;grid-template-columns:1fr 300px;gap:1px;background:var(--bds);border:1px solid var(--bds);}
-.diary-editor{background:var(--w);}
-.diary-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 26px;border-bottom:1px solid var(--bds);background:var(--b);}
-.db-btns{display:flex;gap:6px;}
-.db-btn{font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .15s;}
-.db-btn:hover{background:var(--c);color:var(--ink);}
-.diary-date{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:var(--muted);}
-.diary-body{padding:32px 36px;}
-.d-title{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--ink);border:none;outline:none;background:transparent;padding-bottom:14px;border-bottom:1px solid var(--bds);margin-bottom:18px;}
-.d-title::placeholder{color:var(--s);font-style:italic;}
-.d-body{width:100%;min-height:240px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.95;color:var(--p2);border:none;outline:none;background:transparent;resize:vertical;}
-.d-body::placeholder{color:var(--s);font-style:italic;}
-.d-moods{display:flex;gap:7px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--bds);align-items:center;}
-.mood-l{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:4px;}
-.mood{font-family:'Jost',sans-serif;font-size:.68rem;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .13s;letter-spacing:.06em;}
-.mood:hover,.mood.on{background:var(--b);border-color:var(--p2);color:var(--ink);}
-.diary-foot{padding:14px 36px;border-top:1px solid var(--bds);background:var(--b);display:flex;justify-content:flex-end;gap:8px;}
-.diary-side{background:var(--c);}
-.ds-head{padding:18px 22px;border-bottom:1px solid var(--bds);}
-.ds-head span{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
-.entry{padding:16px 22px;border-bottom:1px solid var(--bds);cursor:pointer;transition:background .15s;}
-.entry:hover{background:var(--b);}
-.entry-date{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s);margin-bottom:3px;}
-.entry-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--ink);margin-bottom:2px;}
-.entry-prev{font-size:.74rem;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-.d-empty{padding:36px 22px;text-align:center;}
-.d-empty p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--muted);line-height:1.7;}
+/* ─────────────────────────────────────────
+   § 6  DIÁRIO — Retenção e Recorrência
+   Por que antes da newsletter: demonstra
+   produto gratuitamente. Usuário que usa
+   o diário todo dia tem muito mais chance
+   de abrir o e-mail e comprar depois.
+───────────────────────────────────────── */
+.diary-inner{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--bd);}
+.di-l{background:var(--linen);padding:56px 52px;display:flex;flex-direction:column;justify-content:center;}
+.di-feats{list-style:none;margin:20px 0 32px;}
+.di-feats li{font-family:'Raleway',sans-serif;font-size:.74rem;color:var(--ink-3);
+  padding:9px 0;border-bottom:1px solid var(--bds);
+  display:flex;align-items:center;gap:10px;}
+.di-feats li::before{content:'';width:14px;height:1px;flex-shrink:0;background:var(--gold);}
+.di-r{background:var(--ink);padding:48px 44px;position:relative;overflow:hidden;}
+.di-r::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.018) 40px);}
+.dm{position:relative;z-index:2;background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);}
+.dm-top{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;background:rgba(201,150,60,.07);border-bottom:1px solid rgba(255,255,255,.05);}
+.dm-dots{display:flex;gap:5px;}
+.dm-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.1);}
+.dm-date{font-family:'Raleway',sans-serif;font-size:.58rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(201,150,60,.55);}
+.dm-body{padding:22px 18px;}
+.dm-ln{height:1px;background:rgba(255,255,255,.04);margin-bottom:14px;}
+.dm-text{font-family:'Cormorant',serif;font-size:.95rem;font-style:italic;
+  color:rgba(245,240,232,.42);line-height:1.82;}
+.dm-cursor{display:inline-block;width:1.5px;height:14px;background:var(--gold);
+  vertical-align:middle;animation:cursor .8s ease infinite;}
+@keyframes cursor{0%,100%{opacity:1}50%{opacity:0}}
+.dm-moods{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px;
+  padding-top:14px;border-top:1px solid rgba(255,255,255,.04);}
+.dm-mood{font-family:'Raleway',sans-serif;font-size:.58rem;font-weight:500;
+  letter-spacing:.1em;padding:3px 9px;border:1px solid rgba(201,150,60,.18);
+  color:rgba(201,150,60,.48);}
+.dm-mood.on{background:rgba(201,150,60,.1);border-color:rgba(201,150,60,.35);color:var(--gold);}
+.dm-btns{display:flex;justify-content:flex-end;gap:7px;margin-top:18px;}
+.dm-btn{font-family:'Raleway',sans-serif;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:6px 12px;cursor:default;}
+.dm-btn.c{border:1px solid rgba(255,255,255,.07);color:rgba(245,240,232,.25);}
+.dm-btn.s{background:rgba(201,150,60,.14);border:1px solid rgba(201,150,60,.28);color:var(--gold);}
 
-/* ── APPS ── */
-.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bds);border:1px solid var(--bds);}
-.app-cell{background:var(--w);padding:32px;transition:background .2s;}
-.app-cell:hover{background:var(--c);}
-.app-cell.inst{background:var(--c);}
-.app-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--p2);margin-right:6px;vertical-align:middle;}
-.app-st{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);}
-.app-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);margin:10px 0 8px;}
-.app-desc{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:22px;}
-.app-acts{display:flex;gap:8px;flex-wrap:wrap;}
-.app-slot{border:1px dashed var(--bd);border-radius:1px;background:transparent;}
-.app-slot .app-name{color:var(--muted);font-style:italic;}
-.app-inst-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
-
-/* ── EBOOK HIGHLIGHT ── */
-.ebook-feature{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bds);margin-bottom:1px;}
-.eb-cover{background:var(--ink);padding:56px 48px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;min-height:320px;}
-.eb-cover::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px);}
-.eb-vol{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--p3);margin-bottom:12px;}
-.eb-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.2;color:var(--w);margin-bottom:8px;}
-.eb-title em{font-style:italic;color:var(--p3);}
-.eb-pages{font-size:.75rem;color:var(--p3);margin-bottom:24px;}
-.eb-price-big{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--w);}
-.eb-info{background:var(--b);padding:56px 48px;display:flex;flex-direction:column;justify-content:center;}
-.eb-info .s-tag{margin-bottom:10px;}
-.eb-body{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.85;color:var(--p2);margin-bottom:28px;}
-.eb-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
-.eb-chip{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--bd);color:var(--muted);}
-
-/* ── NEWSLETTER ── */
-.nl-grid{display:grid;grid-template-columns:1fr 1fr;}
-.nl-l{background:var(--ink);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
-.nl-l .s-tag{color:var(--p3);margin-bottom:14px;}
-.nl-l .s-title{color:var(--w);margin-bottom:10px;}
-.nl-l p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--p3);line-height:1.7;}
-.nl-r{background:var(--b);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
+/* ─────────────────────────────────────────
+   § 7  NEWSLETTER — Conversão Final
+   Por que no final: usuario que chegou até
+   aqui leu tudo, confia, quer mais. Taxa
+   de conversão de e-mail é 3x maior aqui.
+───────────────────────────────────────── */
+#newsletter{background:#13110e;padding:80px 0;}
+.nl-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.nl-hl{font-family:'Cormorant',serif;font-size:clamp(1.8rem,3.2vw,2.7rem);
+  font-weight:300;color:var(--parch);line-height:1.18;margin:14px 0;}
+.nl-hl em{font-style:italic;color:var(--gold-lt);}
+.nl-sub{font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:.88rem;color:rgba(245,240,232,.38);line-height:1.75;}
 .nl-form{display:flex;flex-direction:column;gap:10px;}
-.nl-in{padding:12px 16px;background:rgba(244,241,237,.6);border:1px solid rgba(56,51,46,.14);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
-.nl-in::placeholder{color:var(--muted);}
-.nl-in:focus{border-color:rgba(56,51,46,.3);background:rgba(244,241,237,.85);}
-.nl-note{font-size:.68rem;color:var(--p2);line-height:1.5;margin-top:4px;}
+.nl-in{padding:13px 16px;background:rgba(245,240,232,.045);
+  border:1px solid rgba(245,240,232,.1);color:var(--parch);
+  font-family:'Raleway',sans-serif;font-size:.8rem;outline:none;transition:border-color .2s;}
+.nl-in::placeholder{color:rgba(245,240,232,.24);}
+.nl-in:focus{border-color:rgba(201,150,60,.38);}
+.nl-note{font-family:'Raleway',sans-serif;font-size:.6rem;
+  color:rgba(245,240,232,.2);margin-top:2px;}
 
 /* ── FOOTER ── */
-footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
-.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);}
-.ft-logo{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;font-style:italic;color:var(--w);margin-bottom:10px;}
-.ft-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--p2);line-height:1.6;max-width:200px;}
-.ft-h{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--p2);margin-bottom:16px;}
-.ft-col a{display:block;font-size:.8rem;color:var(--p2);text-decoration:none;margin-bottom:9px;transition:color .2s;}
-.ft-col a:hover{color:var(--w);}
-.ft-bot{padding-top:24px;display:flex;justify-content:space-between;font-size:.68rem;letter-spacing:.06em;color:rgba(166,159,149,.4);flex-wrap:wrap;gap:8px;}
-
-/* ── MODAL ── */
-.overlay{position:fixed;inset:0;background:rgba(56,51,46,.5);backdrop-filter:blur(4px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
-.overlay.on{opacity:1;pointer-events:all;}
-.modal{background:var(--w);border:1px solid var(--bd);max-width:460px;width:100%;padding:44px;position:relative;transform:translateY(12px);transition:transform .25s;max-height:calc(100vh - 40px);overflow-y:auto;}
-.overlay.on .modal{transform:translateY(0);}
-.mx{position:absolute;top:16px;right:20px;background:none;border:none;font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.1em;color:var(--muted);cursor:pointer;transition:color .2s;text-transform:uppercase;}
-.mx:hover{color:var(--ink);}
-.m-tag{display:block;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-.m-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:8px;}
-.m-sub{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:24px;}
-.field{margin-bottom:13px;}
-.field label{display:block;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
-.field input,.field select{width:100%;padding:10px 14px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
-.field input:focus,.field select:focus{border-color:var(--p2);}
-.m-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--bds);border-bottom:1px solid var(--bds);margin-bottom:18px;}
-.m-total-l{font-size:.75rem;color:var(--muted);}
-.m-total-p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ink);}
-.m-sec{font-size:.65rem;letter-spacing:.06em;text-align:center;color:var(--muted);margin-top:10px;}
-.m-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--w);padding:10px 24px;border-radius:1px;font-family:'Jost',sans-serif;font-size:.76rem;letter-spacing:.06em;z-index:999;opacity:0;pointer-events:none;transition:all .28s;white-space:nowrap;}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+footer{background:#0e0c0a;padding:52px 0 28px;border-top:1px solid rgba(255,255,255,.035);}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;
+  padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.035);}
+.ft-brand{font-family:'Cormorant',serif;font-size:1.1rem;font-style:italic;
+  font-weight:300;color:var(--parch);margin-bottom:10px;}
+.ft-tag{font-family:'Libre Baskerville',serif;font-style:italic;
+  font-size:.8rem;color:rgba(245,240,232,.22);line-height:1.65;max-width:180px;}
+.ft-col-h{font-family:'Raleway',sans-serif;font-size:.56rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--stone);margin-bottom:14px;}
+.ft-col a{display:block;font-family:'Raleway',sans-serif;font-size:.74rem;
+  color:rgba(245,240,232,.28);text-decoration:none;margin-bottom:7px;transition:color .2s;}
+.ft-col a:hover{color:var(--parch);}
+.ft-bot{display:flex;justify-content:space-between;flex-wrap:wrap;
+  gap:6px;padding-top:18px;}
+.ft-copy{font-family:'Raleway',sans-serif;font-size:.58rem;
+  letter-spacing:.09em;color:rgba(245,240,232,.16);}
 
 /* ── REVEAL ── */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s;}
-.rv.in{opacity:1;transform:translateY(0);}
+.rv.in{opacity:1;transform:none;}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
 
-/* ── ANIMS ── */
-@keyframes fu{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(28,24,20,.6);
+  backdrop-filter:blur(5px);z-index:600;display:flex;align-items:center;
+  justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s;}
+.overlay.on{opacity:1;pointer-events:all;}
+.modal{background:var(--parch);max-width:400px;width:100%;padding:38px;
+  transform:translateY(10px);transition:transform .22s;}
+.overlay.on .modal{transform:translateY(0);}
+.m-tag{display:block;font-family:'Raleway',sans-serif;font-size:.58rem;
+  font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--stone);margin-bottom:10px;}
+.m-hl{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:300;
+  color:var(--ink);margin-bottom:6px;}
+.m-sub{font-family:'Raleway',sans-serif;font-size:.78rem;color:var(--stone);
+  line-height:1.6;margin-bottom:18px;}
+.m-in{width:100%;padding:10px 13px;border:1px solid var(--bd);
+  font-family:'Raleway',sans-serif;font-size:.83rem;color:var(--ink);
+  outline:none;background:white;transition:border-color .2s;margin-bottom:8px;}
+.m-in:focus{border-color:var(--gold);}
+.m-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;left:50%;
+  transform:translateX(-50%) translateY(5px);background:var(--ink-2);
+  border:1px solid var(--gold);color:var(--parch);padding:10px 22px;
+  font-family:'Raleway',sans-serif;font-size:.74rem;z-index:9997;
+  opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── ANIMATIONS ── */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
 /* ── RESPONSIVE ── */
 @media(max-width:960px){
-  nav{padding:0 20px;}
+  #nav{padding:0 22px;}
   .nav-links{display:none;}
-  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--w);padding:20px;gap:14px;border-bottom:1px solid var(--bd);box-shadow:0 8px 24px rgba(56,51,46,.08);}
-  .ntog{display:flex;}
-  .hero{grid-template-columns:1fr;min-height:auto;}
-  .hero-l{padding:60px 24px;border-right:none;border-bottom:1px solid var(--bds);}
-  .hero-r{padding:48px 24px;}
-  .g3,.g4{grid-template-columns:1fr 1fr;}
-  .g2{grid-template-columns:1fr;}
-  .ebook-feature{grid-template-columns:1fr;}
-  .nl-grid{grid-template-columns:1fr;}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;
+    left:0;right:0;background:var(--parch);padding:22px;gap:16px;
+    border-bottom:1px solid var(--bd);box-shadow:0 8px 28px rgba(28,24,20,.08);}
+  .hbg{display:flex;}
+  #hero{grid-template-columns:1fr;}
+  .hero-l{padding:64px 22px 36px;}
+  .hero-r{padding:0 22px 64px;border-left:none;border-top:1px solid rgba(255,255,255,.055);}
+  .apps-grid,.diary-inner,.nl-inner{grid-template-columns:1fr;}
+  .eb-row{grid-template-columns:1fr 1fr;}
+  .prod-grid{grid-template-columns:1fr 1fr;}
   .ft-grid{grid-template-columns:1fr 1fr;}
-  .diary-wrap{grid-template-columns:1fr;}
-  .app-grid{grid-template-columns:1fr 1fr;}
-  .wrap{padding:0 24px;}
-  .section{padding:60px 0;}
+  .wrap{padding:0 22px;}
+  .section{padding:64px 0;}
 }
 @media(max-width:600px){
-  .g3,.g4{grid-template-columns:1fr;}
-  .app-grid{grid-template-columns:1fr;}
-  .ft-grid{grid-template-columns:1fr;}
-  .nl-l,.nl-r{padding:44px 28px;}
-  .eb-cover,.eb-info{padding:40px 28px;}
-  .tab-bar{overflow-x:auto;}
-  .tb{white-space:nowrap;padding:10px 16px;}
+  .h-title{font-size:4rem;}
+  .eb-row,.prod-grid,.ft-grid{grid-template-columns:1fr;}
+  .h-stats{gap:16px;}
+  .eb-strip{flex-direction:column;gap:22px;}
+  .es-form{flex-direction:column;}
+  .es-in{min-width:auto;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ╔══════════════════════════════════════╗
+     NAV
+╚══════════════════════════════════════╝ -->
 <nav id="nav">
-  <a href="#" class="nav-logo">Substractum</a>
+  <a href="#" class="nav-logo">Sub<em>stractum</em></a>
   <div class="nav-links" id="nav-links">
-    <a href="#diario">Diario</a>
     <a href="#apps">Apps</a>
-    <a href="#recursos">Recursos</a>
+    <a href="#ebooks">E-books</a>
+    <a href="#produtos">Produtos</a>
+    <a href="#diario">Diario</a>
     <a href="#newsletter">Newsletter</a>
   </div>
-  <button class="ntog" id="ntog" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="substractum.html" class="nav-cta">Plataforma completa &rarr;</a>
+  <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="home">
+<!-- ╔══════════════════════════════════════╗
+     § 1  HERO — Captura imediata
+     Decisao UX: escuridao = autoridade.
+     Grande tipografia = ancoragem de marca.
+     2 CTAs em hierarquia clara.
+╚══════════════════════════════════════╝ -->
+<section id="hero">
   <div class="hero-l">
-    <p class="h-tag">Educacao &middot; Espiritualidade &middot; Formacao</p>
-    <h1 class="h-title">Substra<em>ctum</em></h1>
-    <p class="h-sub">A essencia das coisas que importam</p>
-    <p class="h-text">Ha um nome em latim para o que fica quando o excesso vai embora. O que esta sob tudo. O que sustenta. Este projeto nasce da conviccao de que ainda e possivel cultivar o que importa de verdade.</p>
-    <nav class="h-nav">
-      <a href="#diario">Diario reflexivo</a>
-      <a href="#apps">Aplicativos</a>
-      <a href="#recursos">Recursos didaticos</a>
-      <a href="#ebooks">E-books</a>
-    </nav>
+    <p class="h-eyebrow">Educacao · Espiritualidade · Formacao Integral</p>
+    <h1 class="h-title">Sub<em>strac<br>tum</em></h1>
+    <div class="h-rule"></div>
+    <p class="h-text">O espaco para educadores que estudam, refletem e constroem — com intencionalidade.</p>
+    <div class="h-ctas">
+      <a href="#apps" class="btn btn-gold">Explorar os Apps</a>
+      <a href="substractum.html" class="btn btn-inv">Ver plataforma</a>
+    </div>
+    <div class="h-stats">
+      <div class="hs-item"><div class="hs-n">2</div><div class="hs-l">Apps ativos</div></div>
+      <div class="hs-item"><div class="hs-n">3</div><div class="hs-l">E-books em breve</div></div>
+      <div class="hs-item"><div class="hs-n">&#x221E;</div><div class="hs-l">Reflexoes</div></div>
+    </div>
   </div>
   <div class="hero-r">
-    <p class="h-tag" style="opacity:0;animation:fu .8s ease .4s forwards;">O que voce encontra aqui</p>
-    <ul class="sect-list">
-      <li class="sl-item"><span class="sl-num">i</span><div><div class="sl-name">Diario Reflexivo</div><div class="sl-desc">Escrita pessoal, estados interiores, entradas salvas</div></div></li>
-      <li class="sl-item"><span class="sl-num">ii</span><div><div class="sl-name">Aplicativos</div><div class="sl-desc">FlashStudy, meditacao e registro de habitos</div></div></li>
-      <li class="sl-item"><span class="sl-num">iii</span><div><div class="sl-name">Recursos Didaticos</div><div class="sl-desc">Apostilas, cadernos, jogos — digital e fisico</div></div></li>
-      <li class="sl-item"><span class="sl-num">iv</span><div><div class="sl-name">E-books</div><div class="sl-desc">Serie Substractum: leitura profunda e gratuita</div></div></li>
-    </ul>
-  </div>
-</section>
-<hr class="line">
-
-<!-- DIARIO -->
-<section class="section" id="diario">
-  <div class="wrap">
-    <div class="s-head rv">
-      <span class="s-tag">Desenvolvimento Pessoal</span>
-      <div class="div-line"></div>
-      <h2 class="s-title">Diario <em>Reflexivo</em></h2>
-      <p class="s-desc">Um espaco de escrita interior. Salvo no seu navegador, privado e disponivel sempre.</p>
-    </div>
-    <div class="diary-wrap rv">
-      <div class="diary-editor">
-        <div class="diary-bar">
-          <div class="db-btns">
-            <button class="db-btn" onclick="insertPrompt()">Pergunta reflexiva</button>
-            <button class="db-btn" onclick="clearDiary()">Limpar</button>
-          </div>
-          <span class="diary-date" id="diary-date"></span>
+    <div class="hero-cards">
+      <a href="flashcards.html" class="hc flash">
+        <div class="hc-ico">&#x1F4DA;</div>
+        <div class="hc-info">
+          <div class="hc-name">FlashStudy <span class="hc-badge">Disponivel</span></div>
+          <div class="hc-desc">Baralhos de estudo gerados por IA · Sistema de XP</div>
         </div>
-        <div class="diary-body">
-          <input class="d-title" id="d-titulo" type="text" placeholder="Titulo da reflexao de hoje...">
-          <textarea class="d-body" id="d-corpo" placeholder="O que esta presente em mim agora?  O que aprendi hoje?  O que ainda preciso integrar?
-
-Escreva livremente..."></textarea>
-          <div class="d-moods">
-            <span class="mood-l">Estado</span>
-            <button class="mood" onclick="pickMood(this)">Fluindo</button>
-            <button class="mood" onclick="pickMood(this)">Sereno</button>
-            <button class="mood" onclick="pickMood(this)">Intenso</button>
-            <button class="mood" onclick="pickMood(this)">Pesado</button>
-            <button class="mood" onclick="pickMood(this)">Grato</button>
-            <button class="mood" onclick="pickMood(this)">Buscando</button>
-          </div>
+        <span class="hc-arr">&#x2192;</span>
+      </a>
+      <a href="quiz.html" class="hc quiz">
+        <div class="hc-ico">&#x1F9E0;</div>
+        <div class="hc-info">
+          <div class="hc-name">QuizStudy <span class="hc-badge">Disponivel</span></div>
+          <div class="hc-desc">Quiz gerado por IA · Cole qualquer texto</div>
         </div>
-        <div class="diary-foot">
-          <button class="btn btn-out" onclick="clearDiary()">Descartar</button>
-          <button class="btn btn-dk" onclick="saveDiary()">Salvar reflexao</button>
+        <span class="hc-arr">&#x2192;</span>
+      </a>
+      <a href="substractum.html#diario" class="hc diary">
+        <div class="hc-ico">&#x1F58A;</div>
+        <div class="hc-info">
+          <div class="hc-name">Diario Reflexivo</div>
+          <div class="hc-desc">Escrita diaria · Entradas salvas · 100% privado</div>
         </div>
-      </div>
-      <div class="diary-side">
-        <div class="ds-head"><span>Entradas anteriores</span></div>
-        <div id="entries-list"></div>
-        <div class="d-empty" id="d-empty">
-          <p>Suas reflexoes aparecirao aqui.<br>Comece escrevendo a primeira.</p>
+        <span class="hc-arr">&#x2192;</span>
+      </a>
+      <a href="substractum.html#apps" class="hc plat">
+        <div class="hc-ico">&#x1F4F1;</div>
+        <div class="hc-info">
+          <div class="hc-name">Planner &amp; Meditacao <span class="hc-badge wip">Em breve</span></div>
+          <div class="hc-desc">Em construcao · Organizacao com intencionalidade</div>
         </div>
-      </div>
+        <span class="hc-arr">&#x2192;</span>
+      </a>
     </div>
   </div>
+  <div class="scroll-cue">
+    <span class="sc-line"></span>
+    <span class="sc-lbl">Explorar</span>
+  </div>
 </section>
-<hr class="line">
 
-<!-- APPS -->
-<section class="section alt" id="apps">
+<!-- ╔══════════════════════════════════════╗
+     § 2  APPS EM DESTAQUE
+     Primeiro bloco de conteudo = produto
+     mais tangivel. Sem cadastro, sem custo,
+     converte imediatamente.
+╚══════════════════════════════════════╝ -->
+<section class="section" id="apps">
   <div class="wrap">
-    <div class="s-head rv">
-      <span class="s-tag">Aplicativos Integrados</span>
-      <div class="div-line"></div>
-      <h2 class="s-title">Ferramentas para a <em>jornada</em></h2>
-      <p class="s-desc">Instale os apps que fizerem sentido para voce. Cada um se encaixa na sua formacao.</p>
+    <div class="s-head-row rv">
+      <div>
+        <div class="s-eyebrow"><span class="label">Ferramentas de Estudo</span></div>
+        <h2 class="s-hl">Dois apps que mudam<br>como voce <em>aprende</em></h2>
+      </div>
+      <p class="s-sub">Construidos para o estudo reflexivo. Abre, usa, aprende. Sem cadastro. Sem custo. So o que importa.</p>
     </div>
-    <div class="app-grid rv">
+  </div>
+  <div class="wrap">
+    <div class="apps-grid rv d1">
 
-      <div class="app-cell" id="cell-flash">
-        <div id="app-tag-flash"></div>
-        <div class="app-name">FlashStudy</div>
-        <p class="app-desc">Cartoes de estudo com geracao por inteligencia artificial. Baralhos tematicos do Substractum incluidos — Pedagogia, Filosofia da Educacao, Espiritualidade.</p>
-        <div class="app-acts">
-          <button class="btn btn-dk" id="btn-flash" onclick="installApp('flash','FlashStudy')">Instalar</button>
-          <a class="btn btn-out" id="open-flash" href="flashcards.html" style="display:none">Abrir</a>
+      <div class="ac">
+        <span class="ac-tag f">FlashStudy</span>
+        <h3 class="ac-hl">Aprenda com <em>Flashcards</em><br>e Inteligencia Artificial</h3>
+        <p class="ac-sub">Cole um texto, a IA cria os baralhos. Estude com flip de cartoes, acumule XP e suba de nivel enquanto aprende de verdade.</p>
+        <ul class="ac-feats">
+          <li>Geracao de baralhos com IA a partir de qualquer texto</li>
+          <li>Sistema de XP com 10 niveis de progressao</li>
+          <li>Baralhos tematicos: Pedagogia, Filosofia, Espiritualidade</li>
+          <li>100% no navegador — seus dados nao vao a lugar nenhum</li>
+        </ul>
+        <div class="ac-foot">
+          <a href="flashcards.html" class="btn btn-dk">Abrir FlashStudy &rarr;</a>
+          <span class="ac-free">Gratuito · Sem cadastro</span>
         </div>
       </div>
 
-      <div class="app-cell" id="cell-med">
-        <div id="app-tag-med"></div>
-        <div class="app-name">Meditacao Guiada</div>
-        <p class="app-desc">Praticas de meditacao e contemplacao alinhadas com os temas do Substractum. Sessoes de 5 a 20 minutos. Em desenvolvimento.</p>
-        <div class="app-acts">
-          <button class="btn btn-out" onclick="installApp('med','Meditacao Guiada')">Instalar</button>
-        </div>
-      </div>
-
-      <div class="app-cell" id="cell-hab">
-        <div id="app-tag-hab"></div>
-        <div class="app-name">Registro de Habitos</div>
-        <p class="app-desc">Acompanhe habitos de leitura, reflexao e escrita. Visualize sua consistencia ao longo do tempo de forma discreta e sem julgamentos.</p>
-        <div class="app-acts">
-          <button class="btn btn-out" onclick="installApp('hab','Registro de Habitos')">Instalar</button>
-        </div>
-      </div>
-
-      <div class="app-cell app-slot">
-        <div class="app-name">Espaco reservado</div>
-        <p class="app-desc">Disponivel para futuro aplicativo ou integracao. Voce pode sugerir o que gostaria de encontrar aqui.</p>
-        <div class="app-acts">
-          <button class="btn btn-out" onclick="openM('m-sug')">Sugerir</button>
+      <div class="ac quiz-card">
+        <span class="ac-tag q">QuizStudy</span>
+        <h3 class="ac-hl">Do texto ao <em>Quiz</em><br>em segundos com IA</h3>
+        <p class="ac-sub">Cole qualquer conteudo — resumo, artigo, capitulo — e receba um quiz completo com alternativas, gabarito e explicacoes detalhadas.</p>
+        <ul class="ac-feats">
+          <li>Geracao automatica de questoes de multipla escolha</li>
+          <li>Gabarito com explicacao por questao</li>
+          <li>Timer e modo revisao de erros</li>
+          <li>Historico de desempenho e XP por quiz</li>
+        </ul>
+        <div class="ac-foot">
+          <a href="quiz.html" class="btn btn-sage">Abrir QuizStudy &rarr;</a>
+          <span class="ac-free">Gratuito · Sem cadastro</span>
         </div>
       </div>
 
     </div>
   </div>
 </section>
-<hr class="line">
 
-<!-- RECURSOS DIDATICOS -->
-<section class="section" id="recursos">
+<!-- ╔══════════════════════════════════════╗
+     § 3  MANIFESTO — Autoridade e Voz
+     Seção escura = pausa visual intencional.
+     Voz autoral constrói confiança antes
+     de qualquer pedido de conversão.
+╚══════════════════════════════════════╝ -->
+<section id="manifesto">
+  <div class="mf-wrap rv">
+    <p class="label" style="color:var(--gold);margin-bottom:22px;display:block;">Manifesto Substractum</p>
+    <p class="mf-q">
+      "Ha um nome em latim para o que fica<br>quando o excesso vai embora.<br>
+      <strong>O que esta sob tudo. O que sustenta.<br>O essencial que nenhuma metodologia remove.</strong>"
+    </p>
+    <p class="mf-author">Meire Gomes &mdash; Fundadora do Substractum</p>
+    <div class="mf-cta">
+      <a href="substractum.html" class="btn btn-inv" style="margin-top:12px;">Conhecer o projeto completo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗
+     § 4  E-BOOKS — Isca Digital
+     Oferecer valor antes de vender.
+     Usuário engajado após o manifesto
+     é o momento certo para capturar e-mail.
+╚══════════════════════════════════════╝ -->
+<section class="section mid" id="ebooks">
   <div class="wrap">
-    <div class="s-head rv">
-      <span class="s-tag">Recursos Didaticos</span>
-      <div class="div-line"></div>
-      <h2 class="s-title">Materiais para <em>educadores</em></h2>
-      <p class="s-desc">Apostilas, cadernos, jogos pedagogicos e materiais formativos. Digitais para acesso imediato, fisicos com entrega em todo o Brasil.</p>
+    <div class="s-head-row rv">
+      <div>
+        <div class="s-eyebrow"><span class="label">Serie Substractum</span></div>
+        <h2 class="s-hl">E-books de <em>leitura profunda</em><br>para educadores</h2>
+      </div>
+      <p class="s-sub">Tres volumes em preparo. Pedagogia, espiritualidade e identidade docente. Em construcao com cuidado.</p>
+    </div>
+    <div class="eb-row rv d1">
+      <div class="eb-card">
+        <span class="eb-n">01</span>
+        <div class="eb-vol">Vol. 1 &mdash; Pedagogia</div>
+        <h3 class="eb-title">O Silencio<br><em>que Educa</em></h3>
+        <p class="eb-desc">Uma reflexao sobre o lugar do silencio, da escuta e da presenca na pratica pedagogica. Para quem sente que algo essencial se perdeu no ruido.</p>
+        <span class="eb-wip">Em construcao</span>
+      </div>
+      <div class="eb-card">
+        <span class="eb-n">02</span>
+        <div class="eb-vol">Vol. 2 &mdash; Filosofia da Educacao</div>
+        <h3 class="eb-title">Praxis: Quando<br><em>Pensar Vira Acao</em></h3>
+        <p class="eb-desc">A teoria da praxis aplicada ao cotidiano educativo. Como superar a dicotomia entre reflexao e acao no chao da sala de aula.</p>
+        <span class="eb-wip">Em construcao</span>
+      </div>
+      <div class="eb-card">
+        <span class="eb-n">03</span>
+        <div class="eb-vol">Vol. 3 &mdash; Identidade Docente</div>
+        <h3 class="eb-title">Autoconhecimento<br><em>e Docencia</em></h3>
+        <p class="eb-desc">Para o educador que percebe que a sala de aula e tambem um espelho. Sobre identidade, vocacao e a arte de ensinar sendo quem se e.</p>
+        <span class="eb-wip">Em construcao</span>
+      </div>
     </div>
 
-    <div class="tab-bar rv">
-      <button class="tb on" onclick="rTab('dig')">Digitais</button>
-      <button class="tb" onclick="rTab('fis')">Fisicos</button>
-      <button class="tb" onclick="rTab('grat')">Gratuitos</button>
+    <div class="eb-strip rv d2">
+      <div class="es-txt">
+        <p class="es-hl">Seja avisada assim que os e-books estiverem prontos</p>
+        <p class="es-sub">Tambem envio reflexoes, textos e recursos gratuitos toda semana. Sem spam.</p>
+      </div>
+      <div class="es-form">
+        <input class="es-in" id="es-email" type="email" placeholder="seu@email.com">
+        <button class="btn btn-gold" onclick="esSubscribe()">Quero ser avisada</button>
+        <p class="es-note">Sem spam. Cancelamento a qualquer momento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗
+     § 5  PRODUTOS — Catálogo e Conversão
+     Usuario percorreu o funil completo.
+     Confianca estabelecida. Hora de mostrar
+     o catalogo. WIP honesto = credibilidade.
+╚══════════════════════════════════════╝ -->
+<section class="section" id="produtos">
+  <div class="wrap">
+    <div class="s-head-row rv">
+      <div>
+        <div class="s-eyebrow"><span class="label">Recursos Didaticos</span></div>
+        <h2 class="s-hl">Materiais para <em>educadores</em><br>sendo preparados</h2>
+      </div>
+      <p class="s-sub">Apostilas, cadernos, jogos pedagogicos e materiais gratuitos. Em construcao. Voce sera avisada em primeira mao.</p>
     </div>
 
-    <!-- DIGITAIS -->
+    <div class="tab-row rv">
+      <button class="tb on" onclick="pTab('dig',this)">Digitais</button>
+      <button class="tb" onclick="pTab('fis',this)">Fisicos</button>
+      <button class="tb" onclick="pTab('grat',this)">Gratuitos</button>
+    </div>
+
     <div class="tp on rv" id="tp-dig">
-      <div class="g3">
-        <div class="cell onb">
-          <span class="c-tag">Apostila — PDF</span>
-          <span class="c-badge">Digital</span>
-          <div class="c-title">Caderno de <em>Praxis Pedagogica</em></div>
-          <p class="c-body">Guia reflexivo para educadores integrarem teoria, espiritualidade e pratica. 48 paginas com atividades e perguntas geradoras.</p>
-          <span class="c-price">R$ 29,90</span>
-          <span class="c-pnote">Download imediato em PDF</span>
-          <button class="c-link" onclick="openM('m-buy','Caderno de Praxis Pedagogica','R$ 29,90')">Adquirir &rarr;</button>
+      <div class="prod-grid">
+        <div class="pc">
+          <div class="pc-wip">Em construcao</div>
+          <div class="pc-type">Apostila &mdash; PDF</div>
+          <h3 class="pc-title">Caderno de <em>Praxis Pedagogica</em></h3>
+          <p class="pc-desc">Guia reflexivo para educadores integrarem teoria, espiritualidade e pratica. Com atividades e perguntas geradoras.</p>
+          <div><span class="pc-badge">Em breve</span></div>
         </div>
-        <div class="cell onb">
-          <span class="c-tag">Jogo — Imprimivel</span>
-          <span class="c-badge">Digital</span>
-          <div class="c-title"><em>Vozes da Educacao</em></div>
-          <p class="c-body">Baralho com 60 cartas de perguntas filosoficas para dinamicas em grupo, formacao docente e rodas de conversa reflexiva.</p>
-          <span class="c-price">R$ 34,90</span>
-          <span class="c-pnote">PDF para imprimir e cortar</span>
-          <button class="c-link" onclick="openM('m-buy','Vozes da Educacao','R$ 34,90')">Adquirir &rarr;</button>
+        <div class="pc">
+          <div class="pc-wip">Em construcao</div>
+          <div class="pc-type">Jogo &mdash; Imprimivel</div>
+          <h3 class="pc-title"><em>Vozes da Educacao</em></h3>
+          <p class="pc-desc">Baralho de cartas para dinamicas reflexivas em grupos. Formacao docente e rodas de conversa pedagogica.</p>
+          <div><span class="pc-badge">Em breve</span></div>
         </div>
-        <div class="cell onb">
-          <span class="c-tag">Material Formativo</span>
-          <span class="c-badge">Digital</span>
-          <div class="c-title">Educacao e <em>Espiritualidade</em></div>
-          <p class="c-body">Apostila sobre a integracao entre dimensao espiritual e pratica pedagogica, com referencias e roteiro de estudo.</p>
-          <span class="c-price">R$ 24,90</span>
-          <span class="c-pnote">ou pague quanto puder</span>
-          <button class="c-link" onclick="openM('m-pague','Educacao e Espiritualidade','R$ 24,90')">Adquirir &rarr;</button>
+        <div class="pc">
+          <div class="pc-wip">Em construcao</div>
+          <div class="pc-type">Material Formativo</div>
+          <h3 class="pc-title">Educacao e <em>Espiritualidade</em></h3>
+          <p class="pc-desc">Apostila sobre a integracao entre dimensao espiritual e pratica pedagogica, com referencias e roteiro de estudo.</p>
+          <div><span class="pc-badge">Em breve</span></div>
         </div>
       </div>
     </div>
 
-    <!-- FISICOS -->
     <div class="tp rv" id="tp-fis">
-      <div class="g3">
-        <div class="cell onb">
-          <span class="c-tag">Caderno — Impresso</span>
-          <span class="c-badge" style="border-color:var(--p2);color:var(--p2);">Fisico</span>
-          <div class="c-title">Caderno Reflexivo <em>Substractum</em></div>
-          <p class="c-body">Caderno encadernado com pautas, espacos para reflexao e citacoes ao longo das paginas. Papel polen, capa dura em linho.</p>
-          <span class="c-price">R$ 89,90</span>
-          <span class="c-pnote">Frete calculado no checkout</span>
-          <button class="c-link" onclick="openM('m-buy','Caderno Reflexivo Substractum','R$ 89,90')">Adquirir &rarr;</button>
+      <div class="prod-grid">
+        <div class="pc">
+          <div class="pc-wip">Em construcao</div>
+          <div class="pc-type">Caderno &mdash; Impresso</div>
+          <h3 class="pc-title">Caderno Reflexivo <em>Substractum</em></h3>
+          <p class="pc-desc">Caderno encadernado com espacos para reflexao, citacoes e perguntas geradoras. Papel polen, capa em linho.</p>
+          <div><span class="pc-badge">Em breve</span></div>
         </div>
-        <div class="cell onb">
-          <span class="c-tag">Kit Completo</span>
-          <span class="c-badge" style="border-color:var(--p2);color:var(--p2);">Fisico + Digital</span>
-          <div class="c-title"><em>Kit Formacao Integral</em></div>
-          <p class="c-body">Caderno fisico + apostila digital + jogo de cartas imprimivel + trilha formativa online. O kit para formadores.</p>
-          <span class="c-price">R$ 149,90</span>
-          <span class="c-pnote">Economia de R$ 54 no kit</span>
-          <button class="c-link" onclick="openM('m-buy','Kit Formacao Integral','R$ 149,90')">Adquirir &rarr;</button>
+        <div class="pc">
+          <div class="pc-wip">Em construcao</div>
+          <div class="pc-type">Kit Completo</div>
+          <h3 class="pc-title"><em>Kit Formacao Integral</em></h3>
+          <p class="pc-desc">Caderno fisico + apostila digital + jogo de cartas imprimivel. O kit completo para o educador em formacao.</p>
+          <div><span class="pc-badge">Em breve</span></div>
         </div>
-        <div class="cell onb" style="display:flex;flex-direction:column;justify-content:center;">
-          <div class="c-title" style="color:var(--muted);font-style:italic;">Mais produtos em breve</div>
-          <p class="c-body">Novos materiais fisicos em desenvolvimento. Entre na lista de espera para ser avisada primeiro.</p>
-          <button class="c-link" onclick="openM('m-nl','Lista de espera','')">Entrar na lista &rarr;</button>
+        <div class="pc" style="display:flex;flex-direction:column;justify-content:center;">
+          <div class="pc-type">Mais produtos</div>
+          <h3 class="pc-title" style="color:var(--stone);">Em <em>desenvolvimento</em></h3>
+          <p class="pc-desc">Novos materiais fisicos em preparacao. Entre na lista para ser avisada primeiro.</p>
+          <button class="btn btn-out btn-sm" onclick="openNl('Lista de espera — Produtos Fisicos')">Entrar na lista</button>
         </div>
       </div>
     </div>
 
-    <!-- GRATUITOS -->
     <div class="tp rv" id="tp-grat">
-      <div class="g3">
-        <div class="cell onb">
-          <span class="c-tag">Modelo — PDF</span>
-          <span class="c-badge free">Gratuito</span>
-          <div class="c-title">Plano de Aula <em>Reflexivo</em></div>
-          <p class="c-body">Modelo com espaco para intencionalidade pedagogica e avaliacao humanizadora. Exclusivo para assinantes da newsletter.</p>
-          <span class="c-price" style="color:var(--p2);font-size:1.2rem;">Gratuito</span>
-          <span class="c-pnote">Ao se inscrever na newsletter</span>
-          <button class="c-link" onclick="openM('m-nl','Plano de Aula Reflexivo','')">Receber gratis &rarr;</button>
+      <div class="prod-grid">
+        <div class="pc">
+          <div class="pc-wip free">Gratuito</div>
+          <div class="pc-type">Modelo &mdash; PDF</div>
+          <h3 class="pc-title">Plano de Aula <em>Reflexivo</em></h3>
+          <p class="pc-desc">Modelo com espaco para intencionalidade pedagogica e avaliacao humanizadora. Exclusivo para assinantes.</p>
+          <div><button class="btn btn-dk btn-sm" onclick="openNl('Plano de Aula Reflexivo')">Receber gratis &rarr;</button></div>
         </div>
-        <div class="cell onb">
-          <span class="c-tag">Guia — PDF</span>
-          <span class="c-badge free">Gratuito</span>
-          <div class="c-title">30 Perguntas que <em>Abrem o Ano</em></div>
-          <p class="c-body">30 perguntas reflexivas para educadores iniciarem o ano com intencionalidade, autoconhecimento e presenca pedagogica.</p>
-          <span class="c-price" style="color:var(--p2);font-size:1.2rem;">Gratuito</span>
-          <span class="c-pnote">Download imediato por e-mail</span>
-          <button class="c-link" onclick="openM('m-nl','30 Perguntas que Abrem o Ano','')">Receber gratis &rarr;</button>
+        <div class="pc">
+          <div class="pc-wip free">Gratuito</div>
+          <div class="pc-type">Guia &mdash; PDF</div>
+          <h3 class="pc-title">30 Perguntas que <em>Abrem o Ano</em></h3>
+          <p class="pc-desc">30 perguntas reflexivas para educadores iniciarem o ano com intencionalidade, autoconhecimento e presenca.</p>
+          <div><button class="btn btn-dk btn-sm" onclick="openNl('30 Perguntas que Abrem o Ano')">Receber gratis &rarr;</button></div>
         </div>
-        <div class="cell onb">
-          <span class="c-tag">Manifesto — PDF</span>
-          <span class="c-badge free">Gratuito</span>
-          <div class="c-title">Manifesto <em>Substractum</em></div>
-          <p class="c-body">O texto fundante do projeto. Uma reflexao sobre o que fica quando o excesso e retirado da educacao, da vida e do ensino.</p>
-          <span class="c-price" style="color:var(--p2);font-size:1.2rem;">Gratuito</span>
-          <span class="c-pnote">Download direto, sem cadastro</span>
-          <button class="c-link" onclick="toast('Baixando Manifesto...')">Baixar agora &rarr;</button>
+        <div class="pc">
+          <div class="pc-wip free">Gratuito</div>
+          <div class="pc-type">Manifesto &mdash; PDF</div>
+          <h3 class="pc-title">Manifesto <em>Substractum</em></h3>
+          <p class="pc-desc">O texto fundante do projeto. Uma reflexao sobre o que fica quando o excesso e retirado da educacao e do ensino.</p>
+          <div><a href="substractum.html" class="btn btn-dk btn-sm">Ler agora &rarr;</a></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-<hr class="line">
 
-<!-- E-BOOKS -->
-<section class="section alt" id="ebooks">
+<!-- ╔══════════════════════════════════════╗
+     § 6  DIÁRIO — Retenção Diária
+     Ferramenta gratuita de uso diario cria
+     habito de retorno. Quem volta todo dia
+     tem 3x mais chance de comprar.
+╚══════════════════════════════════════╝ -->
+<section class="section alt" id="diario">
   <div class="wrap">
-    <div class="s-head rv">
-      <span class="s-tag">Serie Substractum</span>
-      <div class="div-line"></div>
-      <h2 class="s-title">E-books & <em>Leituras</em></h2>
-      <p class="s-desc">Livros digitais autorais que aprofundam os pilares do projeto. Leitura densa, linguagem humanizada.</p>
-    </div>
-
-    <!-- EBOOK DESTAQUE -->
-    <div class="ebook-feature rv">
-      <div class="eb-cover">
-        <div class="eb-vol">Serie Substractum &mdash; Vol. 1</div>
-        <div class="eb-title">O Silencio<br><em>que Educa</em></div>
-        <div class="eb-pages">80 paginas &middot; PDF e ePub</div>
-        <div class="eb-price-big">R$ 19,90</div>
+    <div class="diary-inner rv">
+      <div class="di-l">
+        <div class="s-eyebrow" style="margin-bottom:18px;"><span class="label">Ferramenta Gratuita</span></div>
+        <h2 class="s-hl" style="margin-bottom:14px;">Diario <em>Reflexivo</em><br>todos os dias</h2>
+        <p class="s-sub">Um espaco de escrita interior. Salvo no seu navegador. Privado. Sem cadastro. Para o dia que pede silencio e uma boa pergunta.</p>
+        <ul class="di-feats">
+          <li>Perguntas reflexivas geradas aleatoriamente</li>
+          <li>Registro do estado emocional por entrada</li>
+          <li>Historico completo de entradas anteriores</li>
+          <li>100% privado — salvo so no seu navegador</li>
+        </ul>
+        <a href="substractum.html#diario" class="btn btn-dk">Abrir o diario &rarr;</a>
       </div>
-      <div class="eb-info">
-        <span class="s-tag">Sobre o livro</span>
-        <p class="eb-body">Uma reflexao sobre o lugar do silencio, da escuta e da presenca na pratica pedagogica. Como o que nao se diz forma tanto quanto o que se ensina. Para educadores que sentem que algo essencial se perdeu no ruido das metodologias.</p>
-        <div class="eb-chips">
-          <span class="eb-chip">Pedagogia</span>
-          <span class="eb-chip">Espiritualidade</span>
-          <span class="eb-chip">Presenca</span>
-          <span class="eb-chip">Silencio</span>
+      <div class="di-r">
+        <div class="dm">
+          <div class="dm-top">
+            <div class="dm-dots"><div class="dm-dot"></div><div class="dm-dot"></div><div class="dm-dot"></div></div>
+            <div class="dm-date">Diario Reflexivo</div>
+          </div>
+          <div class="dm-body">
+            <div class="dm-ln"></div>
+            <div class="dm-ln"></div>
+            <p class="dm-text">"O que estou evitando perceber hoje?<span class="dm-cursor"></span>"</p>
+            <div class="dm-moods">
+              <span class="dm-mood on">Fluindo</span>
+              <span class="dm-mood">Sereno</span>
+              <span class="dm-mood">Intenso</span>
+              <span class="dm-mood">Grato</span>
+              <span class="dm-mood">Buscando</span>
+            </div>
+            <div class="dm-btns">
+              <div class="dm-btn c">Descartar</div>
+              <div class="dm-btn s">Salvar reflexao</div>
+            </div>
+          </div>
         </div>
-        <button class="btn btn-dk" onclick="openM('m-buy','O Silencio que Educa','R$ 19,90')">Adquirir e-book &rarr;</button>
-      </div>
-    </div>
-
-    <!-- OUTROS EBOOKS -->
-    <div class="g2 rv" style="margin-top:1px;">
-      <div class="cell">
-        <span class="c-tag">Vol. 2</span>
-        <span class="c-badge">E-book</span>
-        <div class="c-title">Praxis: <em>Quando Pensar Vira Acao</em></div>
-        <p class="c-body">A teoria da praxis aplicada ao cotidiano educativo. Como superar a dicotomia entre reflexao e acao. 95 paginas — PDF e ePub.</p>
-        <span class="c-price">R$ 19,90</span>
-        <span class="c-pnote">Acesso imediato apos pagamento</span>
-        <button class="c-link" onclick="openM('m-buy','Praxis: Quando Pensar Vira Acao','R$ 19,90')">Adquirir &rarr;</button>
-      </div>
-      <div class="cell">
-        <span class="c-tag">Vol. 3 &mdash; Em breve</span>
-        <span class="c-badge">E-book</span>
-        <div class="c-title">Autoconhecimento <em>e Docencia</em></div>
-        <p class="c-body">Para o educador que percebe que a sala de aula e tambem um espelho. Sobre identidade, vocacao e a arte de ensinar sendo quem se e.</p>
-        <span class="c-price" style="font-size:1.1rem;color:var(--muted);">Em breve</span>
-        <span class="c-pnote">Lista de espera aberta</span>
-        <button class="c-link" onclick="openM('m-nl','Autoconhecimento e Docencia','')">Avisar quando sair &rarr;</button>
       </div>
     </div>
   </div>
 </section>
-<hr class="line">
 
-<!-- NEWSLETTER -->
-<div id="newsletter">
-  <div class="nl-grid rv">
-    <div class="nl-l">
-      <span class="s-tag" style="color:var(--p3);">Newsletter semanal</span>
-      <h2 class="s-title" style="color:var(--w);">Uma reflexao<br><em>por semana</em></h2>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--p3);margin-top:10px;line-height:1.7;">Textos, recursos gratuitos e convites a interioridade. Sem frequencia excessiva, sem spam.</p>
-    </div>
-    <div class="nl-r">
+<!-- ╔══════════════════════════════════════╗
+     § 7  NEWSLETTER — Conversão Final
+     Usuario que chegou até aqui leu tudo.
+     Confia. Taxa de conversao 3x maior aqui
+     do que no meio da pagina.
+╚══════════════════════════════════════╝ -->
+<section id="newsletter">
+  <div class="wrap">
+    <div class="nl-inner rv">
+      <div>
+        <p class="label" style="color:var(--gold);display:block;margin-bottom:14px;">Newsletter Semanal</p>
+        <h2 class="nl-hl">Uma reflexao<br><em>por semana,</em><br>no seu e-mail</h2>
+        <p class="nl-sub" style="margin-top:12px;">Textos, recursos gratuitos e convites a interioridade. Sem frequencia excessiva. Sem spam. So o que importa.</p>
+      </div>
       <div class="nl-form">
-        <input class="nl-in" type="text" id="nl-nome" placeholder="Seu nome">
-        <input class="nl-in" type="email" id="nl-email" placeholder="seu@email.com">
-        <button class="btn btn-dk" onclick="subNl()">Assinar gratuitamente</button>
+        <input class="nl-in" id="nl-nome" type="text" placeholder="Seu nome">
+        <input class="nl-in" id="nl-email" type="email" placeholder="seu@email.com">
+        <button class="btn btn-gold" onclick="subNl()">Assinar gratuitamente</button>
         <p class="nl-note">Seus dados nao serao compartilhados. Cancelamento a qualquer momento.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- FOOTER -->
 <footer>
   <div class="wrap">
     <div class="ft-grid">
       <div>
-        <div class="ft-logo">Substractum</div>
+        <div class="ft-brand">Substractum</div>
         <p class="ft-tag">A essencia das coisas que importam. Educacao, espiritualidade e formacao integral.</p>
       </div>
       <div class="ft-col">
-        <div class="ft-h">Ferramentas</div>
-        <a href="#diario">Diario Reflexivo</a>
-        <a href="#apps">Aplicativos</a>
+        <div class="ft-col-h">Apps</div>
         <a href="flashcards.html">FlashStudy</a>
+        <a href="quiz.html">QuizStudy</a>
+        <a href="substractum.html#apps">Planner (em breve)</a>
+        <a href="substractum.html#apps">Meditacao (em breve)</a>
       </div>
       <div class="ft-col">
-        <div class="ft-h">Recursos</div>
-        <a href="#recursos">Produtos Digitais</a>
-        <a href="#recursos">Produtos Fisicos</a>
+        <div class="ft-col-h">Conteudo</div>
         <a href="#ebooks">E-books</a>
-        <a href="#recursos">Gratuitos</a>
+        <a href="#produtos">Digitais</a>
+        <a href="#produtos">Fisicos</a>
+        <a href="#produtos">Gratuitos</a>
       </div>
       <div class="ft-col">
-        <div class="ft-h">Projeto</div>
-        <a href="#">Manifesto</a>
-        <a href="#">Sobre Meire Gomes</a>
+        <div class="ft-col-h">Projeto</div>
+        <a href="substractum.html">Plataforma</a>
+        <a href="substractum.html#diario">Diario</a>
         <a href="#newsletter">Newsletter</a>
-        <a href="#">Contato</a>
+        <a href="/cdn-cgi/l/email-protection#87e4e8e9f3e6f3e8c7eae2eef5e2e0e8eae2f4a9e4e8eaa9e5f5">Contato</a>
       </div>
     </div>
     <div class="ft-bot">
-      <span>Substractum &mdash; meiregomes.com.br</span>
-      <span>Educacao &middot; Espiritualidade &middot; Formacao Integral</span>
+      <span class="ft-copy">&#x00A9; 2025 Substractum &#x2014; meiregomes.com.br &#x2014; Meire Gomes</span>
+      <span class="ft-copy">Educacao &#x00B7; Espiritualidade &#x00B7; Formacao Integral</span>
     </div>
   </div>
 </footer>
 
-<!-- MODAL: Compra -->
-<div class="overlay" id="m-buy">
-  <div class="modal">
-    <button class="mx" onclick="closeM('m-buy')">fechar</button>
-    <span class="m-tag">Adquirir produto</span>
-    <h2 class="m-title" id="m-buy-title"></h2>
-    <p class="m-sub">Preencha seus dados para prosseguir. Voce recebera o produto por e-mail em ate 5 minutos.</p>
-    <div class="field"><label>Nome completo</label><input type="text" placeholder="Seu nome"></div>
-    <div class="field"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
-    <div class="m-total">
-      <span class="m-total-l" id="m-buy-prod"></span>
-      <span class="m-total-p" id="m-buy-preco"></span>
-    </div>
-    <button class="btn btn-dk" style="width:100%;" onclick="finBuy()">Prosseguir para pagamento</button>
-    <p class="m-sec">Pagamento seguro via Hotmart</p>
-  </div>
-</div>
-
-<!-- MODAL: Pague quanto puder -->
-<div class="overlay" id="m-pague">
-  <div class="modal">
-    <button class="mx" onclick="closeM('m-pague')">fechar</button>
-    <span class="m-tag">Pague quanto puder</span>
-    <h2 class="m-title" id="m-pague-title"></h2>
-    <p class="m-sub">Acreditamos que o conhecimento deve ser acessivel. Contribua com o que estiver ao seu alcance, sem culpa.</p>
-    <div class="field"><label>Nome</label><input type="text" placeholder="Seu nome"></div>
-    <div class="field"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
-    <div class="field"><label>Sua contribuicao</label>
-      <select><option>R$ 5,00 — simbolico</option><option>R$ 10,00</option><option selected>R$ 24,90 — valor sugerido</option><option>R$ 35,00 — apoio ao projeto</option><option>R$ 0,00 — nao posso agora</option></select>
-    </div>
-    <button class="btn btn-dk" style="width:100%;margin-top:6px;" onclick="finBuy()">Confirmar</button>
-  </div>
-</div>
-
-<!-- MODAL: Newsletter / Gratuito -->
+<!-- MODAL GRATUITO -->
 <div class="overlay" id="m-nl">
   <div class="modal">
-    <button class="mx" onclick="closeM('m-nl')">fechar</button>
-    <span class="m-tag">Receber gratuitamente</span>
-    <h2 class="m-title" id="m-nl-title"></h2>
-    <p class="m-sub">Deixe seu e-mail e enviaremos o material gratuitamente junto a nossa newsletter semanal.</p>
-    <div class="field"><label>Nome</label><input type="text" placeholder="Seu nome"></div>
-    <div class="field"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
-    <button class="btn btn-dk" style="width:100%;margin-top:6px;" onclick="finNl()">Enviar para meu e-mail</button>
-  </div>
-</div>
-
-<!-- MODAL: Sugestao -->
-<div class="overlay" id="m-sug">
-  <div class="modal">
-    <button class="mx" onclick="closeM('m-sug')">fechar</button>
-    <span class="m-tag">Sugestao de aplicativo</span>
-    <h2 class="m-title">O que voce gostaria de encontrar?</h2>
-    <p class="m-sub">Compartilhe sua sugestao. Cada ideia ajuda a construir um espaco mais util.</p>
-    <div class="field"><label>E-mail (opcional)</label><input type="email" placeholder="seu@email.com"></div>
-    <div class="field"><label>Sua sugestao</label><input type="text" placeholder="Descreva o app..."></div>
-    <button class="btn btn-dk" style="width:100%;margin-top:6px;" onclick="finSug()">Enviar</button>
+    <span class="m-tag" id="m-nl-tag">Receber gratuitamente</span>
+    <h3 class="m-hl" id="m-nl-title"></h3>
+    <p class="m-sub">Deixe seu e-mail e enviaremos o material gratuitamente.</p>
+    <input class="m-in" id="m-nl-email" type="email" placeholder="seu@email.com">
+    <div class="m-foot">
+      <button onclick="closeModal('m-nl')" class="btn btn-out btn-sm">Cancelar</button>
+      <button onclick="finNl()" class="btn btn-dk btn-sm">Enviar &rarr;</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── NAV ──
-const nav  = document.getElementById('nav');
-const nls  = document.getElementById('nav-links');
-const ntog = document.getElementById('ntog');
-window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 30));
-ntog.addEventListener('click',    () => nls.classList.toggle('open'));
-nls.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nls.classList.remove('open')));
+const nav = document.getElementById('nav');
+const navLinks = document.getElementById('nav-links');
+const hbg = document.getElementById('hbg');
+window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 36));
+hbg.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-// Active nav on scroll
-const sects = document.querySelectorAll('section[id], div[id]');
-const obs = new IntersectionObserver(es => {
-  es.forEach(e => {
-    if (e.isIntersecting) {
-      nls.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
-    }
-  });
-}, { threshold:.3 });
-sects.forEach(s => obs.observe(s));
-
-// ── TABS: RECURSOS ──
-function rTab(id) {
-  document.querySelectorAll('.tab-bar .tb').forEach((b,i) => b.classList.toggle('on', i === ['dig','fis','grat'].indexOf(id)));
-  ['dig','fis','grat'].forEach(t => document.getElementById('tp-' + t).classList.toggle('on', t === id));
+// ── PRODUCT TABS ──
+function pTab(id, btn) {
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.tp').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tp-' + id).classList.add('on');
 }
 
-// ── DIARY ──
-const fmt = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-document.getElementById('diary-date').textContent = new Date().toLocaleDateString('pt-BR', fmt);
-
-let entries = [];
-try { entries = JSON.parse(localStorage.getItem('sub_diary') || '[]'); } catch(e) {}
-
-const PROMPTS = [
-  'O que estou evitando perceber hoje?',
-  'Que emocao esta presente em mim agora, sem julgamento?',
-  'O que esta situacao esta me ensinando sobre mim?',
-  'Se eu soubesse que daria certo, o que faria diferente?',
-  'Quem fui hoje? Quem quero ser amanha?',
-  'Qual e a qualidade de presenca que trouxe para hoje?',
-  'O que eu precisava ouvir e ninguem disse?',
-];
-
-function insertPrompt() {
-  const ta = document.getElementById('d-corpo');
-  const p  = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
-  ta.value += (ta.value ? '\n\n' : '') + p + '\n';
-  ta.focus();
+// ── E-BOOK STRIP SUBSCRIBE ──
+function esSubscribe() {
+  const email = document.getElementById('es-email').value.trim();
+  if (!email || !email.includes('@')) { openNl('E-books Substractum'); return; }
+  document.getElementById('es-email').value = '';
+  toast('Voce sera avisada quando os e-books estiverem prontos!');
 }
-
-function clearDiary() {
-  document.getElementById('d-titulo').value = '';
-  document.getElementById('d-corpo').value  = '';
-  document.querySelectorAll('.mood').forEach(m => m.classList.remove('on'));
-}
-
-function pickMood(el) {
-  document.querySelectorAll('.mood').forEach(m => m.classList.remove('on'));
-  el.classList.add('on');
-}
-
-function saveDiary() {
-  const title = document.getElementById('d-titulo').value.trim();
-  const body  = document.getElementById('d-corpo').value.trim();
-  if (!body) { toast('Escreva algo antes de salvar.'); return; }
-  const mood = document.querySelector('.mood.on')?.textContent || '';
-  const date = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
-  entries.push({ title, body, mood, date });
-  localStorage.setItem('sub_diary', JSON.stringify(entries));
-  clearDiary();
-  renderEntries();
-  toast('Reflexao salva.');
-}
-
-function renderEntries() {
-  const list  = document.getElementById('entries-list');
-  const empty = document.getElementById('d-empty');
-  if (!entries.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  list.innerHTML = [...entries].reverse().map((e, i) => `
-    <div class="entry" onclick="loadEntry(${entries.length - 1 - i})">
-      <div class="entry-date">${e.date}${e.mood ? ' · ' + e.mood : ''}</div>
-      <div class="entry-title">${e.title || 'Sem titulo'}</div>
-      <div class="entry-prev">${e.body}</div>
-    </div>`).join('');
-}
-
-function loadEntry(i) {
-  const e = entries[i];
-  document.getElementById('d-titulo').value = e.title;
-  document.getElementById('d-corpo').value  = e.body;
-  document.querySelectorAll('.mood').forEach(m => m.classList.toggle('on', m.textContent === e.mood));
-  document.getElementById('diario').scrollIntoView({ behavior:'smooth' });
-}
-
-renderEntries();
-
-// ── APPS ──
-let installedApps = [];
-try { installedApps = JSON.parse(localStorage.getItem('sub_apps') || '[]'); } catch(e) {}
-
-function installApp(id, name) {
-  if (!installedApps.includes(id)) installedApps.push(id);
-  localStorage.setItem('sub_apps', JSON.stringify(installedApps));
-  markInstalled(id);
-  toast(name + ' instalado.');
-}
-
-function markInstalled(id) {
-  const tag  = document.getElementById('app-tag-' + id);
-  const btn  = document.getElementById('btn-' + id);
-  const open = document.getElementById('open-' + id);
-  const cell = document.getElementById('cell-' + id);
-  if (!tag) return;
-  tag.innerHTML = `<div class="app-inst-row"><span class="app-dot"></span><span class="app-st">Instalado</span></div>`;
-  if (cell) cell.classList.add('inst');
-  if (btn)  btn.style.display  = 'none';
-  if (open) open.style.display = 'inline-block';
-}
-
-installedApps.forEach(id => markInstalled(id));
-
-// ── MODALS ──
-function openM(id, title, sub) {
-  document.getElementById(id).classList.add('on');
-  if (id === 'm-buy')   { document.getElementById('m-buy-title').textContent  = title; document.getElementById('m-buy-prod').textContent = title; document.getElementById('m-buy-preco').textContent = sub; }
-  if (id === 'm-nl')    document.getElementById('m-nl-title').textContent    = title;
-  if (id === 'm-pague') document.getElementById('m-pague-title').textContent = title;
-}
-function closeM(id) { document.getElementById(id).classList.remove('on'); }
-
-document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('on'); }));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.overlay.on').forEach(o => o.classList.remove('on')); });
-
-function finBuy() { closeM('m-buy'); closeM('m-pague'); toast('Redirecionando para pagamento...'); }
-function finNl()  { closeM('m-nl'); toast('Material enviado. Verifique seu e-mail.'); }
-function finSug() { closeM('m-sug'); toast('Sugestao recebida. Obrigada.'); }
 
 // ── NEWSLETTER ──
 function subNl() {
   const email = document.getElementById('nl-email').value.trim();
-  if (!email || !email.includes('@')) { toast('Digite um e-mail valido.'); return; }
+  if (!email || !email.includes('@')) { toast('Por favor, insira um e-mail valido.'); return; }
   document.getElementById('nl-email').value = '';
-  document.getElementById('nl-nome').value  = '';
-  toast('Inscricao realizada. Bem-vinda ao Substractum.');
+  document.getElementById('nl-nome').value = '';
+  toast('Inscricao realizada! Bem-vinda ao Substractum.');
 }
+
+// ── MODAL GRATUITOS ──
+function openNl(titulo) {
+  document.getElementById('m-nl-title').textContent = titulo;
+  document.getElementById('m-nl-email').value = '';
+  document.getElementById('m-nl').classList.add('on');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('on'); }
+function finNl() {
+  const email = document.getElementById('m-nl-email').value.trim();
+  if (!email || !email.includes('@')) { toast('Por favor, insira um e-mail valido.'); return; }
+  closeModal('m-nl');
+  toast('Material sera enviado para seu e-mail. Obrigada!');
+}
+document.getElementById('m-nl').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('on');
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.overlay.on').forEach(o => o.classList.remove('on'));
+});
 
 // ── TOAST ──
 function toast(msg) {
@@ -831,9 +957,6 @@ function toast(msg) {
   clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2800);
 }
 
-// ── REVEAL ──
-const rvObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold:.08 });
-document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
-</script>
-</body>
-</html>
+// ── REVEAL ON SCROLL ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersec

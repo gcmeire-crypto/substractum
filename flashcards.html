@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlashStudy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #0f0d0a;
+  --surface:    #1a1710;
+  --surface2:   #221f16;
+  --card-f:     #f5f0e8;
+  --card-b:     #192018;
+  --amber:      #d4a843;
+  --amber-lt:   #f0c96a;
+  --amber-dim:  rgba(212,168,67,.13);
+  --green:      #4a8c5c;
+  --green-dim:  rgba(74,140,92,.15);
+  --red:        #8c4a4a;
+  --red-dim:    rgba(140,74,74,.15);
+  --text:       #e8e0cc;
+  --text-dk:    #2a2418;
+  --muted:      #7a7060;
+  --border:     #2e2a20;
+  --border2:    #3a342a;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-weight:300; min-height:100vh; }
+
+/* ─ HEADER ─ */
+header { display:flex; align-items:center; justify-content:space-between; padding:18px 36px; border-bottom:1px solid var(--border); position:sticky; top:0; background:rgba(15,13,10,.94); backdrop-filter:blur(12px); z-index:100; }
+.logo { font-family:'Playfair Display',serif; font-size:1.35rem; color:var(--amber); letter-spacing:-.02em; }
+.logo em { font-style:italic; color:var(--text); }
+.hdr-btns { display:flex; gap:8px; }
+
+/* ─ BUTTONS ─ */
+.btn { padding:7px 15px; border-radius:5px; border:1px solid var(--border); background:transparent; color:var(--text); font-family:'DM Sans',sans-serif; font-size:.82rem; font-weight:500; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.btn:hover { background:var(--border2); }
+.btn.prim { background:var(--amber); border-color:var(--amber); color:var(--text-dk); font-weight:600; }
+.btn.prim:hover { background:var(--amber-lt); }
+.btn.dng { border-color:var(--red); color:#e08080; }
+.btn.dng:hover { background:var(--red-dim); }
+.btn.ok { border-color:var(--green); color:#80c080; }
+.btn.ok:hover { background:var(--green-dim); }
+
+/* ─ PAGES ─ */
+.page { display:none; }
+.page.on { display:block; }
+
+/* ─ HOME ─ */
+#pg-home { padding:32px 36px; max-width:1100px; margin:0 auto; }
+.xp-bar { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 26px; margin-bottom:24px; display:flex; gap:24px; align-items:center; flex-wrap:wrap; }
+.xp-badge { width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,var(--amber),var(--amber-lt)); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--text-dk); flex-shrink:0; }
+.xp-info { flex:1; min-width:180px; }
+.xp-name { font-family:'Playfair Display',serif; font-size:.95rem; margin-bottom:5px; }
+.xp-track { height:5px; background:var(--border2); border-radius:3px; overflow:hidden; margin-bottom:6px; }
+.xp-fill { height:100%; background:linear-gradient(90deg,var(--amber),var(--amber-lt)); border-radius:3px; transition:width .6s; }
+.xp-sub { font-size:.72rem; color:var(--muted); }
+.xp-totals { display:flex; gap:18px; }
+.xp-tot { font-size:.75rem; color:var(--muted); }
+.xp-tot strong { color:var(--text); font-weight:500; }
+
+.stat-row { display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+.stat { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:15px 20px; flex:1; min-width:90px; }
+.stat-n { font-family:'Playfair Display',serif; font-size:1.7rem; color:var(--amber); line-height:1; }
+.stat-l { color:var(--muted); font-size:.72rem; margin-top:3px; }
+
+.decks { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; }
+.deck { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; position:relative; overflow:hidden; transition:all .25s; }
+.deck::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--amber),var(--amber-lt)); opacity:0; transition:.25s; }
+.deck:hover { border-color:rgba(212,168,67,.4); transform:translateY(-2px); }
+.deck:hover::after { opacity:1; }
+.deck-ico { font-size:1.7rem; margin-bottom:8px; }
+.deck-name { font-family:'Playfair Display',serif; font-size:1.05rem; margin-bottom:3px; }
+.deck-meta { color:var(--muted); font-size:.73rem; margin-bottom:2px; }
+.deck-xp { font-size:.68rem; color:var(--amber); margin-bottom:10px; }
+.deck-bar { height:3px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:13px; }
+.deck-bar-fill { height:100%; background:var(--amber); border-radius:2px; }
+.deck-acts { display:flex; gap:5px; }
+.deck-acts .btn { flex:1; padding:5px 6px; font-size:.72rem; text-align:center; }
+.add-deck { border:1px dashed var(--border); border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--muted); cursor:pointer; min-height:120px; transition:all .2s; }
+.add-deck:hover { border-color:var(--amber); color:var(--amber); }
+.add-ico { font-size:1.7rem; line-height:1; }
+
+/* ─ CARDS LIST PAGE ─ */
+#pg-cards { padding:32px 36px; max-width:800px; margin:0 auto; }
+.pg-header { display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+.pg-title { font-family:'Playfair Display',serif; font-size:1.4rem; }
+.pg-sub { font-size:.78rem; color:var(--muted); margin-top:2px; }
+
+.cards-table { display:flex; flex-direction:column; gap:6px; margin-bottom:24px; }
+.ct-row { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px 16px; display:flex; align-items:flex-start; gap:12px; transition:border-color .2s; }
+.ct-row:hover { border-color:var(--border2); }
+.ct-num { font-family:'Playfair Display',serif; font-size:.82rem; color:var(--muted); width:22px; flex-shrink:0; padding-top:1px; font-style:italic; }
+.ct-body { flex:1; }
+.ct-q { font-size:.85rem; font-weight:500; color:var(--text); margin-bottom:3px; }
+.ct-a { font-size:.77rem; color:var(--muted); line-height:1.5; }
+.ct-note { font-size:.7rem; color:var(--amber); margin-top:2px; font-style:italic; }
+.ct-del { background:transparent; border:none; color:var(--red); cursor:pointer; opacity:.4; font-size:.9rem; transition:opacity .15s; flex-shrink:0; padding:2px; }
+.ct-del:hover { opacity:1; }
+.ct-empty { padding:32px; text-align:center; color:var(--muted); font-style:italic; font-size:.9rem; }
+
+/* ─ STUDY PAGE ─ */
+#pg-study { display:none; flex-direction:column; align-items:center; padding:28px 20px; min-height:calc(100vh - 57px); }
+#pg-study.on { display:flex; }
+
+.study-top { width:100%; max-width:600px; margin-bottom:20px; }
+.study-nav { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+.study-name { font-family:'Playfair Display',serif; font-size:1.2rem; }
+
+/* SCORE STRIP — always visible */
+.score-strip { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.sp { display:flex; align-items:center; gap:7px; padding:6px 14px; border-radius:20px; font-size:.8rem; font-weight:600; border:1px solid; }
+.sp-h { background:var(--red-dim); border-color:var(--red); color:#e08080; }
+.sp-m { background:var(--amber-dim); border-color:var(--amber); color:var(--amber-lt); }
+.sp-e { background:var(--green-dim); border-color:var(--green); color:#80c080; }
+.sp-x { background:rgba(212,168,67,.1); border-color:var(--amber); color:var(--amber); margin-left:auto; }
+.sp-val { font-family:'Playfair Display',serif; font-size:1rem; }
+
+.prog-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.prog-fill { height:100%; background:linear-gradient(90deg,var(--amber),var(--amber-lt)); border-radius:3px; transition:width .35s; }
+.prog-txt { display:flex; justify-content:space-between; margin-top:4px; font-size:.72rem; color:var(--muted); }
+
+/* CARD FLIP */
+.card-wrap { width:100%; max-width:560px; height:300px; perspective:1200px; cursor:pointer; margin-bottom:20px; animation:cardIn .3s ease; }
+@keyframes cardIn { from { opacity:0; transform:translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+.card-3d { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .55s cubic-bezier(.4,0,.2,1); }
+.card-3d.flip { transform:rotateY(180deg); }
+.cface { position:absolute; inset:0; border-radius:16px; padding:40px 36px; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+.cf { background:var(--card-f); color:var(--text-dk); box-shadow:0 16px 48px rgba(0,0,0,.5),0 3px 12px rgba(212,168,67,.1); }
+.cb { background:var(--card-b); color:var(--text); transform:rotateY(180deg); border:1px solid #283828; box-shadow:0 16px 48px rgba(0,0,0,.5); }
+.clabel { position:absolute; top:14px; left:18px; font-size:.62rem; text-transform:uppercase; letter-spacing:.14em; font-weight:600; }
+.cf .clabel { color:var(--muted); }
+.cb .clabel { color:var(--green); }
+.cnum { position:absolute; top:14px; right:18px; font-size:.62rem; color:var(--muted); }
+.chint { position:absolute; bottom:12px; font-size:.68rem; color:var(--muted); }
+.cq { font-family:'Playfair Display',serif; font-size:1.4rem; line-height:1.45; }
+.ca { font-family:'Playfair Display',serif; font-size:1.35rem; line-height:1.45; }
+.cnote { font-size:.83rem; margin-top:9px; opacity:.6; font-style:italic; }
+
+/* RATING */
+.rating { display:flex; gap:10px; width:100%; max-width:560px; }
+.rb { flex:1; padding:12px 6px; border-radius:9px; border:1px solid; background:transparent; font-family:'DM Sans',sans-serif; font-size:.8rem; font-weight:600; cursor:pointer; transition:all .2s; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.rb-lbl { font-size:.6rem; opacity:.55; font-weight:400; }
+.rb-pts { font-size:.67rem; opacity:.65; font-weight:500; }
+.rb.hard { border-color:var(--red); color:#e08080; } .rb.hard:hover { background:var(--red-dim); }
+.rb.mid  { border-color:var(--amber); color:var(--amber-lt); } .rb.mid:hover { background:var(--amber-dim); }
+.rb.easy { border-color:var(--green); color:#80c080; } .rb.easy:hover { background:var(--green-dim); }
+.rating.off { opacity:0; pointer-events:none; }
+
+.kbds { display:flex; gap:14px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
+.nav-btns { display:flex; gap:12px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.nav-btn { padding:9px 22px; font-size:.82rem; min-width:110px; }
+.nav-btn:disabled { opacity:.3; cursor:not-allowed; }
+.kbd { font-size:.68rem; color:var(--muted); display:flex; align-items:center; gap:4px; }
+.kbadge { background:var(--border2); border-radius:3px; padding:2px 6px; font-family:monospace; font-size:.68rem; }
+
+/* COMPLETE */
+.done { display:none; flex-direction:column; align-items:center; text-align:center; width:100%; max-width:560px; padding:40px 20px; }
+.done.on { display:flex; }
+.done-ico { font-size:2.8rem; margin-bottom:10px; }
+.done-title { font-family:'Playfair Display',serif; font-size:1.75rem; margin-bottom:4px; }
+.done-sub { color:var(--muted); font-size:.9rem; margin-bottom:4px; }
+.done-xp { font-family:'Playfair Display',serif; color:var(--amber); font-size:1rem; margin-bottom:22px; }
+.done-scores { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:22px; }
+.ds { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px 20px; min-width:100px; }
+.ds-n { font-family:'Playfair Display',serif; font-size:1.5rem; }
+.ds-n.h{color:#e08080;} .ds-n.m{color:var(--amber);} .ds-n.e{color:#80c080;} .ds-n.x{color:var(--amber);}
+.ds-l { font-size:.7rem; color:var(--muted); margin-top:2px; }
+.done-btns { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+
+/* XP popup */
+.xppop { position:fixed; top:68px; right:18px; background:var(--surface2); border:1px solid var(--amber); border-radius:8px; padding:8px 16px; color:var(--amber); font-family:'Playfair Display',serif; font-size:1rem; z-index:400; opacity:0; transform:translateY(-6px); transition:all .25s; pointer-events:none; }
+.xppop.on { opacity:1; transform:translateY(0); }
+
+/* ─ MODAL ─ */
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,.74); backdrop-filter:blur(4px); z-index:300; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .22s; padding:20px; }
+.overlay.on { opacity:1; pointer-events:all; }
+.modal { background:var(--surface); border:1px solid var(--border2); border-radius:14px; padding:28px; width:100%; max-width:460px; transform:translateY(14px); transition:transform .22s; max-height:calc(100vh - 40px); overflow-y:auto; }
+.overlay.on .modal { transform:translateY(0); }
+.mh { font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:18px; }
+.field { margin-bottom:12px; }
+.field label { display:block; font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:5px; }
+.field input, .field textarea, .field select { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:9px 12px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:.87rem; outline:none; transition:border-color .2s; resize:vertical; }
+.field textarea { min-height:70px; }
+.field input:focus, .field textarea:focus, .field select:focus { border-color:var(--amber); }
+.mfoot { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+.emoji-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+.eo { width:32px; height:32px; border:1px solid var(--border); border-radius:5px; background:transparent; font-size:.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .13s; }
+.eo:hover,.eo.sel { background:var(--border2); border-color:var(--amber); }
+
+/* import tabs */
+.itabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:14px; }
+.itab { padding:7px 16px; background:transparent; border:none; color:var(--muted); font-size:.78rem; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .2s; font-family:'DM Sans',sans-serif; font-weight:500; }
+.itab.on { color:var(--amber); border-bottom-color:var(--amber); }
+.ipanel { display:none; }
+.ipanel.on { display:block; }
+.csvhint { background:var(--bg); border:1px solid var(--border); border-radius:5px; padding:8px 11px; font-size:.72rem; color:var(--muted); font-family:monospace; line-height:1.7; margin-bottom:10px; }
+.prevlist { max-height:180px; overflow-y:auto; margin:8px 0; display:flex; flex-direction:column; gap:5px; }
+.previtem { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 11px; display:flex; align-items:flex-start; gap:8px; }
+.previtem input[type=checkbox] { accent-color:var(--amber); width:14px; height:14px; flex-shrink:0; margin-top:2px; }
+.previtem-q { font-size:.8rem; font-weight:500; }
+.previtem-a { font-size:.73rem; color:var(--muted); margin-top:2px; }
+.icount { font-size:.76rem; color:var(--amber); font-weight:500; margin-bottom:5px; }
+.loader { display:none; flex-direction:column; align-items:center; gap:8px; padding:20px; color:var(--muted); font-size:.85rem; }
+.loader.on { display:flex; }
+.spin { width:28px; height:28px; border:2px solid var(--border2); border-top-color:var(--amber); border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* toast */
+.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(4px); background:var(--surface2); border:1px solid var(--amber); color:var(--text); padding:9px 20px; border-radius:7px; font-size:.82rem; z-index:999; opacity:0; transition:all .28s; pointer-events:none; white-space:nowrap; }
+.toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media(max-width:600px) {
+  header { padding:14px 18px; }
+  #pg-home { padding:20px 14px; }
+  #pg-cards { padding:20px 14px; }
+  .cq,.ca { font-size:1.1rem; }
+  .cface { padding:28px 18px; }
+  .rating { gap:6px; }
+  .rb { padding:10px 4px; font-size:.75rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Flash<em>Study</em></div>
+  <div class="hdr-btns">
+    <button class="btn" id="btn-import">Importar</button>
+    <button class="btn" id="btn-add-card">+ Cartão</button>
+    <button class="btn prim" id="btn-new-deck">+ Baralho</button>
+  </div>
+</header>
+
+<!-- HOME -->
+<div id="pg-home" class="page on">
+  <div class="xp-bar" id="xp-bar"></div>
+  <div class="stat-row" id="stat-row"></div>
+  <div class="decks" id="decks"></div>
+</div>
+
+<!-- CARDS LIST (all cards for a deck) -->
+<div id="pg-cards" class="page">
+  <div class="pg-header">
+    <button class="btn" onclick="goHome()">← Voltar</button>
+    <div>
+      <div class="pg-title" id="cl-title"></div>
+      <div class="pg-sub" id="cl-sub"></div>
+    </div>
+    <button class="btn prim" style="margin-left:auto" onclick="openAddCardForDeck()">+ Adicionar cartão</button>
+  </div>
+  <div class="cards-table" id="cards-table"></div>
+</div>
+
+<!-- STUDY -->
+<div id="pg-study" class="page">
+  <div class="study-top">
+    <div class="study-nav">
+      <button class="btn" onclick="goHome()">← Voltar</button>
+      <span class="study-name" id="study-name"></span>
+    </div>
+    <!-- LIVE SCORE — sempre visível -->
+    <div class="score-strip">
+      <div class="sp sp-h"><span class="sp-val" id="lv-h">0</span>Difícil</div>
+      <div class="sp sp-m"><span class="sp-val" id="lv-m">0</span>Regular</div>
+      <div class="sp sp-e"><span class="sp-val" id="lv-e">0</span>Fácil</div>
+      <div class="sp sp-x"><span id="lv-x">0 XP</span></div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="prog-txt"><span>Progresso</span><span id="prog-txt">0/0</span></div>
+  </div>
+
+  <div id="study-cards" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+    <div class="card-wrap" id="card-wrap" onclick="flipCard()">
+      <div class="card-3d" id="card-3d">
+        <div class="cface cf">
+          <span class="clabel">Pergunta</span>
+          <span class="cnum" id="cnum"></span>
+          <p class="cq" id="cq"></p>
+          <span class="chint">Clique para revelar</span>
+        </div>
+        <div class="cface cb">
+          <span class="clabel">Resposta</span>
+          <p class="ca" id="ca"></p>
+          <p class="cnote" id="cnote"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RATING — sempre no DOM, apenas muda opacidade -->
+    <div class="rating off" id="rating">
+      <button class="rb hard" onclick="rate('hard')">Difícil<span class="rb-pts">+1 XP</span><span class="rb-lbl">tecla 1</span></button>
+      <button class="rb mid"  onclick="rate('mid')">Regular<span class="rb-pts">+2 XP</span><span class="rb-lbl">tecla 2</span></button>
+      <button class="rb easy" onclick="rate('easy')">Fácil<span class="rb-pts">+3 XP</span><span class="rb-lbl">tecla 3</span></button>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn nav-btn" id="btn-prev" onclick="navCard(-1)">← Anterior</button>
+      <span class="kbd"><span class="kbadge">Espaço</span>Virar</span>
+      <button class="btn nav-btn" id="btn-next" onclick="navCard(1)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- DONE SCREEN -->
+  <div class="done" id="done-screen">
+    <div class="done-ico">🎯</div>
+    <h2 class="done-title">Sessão concluída!</h2>
+    <p class="done-sub">Você avaliou todos os cartões deste baralho.</p>
+    <p class="done-xp" id="done-xp"></p>
+    <div class="done-scores" id="done-scores"></div>
+    <div class="done-btns">
+      <button class="btn prim" onclick="restartStudy()">Estudar novamente</button>
+      <button class="btn" onclick="goHome()">Ver baralhos</button>
+    </div>
+  </div>
+</div>
+
+<!-- XP popup -->
+<div class="xppop" id="xppop"></div>
+
+<!-- MODAL: Novo/Editar Baralho -->
+<div class="overlay" id="m-deck">
+  <div class="modal">
+    <div class="mh" id="m-deck-title">Novo Baralho</div>
+    <div class="field"><label>Nome do baralho</label><input type="text" id="fi-dname" placeholder="ex: Pedagogia Crítica" maxlength="52"></div>
+    <div class="field"><label>Ícone</label><div class="emoji-row" id="emoji-row"></div></div>
+    <div class="mfoot">
+      <button class="btn" onclick="closeM('m-deck')">Cancelar</button>
+      <button class="btn prim" onclick="saveDeck()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Adicionar Cartão -->
+<div class="overlay" id="m-card">
+  <div class="modal">
+    <div class="mh">Adicionar Cartão</div>
+    <div class="field"><label>Baralho</label><select id="fi-cdecksel"></select></div>
+    <div class="field"><label>Pergunta (frente)</label><textarea id="fi-cq" placeholder="O que é...?"></textarea></div>
+    <div class="field"><label>Resposta (verso)</label><textarea id="fi-ca" placeholder="Resposta completa..."></textarea></div>
+    <div class="field"><label>Nota / dica (opcional)</label><input type="text" id="fi-cn" placeholder="Exemplo, contexto..."></div>
+    <div class="mfoot">
+      <button class="btn" onclick="closeM('m-card')">Cancelar</button>
+      <button class="btn" onclick="saveCard(true)">Salvar e continuar</button>
+      <button class="btn prim" onclick="saveCard(false)">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Importar -->
+<div class="overlay" id="m-import">
+  <div class="modal">
+    <div class="mh">Importar Cartões</div>
+    <div class="field"><label>Baralho de destino</label><select id="fi-ideck"></select></div>
+    <div class="itabs">
+      <button class="itab on" onclick="iTab('csv')">CSV / Lista</button>
+      <button class="itab" onclick="iTab('ai')">Gerar com IA</button>
+    </div>
+
+    <div class="ipanel on" id="ip-csv">
+      <div class="csvhint">Formato: pergunta;resposta<br>Opcional: pergunta;resposta;nota</div>
+      <div class="field"><label>Cole sua lista</label><textarea id="fi-csv" style="min-height:90px" placeholder="O que é práxis?;Ação refletida e transformadora&#10;Quem é Paulo Freire?;Educador e filósofo brasileiro"></textarea></div>
+      <button class="btn" style="width:100%;margin-bottom:8px" onclick="previewCSV()">Pré-visualizar</button>
+      <div id="csv-prev" style="display:none">
+        <div class="icount" id="csv-cnt"></div>
+        <div class="prevlist" id="csv-list"></div>
+        <div class="mfoot" style="margin-top:8px">
+          <button class="btn" onclick="closeM('m-import')">Cancelar</button>
+          <button class="btn prim" onclick="importCSV()">Importar selecionados</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ipanel" id="ip-ai">
+      <div class="field"><label>Cole texto ou anotações</label><textarea id="fi-ai" style="min-height:110px" placeholder="Cole qualquer conteúdo aqui — resumo, artigo, anotações — e a IA cria os cartões automaticamente."></textarea></div>
+      <div class="field"><label>Quantidade de cartões</label>
+        <select id="fi-aiqty">
+          <option value="5">5 cartões</option>
+          <option value="10" selected>10 cartões</option>
+          <option value="15">15 cartões</option>
+          <option value="20">20 cartões</option>
+        </select>
+      </div>
+      <button class="btn prim" style="width:100%;margin-bottom:8px" onclick="genAI()">✨ Gerar com IA</button>
+      <div class="loader" id="ai-loader"><div class="spin"></div><span>Analisando e criando cartões...</span></div>
+      <div id="ai-prev" style="display:none">
+        <div class="icount" id="ai-cnt"></div>
+        <div class="prevlist" id="ai-list"></div>
+        <div class="mfoot" style="margin-top:8px">
+          <button class="btn" onclick="closeM('m-import')">Cancelar</button>
+          <button class="btn prim" onclick="importAI()">Importar selecionados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONSTANTS ──
+const EMOJIS = ['📚','🧠','🔬','💡','🌍','📐','🎯','⚗️','🖊️','🔭','🧬','💻','🎶','🏛️','🌱','📖','⚡','🌿'];
+const XP    = { hard:1, mid:2, easy:3 };
+const XPL   = 100;
+
+// ── INITIAL DATA ──
+const SEED = [
+  { id:'d1', name:'Biologia Celular', icon:'🔬', cards:[
+    { id:'c1', q:'O que é mitocôndria?', a:'Organela responsável pela produção de energia (ATP) via respiração celular.', note:'A "usina" da célula.' },
+    { id:'c2', q:'Função do núcleo celular?', a:'Controla as atividades celulares e armazena o DNA.', note:'' },
+    { id:'c3', q:'Diferença entre mitose e meiose?', a:'Mitose: divisão somática, gera 2 células idênticas. Meiose: gera 4 células com metade do material genético.', note:'Meiose = reprodução sexual.' },
+    { id:'c4', q:'O que é membrana plasmática?', a:'Barreira semipermeável que controla a entrada e saída de substâncias na célula.', note:'' },
+  ], history:{}, xp:0 },
+  { id:'d2', name:'Pedagogia', icon:'📖', cards:[
+    { id:'c5', q:'O que é práxis pedagógica?', a:'Ação refletida e transformadora — integração entre teoria, reflexão crítica e prática.', note:'' },
+    { id:'c6', q:'O que defende Paulo Freire?', a:'Educação como prática da liberdade, baseada no diálogo, na problematização e na conscientização.', note:'Pedagogia do Oprimido.' },
+    { id:'c7', q:'O que é educação bancária?', a:'Modelo em que o educador "deposita" conhecimento no educando passivo. Criticado por Freire.', note:'Oposto à educação dialógica.' },
+  ], history:{}, xp:0 },
+];
+
+// ── STATE — com migração de chaves antigas ──
+function loadDecks() {
+  // Tenta chaves antigas primeiro
+  const keys = ['fs_v4', 'fs_decks_v3', 'flashstudy_decks'];
+  for (const k of keys) {
+    try {
+      const d = JSON.parse(localStorage.getItem(k));
+      if (d && Array.isArray(d) && d.length > 0) return d;
+    } catch(e) {}
+  }
+  return SEED;
+}
+function loadXP() {
+  const keys = ['fs_xp', 'flashstudy_xp'];
+  for (const k of keys) {
+    const v = parseInt(localStorage.getItem(k));
+    if (!isNaN(v) && v > 0) return v;
+  }
+  return 0;
+}
+
+let ST = {
+  decks: loadDecks(),
+  totalXP: loadXP(),
+  deckId: null,
+  queue: [],
+  idx: 0,
+  flipped: false,
+  scores: { hard:0, mid:0, easy:0 },
+  sessXP: 0,
+  editDeckId: null,
+  selEmoji: '📚',
+};
+
+function save() {
+  localStorage.setItem('fs_v4', JSON.stringify(ST.decks));
+  localStorage.setItem('fs_xp', ST.totalXP);
+}
+
+function uid() { return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+
+// ── LEVEL ──
+function getLevel(xp)  { return Math.floor(xp / XPL) + 1; }
+function getXPRem(xp)  { return xp % XPL; }
+function getLvName(l)  { return ['Iniciante','Curioso','Aprendiz','Estudante','Dedicado','Avançado','Mestre','Sábio','Mentor','Iluminado'][Math.min(l-1,9)]; }
+
+// ── NAVIGATION ──
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('on');
+}
+
+function goHome() {
+  goPage('pg-home');
+  renderHome();
+}
+
+// ── HOME ──
+function renderHome() {
+  const l   = getLevel(ST.totalXP);
+  const xi  = getXPRem(ST.totalXP);
+  const pct = (xi / XPL) * 100;
+  const revs = ST.decks.reduce((s,d) => s + Object.keys(d.history||{}).length, 0);
+
+  document.getElementById('xp-bar').innerHTML = `
+    <div class="xp-badge">${l}</div>
+    <div class="xp-info">
+      <div class="xp-name">${getLvName(l)}</div>
+      <div class="xp-track"><div class="xp-fill" style="width:${pct}%"></div></div>
+      <div class="xp-sub">${xi} / ${XPL} XP para o próximo nível</div>
+    </div>
+    <div class="xp-totals">
+      <div class="xp-tot">Total: <strong>${ST.totalXP} XP</strong></div>
+      <div class="xp-tot">Revisões: <strong>${revs}</strong></div>
+      <div class="xp-tot">Nível: <strong>${l}</strong></div>
+    </div>`;
+
+  const tc = ST.decks.reduce((s,d) => s + d.cards.length, 0);
+  document.getElementById('stat-row').innerHTML = `
+    <div class="stat"><div class="stat-n">${ST.decks.length}</div><div class="stat-l">Baralhos</div></div>
+    <div class="stat"><div class="stat-n">${tc}</div><div class="stat-l">Cartões</div></div>
+    <div class="stat"><div class="stat-n">${ST.totalXP}</div><div class="stat-l">XP Total</div></div>
+    <div class="stat"><div class="stat-n">${revs}</div><div class="stat-l">Revisões</div></div>`;
+
+  const grid = document.getElementById('decks');
+  grid.innerHTML = '';
+  ST.decks.forEach(deck => {
+    const tot = deck.cards.length;
+    const rev = Object.keys(deck.history||{}).length;
+    const pct = tot > 0 ? Math.round(rev/tot*100) : 0;
+    const el  = document.createElement('div');
+    el.className = 'deck';
+    el.innerHTML = `
+      <div class="deck-ico">${deck.icon}</div>
+      <div class="deck-name">${deck.name}</div>
+      <div class="deck-meta">${tot} cartão${tot!==1?'s':''} · ${pct}% revisado</div>
+      <div class="deck-xp">${deck.xp||0} XP acumulado</div>
+      <div class="deck-bar"><div class="deck-bar-fill" style="width:${pct}%"></div></div>
+      <div class="deck-acts">
+        <button class="btn prim" onclick="startStudy('${deck.id}');event.stopPropagation()">▶ Estudar</button>
+        <button class="btn" onclick="viewCards('${deck.id}');event.stopPropagation()">Ver cartões (${tot})</button>
+        <button class="btn dng" onclick="delDeck('${deck.id}');event.stopPropagation()">✕</button>
+      </div>`;
+    grid.appendChild(el);
+  });
+
+  const add = document.createElement('div');
+  add.className = 'add-deck';
+  add.innerHTML = '<div class="add-ico">＋</div><div>Novo Baralho</div>';
+  add.onclick = () => { ST.editDeckId = null; openM('m-deck'); };
+  grid.appendChild(add);
+}
+
+// ── VIEW ALL CARDS (página dedicada, sem modal) ──
+function viewCards(deckId) {
+  ST.deckId = deckId;
+  const deck = ST.decks.find(d => d.id === deckId);
+  document.getElementById('cl-title').textContent = deck.icon + ' ' + deck.name;
+  document.getElementById('cl-sub').textContent = deck.cards.length + ' cartão' + (deck.cards.length!==1?'s':'') + ' · ' + (deck.xp||0) + ' XP acumulado';
+  renderCardsTable(deck);
+  goPage('pg-cards');
+}
+
+function renderCardsTable(deck) {
+  const table = document.getElementById('cards-table');
+  if (!deck.cards.length) {
+    table.innerHTML = '<div class="ct-empty">Nenhum cartão ainda. Clique em "+ Adicionar cartão" para começar.</div>';
+    return;
+  }
+  table.innerHTML = deck.cards.map((c, i) => `
+    <div class="ct-row">
+      <span class="ct-num">${i+1}</span>
+      <div class="ct-body">
+        <div class="ct-q">${escHtml(c.q)}</div>
+        <div class="ct-a">${escHtml(c.a)}</div>
+        ${c.note ? '<div class="ct-note">' + escHtml(c.note) + '</div>' : ''}
+      </div>
+      <button class="ct-del" onclick="delCard('${deck.id}','${c.id}')" title="Remover cartão">✕</button>
+    </div>`).join('');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function openAddCardForDeck() {
+  fillDeckSel(ST.deckId);
+  clearCardFields();
+  openM('m-card');
+}
+
+function delCard(deckId, cardId) {
+  const deck = ST.decks.find(d => d.id === deckId);
+  if (!deck) return;
+  deck.cards = deck.cards.filter(c => c.id !== cardId);
+  if (deck.history) delete deck.history[cardId];
+  save();
+  renderCardsTable(deck);
+  document.getElementById('cl-sub').textContent = deck.cards.length + ' cartão' + (deck.cards.length!==1?'s':'') + ' · ' + (deck.xp||0) + ' XP acumulado';
+  toast('Cartão removido.');
+}
+
+// ── STUDY ──
+function startStudy(deckId) {
+  const deck = ST.decks.find(d => d.id === deckId);
+  if (!deck || !deck.cards.length) { toast('Este baralho não tem cartões!'); return; }
+
+  ST.deckId  = deckId;
+  ST.queue   = [...deck.cards].sort(() => Math.random() - .5);
+  ST.idx     = 0;
+  ST.flipped = false;
+  ST.scores  = { hard:0, mid:0, easy:0 };
+  ST.sessXP  = 0;
+
+  document.getElementById('study-name').textContent = deck.name;
+  document.getElementById('study-cards').style.display = 'flex';
+  document.getElementById('done-screen').classList.remove('on');
+
+  goPage('pg-study');
+  updateLive();
+  showCard();
+}
+
+function showCard() {
+  if (ST.idx >= ST.queue.length) { showDone(); return; }
+  const c = ST.queue[ST.idx];
+  document.getElementById('cq').textContent   = c.q;
+  document.getElementById('ca').textContent   = c.a;
+  document.getElementById('cnote').textContent = c.note || '';
+  document.getElementById('cnum').textContent  = (ST.idx + 1) + ' / ' + ST.queue.length;
+
+  const card = document.getElementById('card-3d');
+  card.classList.remove('flip');
+  ST.flipped = false;
+  document.getElementById('rating').classList.add('off');
+
+  // Restart animation
+  const wrap = document.getElementById('card-wrap');
+  wrap.style.animation = 'none';
+  requestAnimationFrame(() => { wrap.style.animation = ''; });
+  updateNavBtns();
+
+  const pct = ST.queue.length > 0 ? (ST.idx / ST.queue.length) * 100 : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent  = ST.idx + ' / ' + ST.queue.length;
+}
+
+function flipCard() {
+  if (ST.idx >= ST.queue.length) return;
+  ST.flipped = !ST.flipped;
+  document.getElementById('card-3d').classList.toggle('flip', ST.flipped);
+  document.getElementById('rating').classList.toggle('off', !ST.flipped);
+}
+
+function rate(level) {
+  ST.scores[level]++;
+  const earned = XP[level];
+  ST.sessXP   += earned;
+  ST.totalXP  += earned;
+
+  const deck = ST.decks.find(d => d.id === ST.deckId);
+  const card = ST.queue[ST.idx];
+  if (deck) {
+    if (!deck.history) deck.history = {};
+    deck.history[card.id] = level;
+    deck.xp = (deck.xp || 0) + earned;
+  }
+  save();
+  updateLive();
+  xpPop(earned);
+  ST.idx++;
+  showCard();
+}
+
+function updateLive() {
+  document.getElementById('lv-h').textContent = ST.scores.hard;
+  document.getElementById('lv-m').textContent = ST.scores.mid;
+  document.getElementById('lv-e').textContent = ST.scores.easy;
+  document.getElementById('lv-x').textContent = ST.sessXP + ' XP';
+}
+
+function showDone() {
+  document.getElementById('study-cards').style.display = 'none';
+  const ds = document.getElementById('done-screen');
+  ds.classList.add('on');
+
+  const total = ST.scores.hard + ST.scores.mid + ST.scores.easy;
+  const pctE  = total > 0 ? Math.round(ST.scores.easy / total * 100) : 0;
+
+  document.getElementById('done-xp').textContent = '+' + ST.sessXP + ' XP conquistados nesta sessão';
+  document.getElementById('done-scores').innerHTML = `
+    <div class="ds"><div class="ds-n h">${ST.scores.hard}</div><div class="ds-l">Difícil (+${ST.scores.hard} XP)</div></div>
+    <div class="ds"><div class="ds-n m">${ST.scores.mid}</div><div class="ds-l">Regular (+${ST.scores.mid*2} XP)</div></div>
+    <div class="ds"><div class="ds-n e">${ST.scores.easy}</div><div class="ds-l">Fácil (+${ST.scores.easy*3} XP)</div></div>
+    <div class="ds"><div class="ds-n x">${pctE}%</div><div class="ds-l">Respondidos fácil</div></div>`;
+}
+
+function restartStudy() {
+  document.getElementById('study-cards').style.display = 'flex';
+  document.getElementById('done-screen').classList.remove('on');
+  const deck = ST.decks.find(d => d.id === ST.deckId);
+  if (deck) deck.history = {};
+  save();
+  startStudy(ST.deckId);
+}
+
+// ── XP POPUP ──
+function xpPop(n) {
+  const p = document.getElementById('xppop');
+  p.textContent = '+' + n + ' XP';
+  p.classList.add('on');
+  clearTimeout(p._t);
+  p._t = setTimeout(() => p.classList.remove('on'), 1500);
+}
+
+// ── MODALS ──
+function openM(id) {
+  document.getElementById(id).classList.add('on');
+  if (id === 'm-card') fillDeckSel(ST.deckId);
+  if (id === 'm-deck') {
+    document.getElementById('fi-dname').value = '';
+    ST.selEmoji = '📚';
+    renderEmoji();
+    document.getElementById('m-deck-title').textContent = ST.editDeckId ? 'Editar Baralho' : 'Novo Baralho';
+  }
+}
+function closeM(id) { document.getElementById(id).classList.remove('on'); }
+
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('on'); });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.overlay.on').forEach(o => o.classList.remove('on'));
+});
+
+// ── EMOJI ──
+function renderEmoji() {
+  document.getElementById('emoji-row').innerHTML = EMOJIS.map(e =>
+    `<button class="eo${e===ST.selEmoji?' sel':''}" onclick="pickEmoji('${e}')">${e}</button>`
+  ).join('');
+}
+function pickEmoji(e) { ST.selEmoji = e; renderEmoji(); }
+renderEmoji();
+
+// ── DECK ──
+function saveDeck() {
+  const name = document.getElementById('fi-dname').value.trim();
+  if (!name) { document.getElementById('fi-dname').style.borderColor='var(--red)'; return; }
+  document.getElementById('fi-dname').style.borderColor = '';
+  if (ST.editDeckId) {
+    const d = ST.decks.find(d => d.id === ST.editDeckId);
+    if (d) { d.name = name; d.icon = ST.selEmoji; }
+    ST.editDeckId = null;
+  } else {
+    ST.decks.push({ id:uid(), name, icon:ST.selEmoji, cards:[], history:{}, xp:0 });
+  }
+  save(); closeM('m-deck'); renderHome();
+  toast('Baralho salvo!');
+}
+
+function delDeck(deckId) {
+  if (!confirm('Excluir este baralho e todos os seus cartões?')) return;
+  ST.decks = ST.decks.filter(d => d.id !== deckId);
+  if (ST.deckId === deckId) ST.deckId = null;
+  save(); renderHome();
+}
+
+// ── CARD ──
+function fillDeckSel(preferId) {
+  const sel = document.getElementById('fi-cdecksel');
+  sel.innerHTML = ST.decks.map(d => `<option value="${d.id}">${d.icon} ${d.name}</option>`).join('');
+  if (preferId) sel.value = preferId;
+}
+function clearCardFields() {
+  document.getElementById('fi-cq').value = '';
+  document.getElementById('fi-ca').value = '';
+  document.getElementById('fi-cn').value = '';
+}
+
+function saveCard(keepOpen) {
+  const deckId = document.getElementById('fi-cdecksel').value;
+  const q      = document.getElementById('fi-cq').value.trim();
+  const a      = document.getElementById('fi-ca').value.trim();
+  const note   = document.getElementById('fi-cn').value.trim();
+  let err = false;
+  document.getElementById('fi-cq').style.borderColor = q ? '' : (err=true,'var(--red)');
+  document.getElementById('fi-ca').style.borderColor = a ? '' : (err=true,'var(--red)');
+  if (err) return;
+  const deck = ST.decks.find(d => d.id === deckId);
+  if (!deck) return;
+  deck.cards.push({ id:uid(), q, a, note });
+  save();
+  clearCardFields();
+  // Atualiza a tabela se estiver na página de cartões
+  if (document.getElementById('pg-cards').classList.contains('on') && ST.deckId === deckId) {
+    renderCardsTable(deck);
+    document.getElementById('cl-sub').textContent = deck.cards.length + ' cartão' + (deck.cards.length!==1?'s':'') + ' · ' + (deck.xp||0) + ' XP acumulado';
+  }
+  renderHome();
+  if (!keepOpen) { closeM('m-card'); toast('Cartão adicionado a ' + deck.name); }
+  else toast('Salvo! Próximo cartão:');
+}
+
+// ── IMPORT ──
+let _csv = [], _ai = [];
+
+function openImport() {
+  if (!ST.decks.length) { toast('Crie um baralho primeiro!'); return; }
+  const sel = document.getElementById('fi-ideck');
+  sel.innerHTML = ST.decks.map(d => `<option value="${d.id}">${d.icon} ${d.name}</option>`).join('');
+  if (ST.deckId) sel.value = ST.deckId;
+  document.getElementById('fi-csv').value = '';
+  document.getElementById('fi-ai').value  = '';
+  document.getElementById('csv-prev').style.display = 'none';
+  document.getElementById('ai-prev').style.display  = 'none';
+  document.getElementById('ai-loader').classList.remove('on');
+  iTab('csv');
+  openM('m-import');
+}
+
+function iTab(t) {
+  document.querySelectorAll('.itab').forEach((b,i) => b.classList.toggle('on', i===(t==='csv'?0:1)));
+  document.getElementById('ip-csv').classList.toggle('on', t==='csv');
+  document.getElementById('ip-ai').classList.toggle('on', t==='ai');
+}
+
+function previewCSV() {
+  const raw = document.getElementById('fi-csv').value.trim();
+  if (!raw) return;
+  _csv = raw.split('\n').map(l => l.trim()).filter(Boolean).map(line => {
+    const p = line.split(';');
+    return { q: (p[0]||'').trim(), a: (p[1]||'').trim(), note: (p[2]||'').trim() };
+  }).filter(c => c.q && c.a);
+  if (!_csv.length) { toast('Nenhum cartão válido. Use: pergunta;resposta'); return; }
+  document.getElementById('csv-cnt').textContent = _csv.length + ' cartão(s) encontrado(s)';
+  document.getElementById('csv-list').innerHTML = _csv.map((c,i) => `
+    <div class="previtem">
+      <input type="checkbox" class="csv-chk" data-i="${i}" checked>
+      <div><div class="previtem-q">${escHtml(c.q)}</div><div class="previtem-a">${escHtml(c.a)}</div></div>
+    </div>`).join('');
+  document.getElementById('csv-prev').style.display = 'block';
+}
+
+function importCSV() {
+  const deckId = document.getElementById('fi-ideck').value;
+  const deck   = ST.decks.find(d => d.id === deckId);
+  let count = 0;
+  document.querySelectorAll('.csv-chk:checked').forEach(cb => {
+    const c = _csv[+cb.dataset.i];
+    deck.cards.push({ id:uid(), q:c.q, a:c.a, note:c.note });
+    count++;
+  });
+  save(); renderHome(); closeM('m-import');
+  toast(count + ' cartão(s) importado(s) para ' + deck.name);
+}
+
+async function genAI() {
+  const text = document.getElementById('fi-ai').value.trim();
+  if (text.length < 30) { toast('Cole um texto maior para a IA gerar cartões.'); return; }
+  const qty = document.getElementById('fi-aiqty').value;
+  document.getElementById('ai-loader').classList.add('on');
+  document.getElementById('ai-prev').style.display = 'none';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        messages: [{
+          role: 'user',
+          content: 'Analise o texto e gere exatamente ' + qty + ' flashcards de estudo em português brasileiro.\nResponda APENAS com um array JSON puro (sem markdown, sem texto antes ou depois):\n[{"q":"pergunta","a":"resposta","note":"dica opcional ou string vazia"}]\n\nTEXTO:\n' + text
+        }]
+      })
+    });
+    const data = await res.json();
+    const raw  = (data.content || []).map(b => b.text || '').join('').replace(/```json|```/g,'').trim();
+    _ai = JSON.parse(raw);
+    document.getElementById('ai-cnt').textContent = _ai.length + ' cartão(s) gerado(s) pela IA';
+    document.getElementById('ai-list').innerHTML  = _ai.map((c,i) => `
+      <div class="previtem">
+        <input type="checkbox" class="ai-chk" data-i="${i}" checked>
+        <div><div class="previtem-q">${escHtml(c.q)}</div><div class="previtem-a">${escHtml(c.a)}</div></div>
+      </div>`).join('');
+    document.getElementById('ai-prev').style.display = 'block';
+  } catch(err) {
+    toast('Erro ao gerar cartões. Tente novamente.');
+    console.error(err);
+  } finally {
+    document.getElementById('ai-loader').classList.remove('on');
+  }
+}
+
+function importAI() {
+  const deckId = document.getElementById('fi-ideck').value;
+  const deck   = ST.decks.find(d => d.id === deckId);
+  let count = 0;
+  document.querySelectorAll('.ai-chk:checked').forEach(cb => {
+    const c = _ai[+cb.dataset.i];
+    deck.cards.push({ id:uid(), q:c.q, a:c.a, note:c.note||'' });
+    count++;
+  });
+  save(); renderHome(); closeM('m-import');
+  toast(count + ' cartão(s) importado(s) com IA para ' + deck.name);
+}
+
+// ── TOAST ──
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('on'), 2800);
+}
+
+// ── BUTTON WIRING ──
+document.getElementById('btn-new-deck').onclick = () => { ST.editDeckId = null; openM('m-deck'); };
+document.getElementById('btn-add-card').onclick = () => {
+  if (!ST.decks.length) { toast('Crie um baralho primeiro!'); return; }
+  fillDeckSel(ST.deckId);
+  clearCardFields();
+  openM('m-card');
+};
+document.getElementById('btn-import').onclick = openImport;
+
+// ── NAV BUTTONS ──
+function navCard(dir) {
+  if (dir === -1) {
+    if (ST.idx <= 0) return;
+    ST.idx--;
+  } else {
+    if (ST.idx >= ST.queue.length) return;
+    ST.idx++;
+  }
+  showCard();
+  updateNavBtns();
+}
+
+function updateNavBtns() {
+  const prev = document.getElementById('btn-prev');
+  const next = document.getElementById('btn-next');
+  if (prev) prev.disabled = ST.idx <= 0;
+  if (next) next.disabled = ST.idx >= ST.queue.length;
+}
+
+// ── KEYBOARD SHORTCUTS ──
+document.addEventListener('keydown', e => {
+  if (document.querySelector('.overlay.on')) return;
+  if (!document.getElementById('pg-study').classList.contains('on')) return;
+  if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+  if (e.key === '1' && ST.flipped) rate('hard');
+  if (e.key === '2' && ST.flipped) rate('mid');
+  if (e.key === '3' && ST.flipped) rate('easy');
+  if (e.key === 'ArrowRight' && !ST.flipped) { ST.idx = Math.min(ST.idx+1, ST.queue.length); showCard(); updateNavBtns(); }
+  if (e.key === 'ArrowLeft'  && !ST.flipped) { ST.idx = Math.max(ST.idx-1, 0); showCard(); updateNavBtns(); }
+});
+
+// ── INIT ──
+renderHome();
+</script>
+</body>
+</html>

@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Substractum</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --w:    #F4F1ED;
+  --c:    #EAE4DC;
+  --b:    #DED7CD;
+  --s:    #C5BFB8;
+  --p2:   #6E645A;
+  --p3:   #A69F95;
+  --ink:  #38332E;
+  --muted:#A69F95;
+  --bd:   rgba(56,51,46,.11);
+  --bds:  rgba(56,51,46,.06);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--w);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;inset:0 0 auto;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(244,241,237,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--bds);z-index:200;transition:border-color .3s;}
+nav.sc{border-color:var(--bd);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);text-decoration:none;letter-spacing:.04em;}
+.nav-links{display:flex;gap:28px;align-items:center;}
+.nav-links a{font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a.active{color:var(--ink);}
+.ntog{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px;}
+.ntog span{display:block;width:20px;height:1px;background:var(--ink);transition:.3s;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding-top:62px;display:grid;grid-template-columns:1fr 1fr;}
+.hero-l{padding:80px 60px 80px 48px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--bds);}
+.hero-r{padding:80px 48px 80px 60px;background:var(--b);display:flex;flex-direction:column;justify-content:center;}
+.h-tag{font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;opacity:0;animation:fu .8s ease .1s forwards;}
+.h-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,7vw,6rem);font-weight:300;line-height:1.05;letter-spacing:-.01em;color:var(--ink);margin-bottom:20px;opacity:0;animation:fu .9s ease .25s forwards;}
+.h-title em{font-style:italic;color:var(--p2);}
+.h-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--muted);margin-bottom:44px;opacity:0;animation:fu .9s ease .4s forwards;}
+.h-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;line-height:1.9;color:var(--p2);margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--bds);opacity:0;animation:fu .9s ease .55s forwards;}
+.h-nav{display:flex;gap:28px;flex-wrap:wrap;opacity:0;animation:fu .9s ease .7s forwards;}
+.h-nav a{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;}
+.h-nav a:hover{color:var(--ink);border-color:var(--ink);}
+.hero-r .h-tag{opacity:0;animation:fu .8s ease .4s forwards;}
+.sect-list{list-style:none;display:flex;flex-direction:column;}
+.sl-item{padding:26px 0;border-bottom:1px solid var(--bds);display:flex;gap:20px;opacity:0;animation:fu .6s ease forwards;}
+.sl-item:last-child{border-bottom:none;}
+.sl-item:nth-child(1){animation-delay:.4s;}
+.sl-item:nth-child(2){animation-delay:.55s;}
+.sl-item:nth-child(3){animation-delay:.7s;}
+.sl-item:nth-child(4){animation-delay:.85s;}
+.sl-num{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:var(--muted);width:20px;flex-shrink:0;padding-top:2px;}
+.sl-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;color:var(--ink);margin-bottom:3px;}
+.sl-desc{font-size:.76rem;color:var(--muted);line-height:1.5;}
+
+/* ── LAYOUT ── */
+.section{padding:88px 0;}
+.section.alt{background:var(--b);}
+.section.dark{background:var(--ink);}
+.wrap{max-width:1120px;margin:0 auto;padding:0 48px;}
+hr.line{border:none;border-top:1px solid var(--bds);}
+.s-tag{display:block;font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:14px;}
+.s-title em{font-style:italic;color:var(--p2);}
+.s-title.inv{color:var(--w);}
+.s-desc{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.8;color:var(--muted);}
+.s-head{margin-bottom:52px;}
+.div-line{width:48px;height:1px;background:var(--bd);margin:0 0 20px;}
+
+/* ── GRID ── */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bds);}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--bds);}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bds);}
+.cell{background:var(--w);padding:36px 32px;transition:background .22s;}
+.cell.onb{background:var(--b);}
+.cell:hover{background:var(--c);}
+.c-tag{display:block;font-size:.63rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.c-badge{display:inline-block;font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--bd);border-radius:1px;margin-bottom:12px;color:var(--muted);}
+.c-badge.free{border-color:var(--p2);color:var(--p2);}
+.c-badge.wip{border-color:rgba(180,130,60,.4);color:rgba(180,130,60,.9);background:rgba(180,130,60,.06);}
+.wip-overlay{position:relative;}
+.wip-overlay::after{content:'Em construção';position:absolute;inset:0;background:rgba(244,241,237,.82);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);backdrop-filter:blur(1px);}
+.cell.wip{position:relative;overflow:hidden;}
+.cell.wip::before{content:'Em construção';position:absolute;top:12px;right:-22px;background:rgba(180,130,60,.13);border:1px solid rgba(180,130,60,.3);color:rgba(150,100,40,.9);font-size:.55rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:3px 34px;transform:rotate(30deg);white-space:nowrap;}
+.c-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);line-height:1.35;margin-bottom:10px;}
+.c-title em{font-style:italic;color:var(--p2);}
+.c-body{font-size:.84rem;color:var(--muted);line-height:1.65;margin-bottom:20px;}
+.c-price{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;display:block;margin-bottom:3px;}
+.c-pnote{font-size:.7rem;color:var(--muted);display:block;margin-bottom:18px;}
+.c-link{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);text-decoration:none;cursor:pointer;background:none;border:none;padding:0;display:inline-flex;align-items:center;gap:6px;transition:gap .2s,color .2s;}
+.c-link:hover{gap:12px;color:var(--ink);}
+
+/* ── BUTTONS ── */
+.btn{display:inline-block;font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:10px 24px;border-radius:1px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;}
+.btn-dk{background:var(--ink);color:var(--w);border-color:var(--ink);}
+.btn-dk:hover{background:var(--p2);}
+.btn-out{background:transparent;color:var(--ink);border-color:var(--bd);}
+.btn-out:hover{background:var(--c);border-color:var(--p3);}
+.btn-inv{background:var(--w);color:var(--ink);}
+.btn-inv:hover{background:var(--b);}
+
+/* ── TABS ── */
+.tab-bar{display:flex;border-bottom:1px solid var(--bds);margin-bottom:44px;}
+.tb{font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:1px solid transparent;padding:12px 22px 11px;cursor:pointer;transition:all .2s;margin-bottom:-1px;}
+.tb:hover{color:var(--ink);}
+.tb.on{color:var(--ink);border-bottom-color:var(--p2);}
+.tp{display:none;}
+.tp.on{display:block;}
+
+/* ── DIARY ── */
+.diary-wrap{display:grid;grid-template-columns:1fr 300px;gap:1px;background:var(--bds);border:1px solid var(--bds);}
+.diary-editor{background:var(--w);}
+.diary-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 26px;border-bottom:1px solid var(--bds);background:var(--b);}
+.db-btns{display:flex;gap:6px;}
+.db-btn{font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .15s;}
+.db-btn:hover{background:var(--c);color:var(--ink);}
+.diary-date{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:var(--muted);}
+.diary-body{padding:32px 36px;}
+.d-title{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--ink);border:none;outline:none;background:transparent;padding-bottom:14px;border-bottom:1px solid var(--bds);margin-bottom:18px;}
+.d-title::placeholder{color:var(--s);font-style:italic;}
+.d-body{width:100%;min-height:240px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.95;color:var(--p2);border:none;outline:none;background:transparent;resize:vertical;}
+.d-body::placeholder{color:var(--s);font-style:italic;}
+.d-moods{display:flex;gap:7px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--bds);align-items:center;}
+.mood-l{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:4px;}
+.mood{font-family:'Jost',sans-serif;font-size:.68rem;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .13s;letter-spacing:.06em;}
+.mood:hover,.mood.on{background:var(--b);border-color:var(--p2);color:var(--ink);}
+.diary-foot{padding:14px 36px;border-top:1px solid var(--bds);background:var(--b);display:flex;justify-content:flex-end;gap:8px;}
+.diary-side{background:var(--c);}
+.ds-head{padding:18px 22px;border-bottom:1px solid var(--bds);}
+.ds-head span{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+.entry{padding:16px 22px;border-bottom:1px solid var(--bds);cursor:pointer;transition:background .15s;}
+.entry:hover{background:var(--b);}
+.entry-date{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s);margin-bottom:3px;}
+.entry-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--ink);margin-bottom:2px;}
+.entry-prev{font-size:.74rem;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.d-empty{padding:36px 22px;text-align:center;}
+.d-empty p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--muted);line-height:1.7;}
+
+/* ── APPS ── */
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bds);border:1px solid var(--bds);}
+.app-cell{background:var(--w);padding:32px;transition:background .2s;}
+.app-cell:hover{background:var(--c);}
+.app-cell.inst{background:var(--c);}
+.app-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--p2);margin-right:6px;vertical-align:middle;}
+.app-st{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);}
+.app-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);margin:10px 0 8px;}
+.app-desc{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:22px;}
+.app-acts{display:flex;gap:8px;flex-wrap:wrap;}
+.app-slot{border:1px dashed var(--bd);border-radius:1px;background:transparent;}
+.app-slot .app-name{color:var(--muted);font-style:italic;}
+.app-inst-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+
+/* ── EBOOK HIGHLIGHT ── */
+.ebook-feature{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bds);margin-bottom:1px;}
+.eb-cover{background:var(--ink);padding:56px 48px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;min-height:320px;}
+.eb-cover::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px);}
+.eb-vol{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--p3);margin-bottom:12px;}
+.eb-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.2;color:var(--w);margin-bottom:8px;}
+.eb-title em{font-style:italic;color:var(--p3);}
+.eb-pages{font-size:.75rem;color:var(--p3);margin-bottom:24px;}
+.eb-price-big{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--w);}
+.eb-info{background:var(--b);padding:56px 48px;display:flex;flex-direction:column;justify-content:center;}
+.eb-info .s-tag{margin-bottom:10px;}
+.eb-body{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.85;color:var(--p2);margin-bottom:28px;}
+.eb-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.eb-chip{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--bd);color:var(--muted);}
+
+/* ── NEWSLETTER ── */
+.nl-grid{display:grid;grid-template-columns:1fr 1fr;}
+.nl-l{background:var(--ink);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
+.nl-l .s-tag{color:var(--p3);margin-bottom:14px;}
+.nl-l .s-title{color:var(--w);margin-bottom:10px;}
+.nl-l p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--p3);line-height:1.7;}
+.nl-r{background:var(--b);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
+.nl-form{display:flex;flex-direction:column;gap:10px;}
+.nl-in{padding:12px 16px;background:rgba(244,241,237,.6);border:1px solid rgba(56,51,46,.14);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.nl-in::placeholder{color:var(--muted);}
+.nl-in:focus{border-color:rgba(56,51,46,.3);background:rgba(244,241,237,.85);}
+.nl-note{font-size:.68rem;color:var(--p2);line-height:1.5;margin-top:4px;}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;font-style:italic;color:var(--w);margin-bottom:10px;}
+.ft-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--p2);line-height:1.6;max-width:200px;}
+.ft-h{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--p2);margin-bottom:16px;}
+.ft-col a{display:block;font-size:.8rem;color:var(--p2);text-decoration:none;margin-bottom:9px;transition:color .2s;}
+.ft-col a:hover{color:var(--w);}
+.ft-bot{padding-top:24px;display:flex;justify-content:space-between;font-size:.68rem;letter-spacing:.06em;color:rgba(166,159,149,.4);flex-wrap:wrap;gap:8px;}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(56,51,46,.5);backdrop-filter:blur(4px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.overlay.on{opacity:1;pointer-events:all;}
+.modal{background:var(--w);border:1px solid var(--bd);max-width:460px;width:100%;padding:44px;position:relative;transform:translateY(12px);transition:transform .25s;max-height:calc(100vh - 40px);overflow-y:auto;}
+.overlay.on .modal{transform:translateY(0);}
+.mx{position:absolute;top:16px;right:20px;background:none;border:none;font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.1em;color:var(--muted);cursor:pointer;transition:color .2s;text-transform:uppercase;}
+.mx:hover{color:var(--ink);}
+.m-tag{display:block;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.m-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:8px;}
+.m-sub{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.field input,.field select{width:100%;padding:10px 14px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.field input:focus,.field select:focus{border-color:var(--p2);}
+.m-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--bds);border-bottom:1px solid var(--bds);margin-bottom:18px;}
+.m-total-l{font-size:.75rem;color:var(--muted);}
+.m-total-p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ink);}
+.m-sec{font-size:.65rem;letter-spacing:.06em;text-align:center;color:var(--muted);margin-top:10px;}
+.m-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--w);padding:10px 24px;border-radius:1px;font-family:'Jost',sans-serif;font-size:.76rem;letter-spacing:.06em;z-index:999;opacity:0;pointer-events:none;transition:all .28s;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s;}
+.rv.in{opacity:1;transform:translateY(0);}
+
+/* ── ANIMS ── */
+@keyframes fu{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--w);padding:20px;gap:14px;border-bottom:1px solid var(--bd);box-shadow:0 8px 24px rgba(56,51,46,.08);}
+  .ntog{display:flex;}
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-l{padding:60px 24px;border-right:none;border-bottom:1px solid var(--bds);}
+  .hero-r{padding:48px 24px;}
+  .g3,.g4{grid-template-columns:1fr 1fr;}
+  .g2{grid-template-columns:1fr;}
+  .ebook-feature{grid-template-columns:1fr;}
+  .nl-grid{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr 1fr;}
+  .diary-wrap{grid-template-columns:1fr;}
+  .app-grid{grid-template-columns:1fr 1fr !important;}
+  .wrap{padding:0 24px;}
+  .section{padding:60px 0;}
+}
+@media(max-width:600px){
+  .g3,.g4{grid-template-columns:1fr;}
+  .app-grid{grid-template-columns:1fr;}
+  .ft-grid{grid-template-columns:1fr;}
+  .nl-l,.nl-r{padding:44px 28px;}
+  .eb-cover,.eb-info{padding:40px 28px;}
+  .tab-bar{overflow-x:auto;}
+  .tb{white-space:nowrap;padding:10px 16px;}
+}
+
+/* ── ADMIN PANEL ── */
+.adm-overlay{position:fixed;inset:0;background:rgba(56,51,46,.6);backdrop-filter:blur(6px);z-index:600;display:flex;align-items:flex-start;justify-content:flex-end;padding:0;opacity:0;pointer-events:none;transition:opacity .25s;}
+.adm-overlay.on{opacity:1;pointer-events:all;}
+.adm-panel{background:var(--w);width:520px;height:100vh;overflow-y:auto;border-left:1px solid var(--bd);transform:translateX(40px);transition:transform .28s;display:flex;flex-direction:column;}
+.adm-overlay.on .adm-panel{transform:translateX(0);}
+.adm-head{padding:24px 28px 20px;border-bottom:1px solid var(--bds);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--w);z-index:2;}
+.adm-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;}
+.adm-close{background:none;border:none;cursor:pointer;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:'Jost',sans-serif;transition:color .2s;}
+.adm-close:hover{color:var(--ink);}
+.adm-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--bds);flex-shrink:0;}
+.adm-tab{padding:10px 18px;background:none;border:none;border-bottom:2px solid transparent;font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;margin-bottom:-1px;}
+.adm-tab.on{color:var(--ink);border-bottom-color:var(--p2);}
+.adm-body{flex:1;overflow-y:auto;padding:28px;}
+.adm-section{margin-bottom:28px;}
+.adm-s-title{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--bds);}
+.adm-row{margin-bottom:14px;}
+.adm-row label{display:block;font-size:.68rem;color:var(--p2);margin-bottom:5px;font-weight:500;}
+.adm-row .adm-hint{display:block;font-size:.64rem;color:var(--muted);margin-bottom:5px;line-height:1.4;}
+.adm-row input,.adm-row select{width:100%;padding:9px 12px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.82rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.adm-row input:focus,.adm-row select:focus{border-color:var(--p2);}
+.adm-row input.ok{border-color:rgba(74,140,92,.4);background:rgba(74,140,92,.03);}
+.adm-foot{padding:18px 28px;border-top:1px solid var(--bds);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:var(--w);}
+.adm-tp{display:none;} .adm-tp.on{display:block;}
+.adm-badge{display:inline-block;font-size:.6rem;padding:2px 7px;border-radius:1px;border:1px solid var(--bd);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-left:6px;}
+.adm-badge.live{border-color:rgba(74,140,92,.5);color:rgba(74,140,92,.8);background:rgba(74,140,92,.06);}
+.adm-badge.empty{border-color:rgba(200,140,60,.4);color:rgba(200,140,60,.8);background:rgba(200,140,60,.04);}
+/* login */
+.adm-login{padding:48px 28px;display:flex;flex-direction:column;align-items:center;gap:16px;flex:1;justify-content:center;}
+.adm-login h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--ink);}
+.adm-login p{font-size:.8rem;color:var(--muted);text-align:center;line-height:1.6;}
+.adm-login input{width:100%;max-width:280px;padding:10px 14px;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;text-align:center;letter-spacing:.1em;background:white;}
+.adm-login input:focus{border-color:var(--p2);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Substractum</a>
+  <div class="nav-links" id="nav-links">
+    <a href="#diario">Diario</a>
+    <a href="#apps">Apps</a>
+    <a href="#recursos">Recursos</a>
+    <a href="#newsletter">Newsletter</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="ntog" id="ntog" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="admin-btn" id="admin-btn" title="Configuracoes" onclick="openAdmin()" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--muted);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Jost',sans-serif;transition:color .2s;">&#9881;</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-l">
+    <p class="h-tag">Educacao &middot; Espiritualidade &middot; Formacao</p>
+    <h1 class="h-title">Substra<em>ctum</em></h1>
+    <p class="h-sub">A essencia das coisas que importam</p>
+    <p class="h-text">Ha um nome em latim para o que fica quando o excesso vai embora. O que esta sob tudo. O que sustenta. Este projeto nasce da conviccao de que ainda e possivel cultivar o que importa de verdade.</p>
+    <nav class="h-nav">
+      <a href="#diario">Diario reflexivo</a>
+      <a href="#apps">Aplicativos</a>
+      <a href="#recursos">Recursos didaticos</a>
+      <a href="#ebooks">E-books</a>
+    </nav>
+  </div>
+  <div class="hero-r">
+    <p class="h-tag" style="opacity:0;animation:fu .8s ease .4s forwards;">O que voce encontra aqui</p>
+    <ul class="sect-list">
+      <li class="sl-item"><span class="sl-num">i</span><div><div class="sl-name">Diario Reflexivo</div><div class="sl-desc">Escrita pessoal, estados interiores, entradas salvas</div></div></li>
+      <li class="sl-item"><span class="sl-num">ii</span><div><div class="sl-name">Aplicativos</div><div class="sl-desc">FlashStudy, meditacao e registro de habitos</div></div></li>
+      <li class="sl-item"><span class="sl-num">iii</span><div><div class="sl-name">Recursos Didaticos</div><div class="sl-desc">Apostilas, cadernos, jogos — digital e fisico</div></div></li>
+      <li class="sl-item"><span class="sl-num">iv</span><div><div class="sl-name">E-books</div><div class="sl-desc">Serie Substractum: leitura profunda e gratuita</div></div></li>
+    </ul>
+  </div>
+</section>
+<hr class="line">
+
+<!-- DIARIO -->
+<section class="section" id="diario">
+  <div class="wrap">
+    <div class="s-head rv">
+      <span class="s-tag">Desenvolvimento Pessoal</span>
+      <div class="div-line"></div>
+      <h2 class="s-title">Diario <em>Reflexivo</em></h2>
+      <p class="s-desc">Um espaco de escrita interior. Salvo no seu navegador, privado e disponivel sempre.</p>
+    </div>
+    <div class="diary-wrap rv">
+      <div class="diary-editor">
+        <div class="diary-bar">
+          <div class="db-btns">
+            <button class="db-btn" onclick="insertPrompt()">Pergunta reflexiva</button>
+            <button class="db-btn" onclick="clearDiary()">Limpar</button>
+          </div>
+          <span class="diary-date" id="diary-date"></span>
+        </div>
+        <div class="diary-body">
+          <input class="d-title" id="d-titulo" type="text" placeholder="Titulo da reflexao de hoje...">
+          <textarea class="d-body" id="d-corpo" placeholder="O que esta presente em mim agora?  O que aprendi hoje?  O que ainda preciso integrar?
+
+Escreva livremente..."></textarea>
+          <div class="d-moods">
+            <span class="mood-l">Estado</span>
+            <button class="mood" onclick="pickMood(this)">Fluindo</button>
+            <button class="mood" onclick="pickMood(this)">Sereno</button>
+            <button class="mood" onclick="pickMood(this)">Intenso</button>
+            <button class="mood" onclick="pickMood(this)">Pesado</button>
+            <button class="mood" onclick="pickMood(this)">Grato</button>
+            <button class="mood" onclick="pickMood(this)">Buscando</button>
+          </div>
+        </div>
+        <div class="diary-foot">
+          <button class="btn btn-out" onclick="clearDiary()">Descartar</button>
+          <button class="btn btn-dk" onclick="saveDiary()">Salvar reflexao</button>
+        </div>
+      </div>
+      <div class="diary-side">
+        <div class="ds-head"><span>Entradas anteriores</span></div>
+        <div id="entries-list"></div>
+        <div class="d-empty" id="d-empty">
+          <p>Suas reflexoes aparecirao aqui.<br>Comece escrevendo a primeira.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="line">
+
+<!-- APPS -->
+<section class="section alt" id="apps">
+  <div class="wrap">
+    <div class="s-head rv">
+      <span class="s-tag">Aplicativos Integrados</span>
+      <div class="div-line"></div>
+      <h2 class="s-title">Ferramentas para a <em>jornada</em></h2>
+      <p class="s-desc">Apps que vivem dentro do Substractum. Instale os que fizerem sentido para voce.</p>
+    </div>
+    <div class="app-grid rv" style="grid-template-columns:repeat(4,1fr);">
+
+      <div class="app-cell" id="cell-flash">
+        <div id="app-tag-flash"></div>
+        <div class="app-name">FlashStudy</div>
+        <p class="app-desc">Cartoes de estudo com geracao por IA. Estude por baralhos tematicos com sistema de XP e progressao de nivel.</p>
+        <div class="app-acts">
+          <button class="btn btn-dk" id="btn-flash" onclick="installApp('flash','FlashStudy')">Instalar</button>
+          <a class="btn btn-out" id="open-flash" href="flashcards.html" style="display:none">Abrir</a>
+        </div>
+      </div>
+
+      <div class="app-cell" id="cell-quiz">
+        <div id="app-tag-quiz"></div>
+        <div class="app-name">QuizStudy</div>
+        <p class="app-desc">Cole qualquer texto e a IA gera um quiz completo com alternativas e gabarito. Ganhe XP a cada questao correta.</p>
+        <div class="app-acts">
+          <button class="btn btn-dk" id="btn-quiz" onclick="installApp('quiz','QuizStudy')">Instalar</button>
+          <a class="btn btn-out" id="open-quiz" href="quiz.html" style="display:none">Abrir</a>
+        </div>
+      </div>
+
+      <div class="app-cell" style="position:relative;overflow:hidden;">
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div class="app-name" style="color:var(--muted);">Planner</div>
+        <p class="app-desc">Organize sua semana com intencionalidade. Metas, habitos e reflexoes integrados em um unico espaco de planejamento.</p>
+        <div class="app-acts">
+          <button class="btn btn-out" style="opacity:.45;cursor:default;">Em breve</button>
+        </div>
+      </div>
+
+      <div class="app-cell" style="position:relative;overflow:hidden;">
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div class="app-name" style="color:var(--muted);">Meditacao Guiada</div>
+        <p class="app-desc">Praticas contemplativas de 5 a 20 minutos alinhadas com os temas do Substractum. Para iniciar o dia com presenca.</p>
+        <div class="app-acts">
+          <button class="btn btn-out" style="opacity:.45;cursor:default;">Em breve</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<hr class="line">
+
+<!-- RECURSOS DIDATICOS -->
+<section class="section" id="recursos">
+  <div class="wrap">
+    <div class="s-head rv">
+      <span class="s-tag">Recursos Didaticos</span>
+      <div class="div-line"></div>
+      <h2 class="s-title">Materiais para <em>educadores</em></h2>
+      <p class="s-desc">Apostilas, cadernos, jogos pedagogicos e materiais formativos. Digitais para acesso imediato, fisicos com entrega em todo o Brasil.</p>
+    </div>
+
+    <div class="tab-bar rv">
+      <button class="tb on" onclick="rTab('dig')">Digitais</button>
+      <button class="tb" onclick="rTab('fis')">Fisicos</button>
+      <button class="tb" onclick="rTab('grat')">Gratuitos</button>
+    </div>
+
+    <!-- DIGITAIS -->
+    <div class="tp on rv" id="tp-dig">
+      <div class="g3">
+        <div class="cell onb" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <span class="c-tag">Apostila — PDF</span>
+          <span class="c-badge wip">Em construcao</span>
+          <div class="c-title">Caderno de <em>Praxis Pedagogica</em></div>
+          <p class="c-body">Guia reflexivo para educadores integrarem teoria, espiritualidade e pratica. 48 paginas com atividades e perguntas geradoras.</p>
+          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-pnote">Disponivel em breve</span>
+          <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
+        </div>
+        <div class="cell onb" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <span class="c-tag">Jogo — Imprimivel</span>
+          <span class="c-badge wip">Em construcao</span>
+          <div class="c-title"><em>Vozes da Educacao</em></div>
+          <p class="c-body">Baralho com 60 cartas de perguntas filosoficas para dinamicas em grupo, formacao docente e rodas de conversa reflexiva.</p>
+          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-pnote">Disponivel em breve</span>
+          <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
+        </div>
+        <div class="cell onb" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <span class="c-tag">Material Formativo</span>
+          <span class="c-badge wip">Em construcao</span>
+          <div class="c-title">Educacao e <em>Espiritualidade</em></div>
+          <p class="c-body">Apostila sobre a integracao entre dimensao espiritual e pratica pedagogica, com referencias e roteiro de estudo.</p>
+          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-pnote">Disponivel em breve</span>
+          <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FISICOS -->
+    <div class="tp rv" id="tp-fis">
+      <div class="g3">
+        <div class="cell onb" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <span class="c-tag">Caderno — Impresso</span>
+          <span class="c-badge wip">Em construcao</span>
+          <div class="c-title">Caderno Reflexivo <em>Substractum</em></div>
+          <p class="c-body">Caderno encadernado com pautas, espacos para reflexao e citacoes ao longo das paginas. Papel polen, capa dura em linho.</p>
+          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-pnote">Disponivel em breve</span>
+          <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
+        </div>
+        <div class="cell onb" style="position:relative;overflow:hidden;">
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <span class="c-tag">Kit Completo</span>
+          <span class="c-badge wip">Em construcao</span>
+          <div class="c-title"><em>Kit Formacao Integral</em></div>
+          <p class="c-body">Caderno fisico + apostila digital + jogo de cartas imprimivel + trilha formativa online. O kit para formadores.</p>
+          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-pnote">Disponivel em breve</span>
+          <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
+        </div>
+        <div class="cell onb" style="position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <span class="c-badge wip" style="margin-bottom:12px;">Em construcao</span>
+          <div class="c-title" style="color:var(--muted);font-style:italic;">Mais produtos em desenvolvimento</div>
+          <p class="c-body">Novos materiais fisicos em preparacao. Entre na lista de espera para ser avisada em primeira mao.</p>
+          <button class="c-link" onclick="openM('m-nl','Lista de espera','','')">Entrar na lista &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRATUITOS -->
+    <div class="tp rv" id="tp-grat">
+      <div class="g3">
+        <div class="cell onb">
+          <span class="c-tag">Modelo — PDF</span>
+          <span class="c-badge free">Gratuito</span>
+          <div class="c-title">Plano de Aula <em>Reflexivo</em></div>
+          <p class="c-body">Modelo com espaco para intencionalidade pedagogica e avaliacao humanizadora. Exclusivo para assinantes da newsletter.</p>
+          <span class="c-price" style="color:var(--p2);font-size:1.2rem;">Gratuito</span>
+          <span class="c-pnote">Ao se inscrever na newsletter</span>
+          <button class="c-link" onclick="openM('m-nl','Plano de Aula Reflexivo','','plano')">Receber gratis &rarr;</button>
+        </div>
+        <div class="cell onb">
+          <span class="c-tag">Guia — PDF</span>
+          <span class="c-badge free">Gratuito</span>
+          <div class="c-title">30 Perguntas que <em>Abrem o Ano</em></div>
+          <p class="c-body">30 perguntas reflexivas para educadores iniciarem o ano com intencionalidade, autoconhecimento e presenca pedagogica.</p>
+          <span class="c-price" style="color:var(--p2);font-size:1.2rem;">Gratuito</span>
+          <span class="c-pnote">Download imediato por e-mail</span>
+          <button class="c-link" onclick="openM('m-nl','30 Perguntas que Abrem o Ano','','p30')">Receber gratis &rarr;</button>
+        </div>
+        <div class="cell onb">
+          <span class="c-tag">Manifesto — PDF</span>
+          <span class="c-badge free">Gratuito</span>
+          <div class="c-title">Manifesto <em>Substractum</em></div>
+          <p class="c-body">O texto fundante do projeto. Uma reflexao sobre o que fica quando o excesso e retirado da educacao, da vida e do ensino.</p>
+          <span class="c-price" style="color:var(--p2);font-size:1.2rem;">Gratuito</span>
+          <span class="c-pnote">Download direto, sem cadastro</span>
+          <button class="c-link" onclick="openM('m-free-manifesto')">Baixar agora &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="line">
+
+<!-- E-BOOKS -->
+<section class="section alt" id="ebooks">
+  <div class="wrap">
+    <div class="s-head rv">
+      <span class="s-tag">Serie Substractum</span>
+      <div class="div-line"></div>
+      <h2 class="s-title">E-books & <em>Leituras</em></h2>
+      <p class="s-desc">Livros digitais autorais que aprofundam os pilares do projeto. Leitura densa, linguagem humanizada.</p>
+    </div>
+
+    <!-- EBOOK DESTAQUE — EM CONSTRUCAO -->
+    <div class="ebook-feature rv">
+      <div class="eb-cover" style="position:relative;overflow:hidden;">
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div class="eb-vol">Serie Substractum &mdash; Vol. 1</div>
+        <div class="eb-title">O Silencio<br><em>que Educa</em></div>
+        <div class="eb-pages">Pedagogia &middot; Espiritualidade &middot; Presenca</div>
+        <span style="display:inline-block;font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(180,130,60,.4);color:rgba(210,170,80,.8);margin-top:8px;">Em construcao</span>
+      </div>
+      <div class="eb-info">
+        <span class="s-tag">Sobre o livro</span>
+        <p class="eb-body">Uma reflexao sobre o lugar do silencio, da escuta e da presenca na pratica pedagogica. Como o que nao se diz forma tanto quanto o que se ensina. Para educadores que sentem que algo essencial se perdeu no ruido das metodologias.</p>
+        <div class="eb-chips">
+          <span class="eb-chip">Pedagogia</span>
+          <span class="eb-chip">Espiritualidade</span>
+          <span class="eb-chip">Presenca</span>
+          <span class="eb-chip">Silencio</span>
+        </div>
+        <p style="font-size:.76rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Este e-book esta sendo preparado com cuidado. Entre na lista para receber quando estiver pronto.</p>
+        <button class="btn btn-out" onclick="openM('m-nl','O Silencio que Educa','','')">Avisar quando sair &rarr;</button>
+      </div>
+    </div>
+
+    <!-- OUTROS EBOOKS — EM CONSTRUCAO -->
+    <div class="g2 rv" style="margin-top:1px;">
+      <div class="cell" style="position:relative;overflow:hidden;">
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <span class="c-tag">Vol. 2</span>
+        <span class="c-badge wip">Em construcao</span>
+        <div class="c-title">Praxis: <em>Quando Pensar Vira Acao</em></div>
+        <p class="c-body">A teoria da praxis aplicada ao cotidiano educativo. Como superar a dicotomia entre reflexao e acao.</p>
+        <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+        <span class="c-pnote">Disponivel em breve</span>
+        <button class="c-link" onclick="openM('m-nl','Praxis: Quando Pensar Vira Acao','','')" style="color:var(--muted);font-size:.65rem;letter-spacing:.1em;">Avisar quando sair &rarr;</button>
+      </div>
+      <div class="cell" style="position:relative;overflow:hidden;">
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <span class="c-tag">Vol. 3</span>
+        <span class="c-badge wip">Em construcao</span>
+        <div class="c-title">Autoconhecimento <em>e Docencia</em></div>
+        <p class="c-body">Para o educador que percebe que a sala de aula e tambem um espelho. Sobre identidade, vocacao e a arte de ensinar sendo quem se e.</p>
+        <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+        <span class="c-pnote">Disponivel em breve</span>
+        <button class="c-link" onclick="openM('m-nl','Autoconhecimento e Docencia','','')" style="color:var(--muted);font-size:.65rem;letter-spacing:.1em;">Avisar quando sair &rarr;</button>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="line">
+
+<!-- NEWSLETTER -->
+<div id="newsletter">
+  <div class="nl-grid rv">
+    <div class="nl-l">
+      <span class="s-tag" style="color:var(--p3);">Newsletter semanal</span>
+      <h2 class="s-title" style="color:var(--w);">Uma reflexao<br><em>por semana</em></h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--p3);margin-top:10px;line-height:1.7;">Textos, recursos gratuitos e convites a interioridade. Sem frequencia excessiva, sem spam.</p>
+    </div>
+    <div class="nl-r">
+      <div class="nl-form">
+        <input class="nl-in" type="text" id="nl-nome" placeholder="Seu nome">
+        <input class="nl-in" type="email" id="nl-email" placeholder="seu@email.com">
+        <button class="btn btn-dk" onclick="subNl()">Assinar gratuitamente</button>
+        <p class="nl-note">Seus dados nao serao compartilhados. Cancelamento a qualquer momento.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-logo">Substractum</div>
+        <p class="ft-tag">A essencia das coisas que importam. Educacao, espiritualidade e formacao integral.</p>
+      </div>
+      <div class="ft-col">
+        <div class="ft-h">Ferramentas</div>
+        <a href="#diario">Diario Reflexivo</a>
+        <a href="#apps">Aplicativos</a>
+        <a href="flashcards.html">FlashStudy</a>
+        <a href="quiz.html">QuizStudy</a>
+      </div>
+      <div class="ft-col">
+        <div class="ft-h">Recursos</div>
+        <a href="#recursos">Produtos Digitais</a>
+        <a href="#recursos">Produtos Fisicos</a>
+        <a href="#ebooks">E-books</a>
+        <a href="#recursos">Gratuitos</a>
+      </div>
+      <div class="ft-col">
+        <div class="ft-h">Projeto</div>
+        <a href="#">Manifesto</a>
+        <a href="#">Sobre Meire Gomes</a>
+        <a href="#newsletter">Newsletter</a>
+        <a href="#">Contato</a>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span>Substractum &mdash; meiregomes.com.br</span>
+      <span>Educacao &middot; Espiritualidade &middot; Formacao Integral</span>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL: Compra -->
+<div class="overlay" id="m-buy">
+  <div class="modal">
+    <button class="mx" onclick="closeM('m-buy')">fechar</button>
+    <span class="m-tag">Adquirir produto</span>
+    <h2 class="m-title" id="m-buy-title"></h2>
+    <p class="m-sub">Preencha seus dados para prosseguir. Voce recebera o produto por e-mail em ate 5 minutos.</p>
+    <div class="field"><label>Nome completo</label><input type="text" placeholder="Seu nome"></div>
+    <div class="field"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+    <div class="m-total">
+      <span class="m-total-l" id="m-buy-prod"></span>
+      <span class="m-total-p" id="m-buy-preco"></span>
+    </div>
+    <button class="btn btn-dk" style="width:100%;" onclick="finBuy()">Prosseguir para pagamento</button>
+    <p class="m-sec">Pagamento seguro via Hotmart</p>
+  </div>
+</div>
+
+<!-- MODAL: Pague quanto puder -->
+<div class="overlay" id="m-pague">
+  <div class="modal">
+    <button class="mx" onclick="closeM('m-pague')">fechar</button>
+    <span class="m-tag">Pague quanto puder</span>
+    <h2 class="m-title" id="m-pague-title"></h2>
+    <p class="m-sub">Acreditamos que o conhecimento deve ser acessivel. Contribua com o que estiver ao seu alcance, sem culpa.</p>
+    <div class="field"><label>Nome</label><input type="text" placeholder="Seu nome"></div>
+    <div class="field"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+    <div class="field"><label>Sua contribuicao</label>
+      <select><option>R$ 5,00 — simbolico</option><option>R$ 10,00</option><option selected>R$ 24,90 — valor sugerido</option><option>R$ 35,00 — apoio ao projeto</option><option>R$ 0,00 — nao posso agora</option></select>
+    </div>
+    <button class="btn btn-dk" style="width:100%;margin-top:6px;" onclick="finBuy()">Confirmar</button>
+  </div>
+</div>
+
+<!-- MODAL: Newsletter / Gratuito -->
+<div class="overlay" id="m-nl">
+  <div class="modal">
+    <button class="mx" onclick="closeM('m-nl')">fechar</button>
+    <span class="m-tag">Receber gratuitamente</span>
+    <h2 class="m-title" id="m-nl-title"></h2>
+    <p class="m-sub">Deixe seu e-mail e enviaremos o material gratuitamente junto a nossa newsletter semanal.</p>
+    <div class="field"><label>Nome</label><input type="text" id="m-nl-nome" placeholder="Seu nome"></div>
+    <div class="field"><label>E-mail</label><input type="email" id="m-nl-email" placeholder="seu@email.com"></div>
+    <button class="btn btn-dk" style="width:100%;margin-top:6px;" onclick="finNl()">Enviar para meu e-mail</button>
+  </div>
+</div>
+
+<!-- MODAL: Sugestao -->
+<div class="overlay" id="m-sug">
+  <div class="modal">
+    <button class="mx" onclick="closeM('m-sug')">fechar</button>
+    <span class="m-tag">Sugestao de aplicativo</span>
+    <h2 class="m-title">O que voce gostaria de encontrar?</h2>
+    <p class="m-sub">Compartilhe sua sugestao. Cada ideia ajuda a construir um espaco mais util.</p>
+    <div class="field"><label>E-mail (opcional)</label><input type="email" placeholder="seu@email.com"></div>
+    <div class="field"><label>Sua sugestao</label><input type="text" placeholder="Descreva o app..."></div>
+    <button class="btn btn-dk" style="width:100%;margin-top:6px;" onclick="finSug()">Enviar</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──
+const DEFAULT_CFG = {
+  apps:    { flash:'flashcards.html', quiz:'quiz.html', med:'', hab:'' },
+  prods:   { praxis:'', vozes:'', espirit:'', caderno:'', kit:'' },
+  ebooks:  { silencio:'', silencio_file:'', praxis:'', praxis_file:'', auto:'' },
+  free:    { plano:'', p30:'', manifesto:'' },
+  pay:     { gateway:'hotmart', email:'' },
+  nl:      { url:'' },
+  pass:    btoa('substractum2025')
+};
+
+let CFG = DEFAULT_CFG;
+try {
+  const saved = JSON.parse(localStorage.getItem('sub_cfg'));
+  if (saved) CFG = Object.assign({}, DEFAULT_CFG, saved, {
+    apps:   Object.assign({}, DEFAULT_CFG.apps,   saved.apps   || {}),
+    prods:  Object.assign({}, DEFAULT_CFG.prods,  saved.prods  || {}),
+    ebooks: Object.assign({}, DEFAULT_CFG.ebooks, saved.ebooks || {}),
+    free:   Object.assign({}, DEFAULT_CFG.free,   saved.free   || {}),
+    pay:    Object.assign({}, DEFAULT_CFG.pay,     saved.pay    || {}),
+    nl:     Object.assign({}, DEFAULT_CFG.nl,      saved.nl     || {}),
+  });
+} catch(e) {}
+
+function saveConfig() {
+  CFG.apps.flash        = v('cfg-app-flash');
+  CFG.apps.quiz         = v('cfg-app-quiz');
+  CFG.apps.med          = v('cfg-app-med');
+  CFG.apps.hab          = v('cfg-app-hab');
+  CFG.prods.praxis      = v('cfg-prod-praxis');
+  CFG.prods.vozes       = v('cfg-prod-vozes');
+  CFG.prods.espirit     = v('cfg-prod-espirit');
+  CFG.prods.caderno     = v('cfg-prod-caderno');
+  CFG.prods.kit         = v('cfg-prod-kit');
+  CFG.ebooks.silencio   = v('cfg-eb-silencio');
+  CFG.ebooks.silencio_file = v('cfg-eb-silencio-file');
+  CFG.ebooks.praxis     = v('cfg-eb-praxis');
+  CFG.ebooks.praxis_file= v('cfg-eb-praxis-file');
+  CFG.ebooks.auto       = v('cfg-eb-auto');
+  CFG.free.plano        = v('cfg-free-plano');
+  CFG.free.p30          = v('cfg-free-30p');
+  CFG.free.manifesto    = v('cfg-free-manifesto');
+  CFG.pay.gateway       = v('cfg-gateway');
+  CFG.pay.email         = v('cfg-email-vendedor');
+  CFG.nl.url            = v('cfg-nl-url');
+  localStorage.setItem('sub_cfg', JSON.stringify(CFG));
+  applyConfig();
+  updateStatus();
+  toast('Configuracoes salvas.');
+}
+
+function v(id) { return (document.getElementById(id) || {}).value || ''; }
+
+function applyConfig() {
+  // App links
+  const oFlash = document.getElementById('open-flash');
+  if (oFlash) oFlash.href = CFG.apps.flash || 'flashcards.html';
+  // Manifesto direct download
+}
+
+function loadConfigToPanel() {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('cfg-app-flash',       CFG.apps.flash);
+  set('cfg-app-quiz',        CFG.apps.quiz);
+  set('cfg-app-med',         CFG.apps.med);
+  set('cfg-app-hab',         CFG.apps.hab);
+  set('cfg-prod-praxis',     CFG.prods.praxis);
+  set('cfg-prod-vozes',      CFG.prods.vozes);
+  set('cfg-prod-espirit',    CFG.prods.espirit);
+  set('cfg-prod-caderno',    CFG.prods.caderno);
+  set('cfg-prod-kit',        CFG.prods.kit);
+  set('cfg-eb-silencio',     CFG.ebooks.silencio);
+  set('cfg-eb-silencio-file',CFG.ebooks.silencio_file);
+  set('cfg-eb-praxis',       CFG.ebooks.praxis);
+  set('cfg-eb-praxis-file',  CFG.ebooks.praxis_file);
+  set('cfg-eb-auto',         CFG.ebooks.auto);
+  set('cfg-free-plano',      CFG.free.plano);
+  set('cfg-free-30p',        CFG.free.p30);
+  set('cfg-free-manifesto',  CFG.free.manifesto);
+  set('cfg-gateway',         CFG.pay.gateway);
+  set('cfg-email-vendedor',  CFG.pay.email);
+  set('cfg-nl-url',          CFG.nl.url);
+  // mark filled inputs
+  document.querySelectorAll('.adm-row input[type=url],.adm-row input[type=text],.adm-row input[type=email]').forEach(inp => {
+    inp.classList.toggle('ok', inp.value.length > 3);
+    inp.addEventListener('input', function(){ this.classList.toggle('ok', this.value.length > 3); });
+  });
+}
+
+function updateStatus() {
+  const prods = [
+    ['Caderno Praxis',       CFG.prods.praxis],
+    ['Vozes da Educacao',    CFG.prods.vozes],
+    ['Ed. e Espiritualidade',CFG.prods.espirit],
+    ['Caderno Reflexivo',    CFG.prods.caderno],
+    ['Kit Formacao',         CFG.prods.kit],
+    ['Silencio que Educa',   CFG.ebooks.silencio],
+    ['Praxis - Vol.2',       CFG.ebooks.praxis],
+    ['FlashStudy',           CFG.apps.flash],
+    ['Newsletter',           CFG.nl.url],
+  ];
+  const el = document.getElementById('cfg-status');
+  if (!el) return;
+  el.innerHTML = prods.map(([name, url]) => {
+    const live = url && url.length > 4;
+    return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bds);">
+      <span style="font-size:.76rem;color:var(--p2);">${name}</span>
+      <span class="adm-badge ${live?'live':'empty'}">${live?'configurado':'pendente'}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── ADMIN AUTH ──
+let admAuthed = false;
+const ADM_SESS_KEY = 'sub_adm_sess';
+
+function openAdmin() {
+  document.getElementById('adm-overlay').classList.add('on');
+  const sess = sessionStorage.getItem(ADM_SESS_KEY);
+  if (sess === 'ok') { admAuthed = true; showAdmPanel(); }
+  else { document.getElementById('adm-login').style.display = 'flex'; document.getElementById('adm-content').style.display = 'none'; }
+}
+function closeAdmin() {
+  document.getElementById('adm-overlay').classList.remove('on');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdmin(); });
+
+function admLogin() {
+  const pass = document.getElementById('adm-pass').value;
+  const stored = CFG.pass || DEFAULT_CFG.pass;
+  if (btoa(pass) === stored || pass === atob(stored)) {
+    admAuthed = true;
+    sessionStorage.setItem(ADM_SESS_KEY, 'ok');
+    document.getElementById('adm-pass').value = '';
+    showAdmPanel();
+  } else {
+    document.getElementById('adm-pass').style.borderColor = 'rgba(180,60,60,.5)';
+    document.getElementById('adm-pass').value = '';
+    setTimeout(() => document.getElementById('adm-pass').style.borderColor = '', 1200);
+    toast('Senha incorreta.');
+  }
+}
+
+function showAdmPanel() {
+  document.getElementById('adm-login').style.display = 'none';
+  document.getElementById('adm-content').style.display = 'flex';
+  loadConfigToPanel();
+  updateStatus();
+  admTab('apps');
+}
+
+function admTab(id) {
+  document.querySelectorAll('.adm-tab').forEach((b,i) => b.classList.toggle('on', i === ['apps','digital','fisico','ebooks','gratuitos','pagamento','senha'].indexOf(id)));
+  ['apps','digital','fisico','ebooks','gratuitos','pagamento','senha'].forEach(t => {
+    const el = document.getElementById('admt-' + t);
+    if (el) el.classList.toggle('on', t === id);
+  });
+}
+
+function changePass() {
+  const atual = document.getElementById('cfg-pass-atual').value;
+  const nova  = document.getElementById('cfg-pass-nova').value;
+  const conf  = document.getElementById('cfg-pass-conf').value;
+  const stored = CFG.pass || DEFAULT_CFG.pass;
+  if (btoa(atual) !== stored && atual !== atob(stored)) { toast('Senha atual incorreta.'); return; }
+  if (nova.length < 6) { toast('Nova senha precisa ter ao menos 6 caracteres.'); return; }
+  if (nova !== conf)   { toast('As senhas nao coincidem.'); return; }
+  CFG.pass = btoa(nova);
+  localStorage.setItem('sub_cfg', JSON.stringify(CFG));
+  document.getElementById('cfg-pass-atual').value = '';
+  document.getElementById('cfg-pass-nova').value  = '';
+  document.getElementById('cfg-pass-conf').value  = '';
+  toast('Senha alterada com sucesso.');
+}
+
+// ── NAV ──
+const nav  = document.getElementById('nav');
+const nls  = document.getElementById('nav-links');
+const ntog = document.getElementById('ntog');
+window.addEventListener('scroll', () => nav.classList.toggle('sc', scrollY > 30));
+ntog.addEventListener('click',    () => nls.classList.toggle('open'));
+nls.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nls.classList.remove('open')));
+
+const sects = document.querySelectorAll('section[id], div[id]');
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      nls.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { threshold:.3 });
+sects.forEach(s => obs.observe(s));
+
+// ── TABS: RECURSOS ──
+function rTab(id) {
+  document.querySelectorAll('.tab-bar .tb').forEach((b,i) => b.classList.toggle('on', i === ['dig','fis','grat'].indexOf(id)));
+  ['dig','fis','grat'].forEach(t => document.getElementById('tp-' + t).classList.toggle('on', t === id));
+}
+
+// ── DIARY ──
+const fmt = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+document.getElementById('diary-date').textContent = new Date().toLocaleDateString('pt-BR', fmt);
+
+let entries = [];
+try { entries = JSON.parse(localStorage.getItem('sub_diary') || '[]'); } catch(e) {}
+
+const PROMPTS = [
+  'O que estou evitando perceber hoje?',
+  'Que emocao esta presente em mim agora, sem julgamento?',
+  'O que esta situacao esta me ensinando sobre mim?',
+  'Se eu soubesse que daria certo, o que faria diferente?',
+  'Quem fui hoje? Quem quero ser amanha?',
+  'Qual e a qualidade de presenca que trouxe para hoje?',
+  'O que eu precisava ouvir e ninguem disse?',
+];
+
+function insertPrompt() {
+  const ta = document.getElementById('d-corpo');
+  const p  = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+  ta.value += (ta.value ? '
+
+' : '') + p + '
+';
+  ta.focus();
+}
+
+function clearDiary() {
+  document.getElementById('d-titulo').value = '';
+  document.getElementById('d-corpo').value  = '';
+  document.querySelectorAll('.mood').forEach(m => m.classList.remove('on'));
+}
+
+function pickMood(el) {
+  document.querySelectorAll('.mood').forEach(m => m.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function saveDiary() {
+  const title = document.getElementById('d-titulo').value.trim();
+  const body  = document.getElementById('d-corpo').value.trim();
+  if (!body) { toast('Escreva algo antes de salvar.'); return; }
+  const mood = document.querySelector('.mood.on')?.textContent || '';
+  const date = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+  entries.push({ title, body, mood, date });
+  localStorage.setItem('sub_diary', JSON.stringify(entries));
+  clearDiary();
+  renderEntries();
+  toast('Reflexao salva.');
+}
+
+function renderEntries() {
+  const list  = document.getElementById('entries-list');
+  const empty = document.getElementById('d-empty');
+  if (!entries.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = [...entries].reverse().map((e, i) => `
+    <div class="entry" onclick="loadEntry(${entries.length - 1 - i})">
+      <div class="entry-date">${e.date}${e.mood ? ' · ' + e.mood : ''}</div>
+      <div class="entry-title">${e.title || 'Sem titulo'}</div>
+      <div class="entry-prev">${e.body}</div>
+    </div>`).join('');
+}
+
+function loadEntry(i) {
+  const e = entries[i];
+  document.getElementById('d-titulo').value = e.title;
+  document.getElementById('d-corpo').value  = e.body;
+  document.querySelectorAll('.mood').forEach(m => m.classList.toggle('on', m.textContent === e.mood));
+  document.getElementById('diario').scrollIntoView({ behavior:'smooth' });
+}
+
+renderEntries();
+
+// ── APPS ──
+let installedApps = [];
+try { installedApps = JSON.parse(localStorage.getItem('sub_apps') || '[]'); } catch(e) {}
+
+function installApp(id, name) {
+  if (!installedApps.includes(id)) installedApps.push(id);
+  localStorage.setItem('sub_apps', JSON.stringify(installedApps));
+  markInstalled(id);
+  toast(name + ' instalado.');
+}
+
+function markInstalled(id) {
+  const tag  = document.getElementById('app-tag-' + id);
+  const btn  = document.getElementById('btn-' + id);
+  const open = document.getElementById('open-' + id);
+  const cell = document.getElementById('cell-' + id);
+  if (!tag) return;
+  tag.innerHTML = `<div class="app-inst-row"><span class="app-dot"></span><span class="app-st">Instalado</span></div>`;
+  if (cell) cell.classList.add('inst');
+  if (btn)  btn.style.display  = 'none';
+  if (open) {
+    open.style.display = 'inline-block';
+    // Use configured URL
+    const appUrls = { flash: CFG.apps.flash || 'flashcards.html', quiz: CFG.apps.quiz || 'quiz.html', med: CFG.apps.med || '#apps', hab: CFG.apps.hab || '#apps' };
+    open.href = appUrls[id] || '#';
+  }
+}
+
+installedApps.forEach(id => markInstalled(id));
+
+// ── MODALS ──
+let _currentBuyKey = '';
+
+function openM(id, title, sub, cfgKey) {
+  // If a payment URL is configured and this is a buy action, go directly
+  if (cfgKey && id === 'm-buy') {
+    const url = getCfgUrl(cfgKey);
+    if (url) { window.open(url, '_blank'); return; }
+  }
+  if (cfgKey && id === 'm-pague') {
+    const url = getCfgUrl(cfgKey);
+    if (url) { window.open(url, '_blank'); return; }
+  }
+  if (cfgKey && id === 'm-nl') {
+    const nlUrl = CFG.nl.url;
+    if (nlUrl) { window.open(nlUrl, '_blank'); return; }
+  }
+  // Manifesto direct download
+  if (id === 'm-free-manifesto') {
+    if (CFG.free.manifesto) { window.open(CFG.free.manifesto, '_blank'); return; }
+    toast('Link do manifesto ainda nao configurado.'); return;
+  }
+  _currentBuyKey = cfgKey || '';
+  document.getElementById(id).classList.add('on');
+  if (id === 'm-buy')   { document.getElementById('m-buy-title').textContent = title; document.getElementById('m-buy-prod').textContent = title; document.getElementById('m-buy-preco').textContent = sub; }
+  if (id === 'm-nl')    document.getElementById('m-nl-title').textContent    = title;
+  if (id === 'm-pague') document.getElementById('m-pague-title').textContent = title;
+}
+
+function getCfgUrl(key) {
+  const map = {
+    praxis:   CFG.prods.praxis,
+    vozes:    CFG.prods.vozes,
+    espirit:  CFG.prods.espirit,
+    caderno:  CFG.prods.caderno,
+    kit:      CFG.prods.kit,
+    silencio: CFG.ebooks.silencio,
+    'eb-praxis': CFG.ebooks.praxis,
+    'eb-auto':   CFG.ebooks.auto,
+    plano:    CFG.free.plano,
+    p30:      CFG.free.p30,
+  };
+  return map[key] || '';
+}
+
+function closeM(id) { document.getElementById(id).classList.remove('on'); }
+
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('on'); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.overlay.on, .adm-overlay.on').forEach(o => o.classList.remove('on')); });
+
+function finBuy() {
+  const url = getCfgUrl(_currentBuyKey);
+  closeM('m-buy'); closeM('m-pague');
+  if (url) window.open(url, '_blank');
+  else toast('Link de pagamento ainda nao configurado. Acesse Configuracoes.');
+}
+
+function finNl() {
+  const email = document.getElementById('m-nl-email')?.value?.trim();
+  const url = CFG.nl.url;
+  closeM('m-nl');
+  if (url) window.open(url, '_blank');
+  else toast('Material sera enviado para seu e-mail em breve.');
+}
+
+function finSug() { closeM('m-sug'); toast('Sugestao recebida. Obrigada.'); }
+
+// ── NEWSLETTER ──
+function subNl() {
+  const email = document.getElementById('nl-email').value.trim();
+  if (!email || !email.includes('@')) { toast('Digite um e-mail valido.'); return; }
+  const url = CFG.nl.url;
+  if (url) { window.open(url, '_blank'); }
+  else {
+    document.getElementById('nl-email').value = '';
+    document.getElementById('nl-nome').value  = '';
+    toast('Inscricao realizada. Bem-vinda ao Substractum.');
+  }
+}
+
+// ── TOAST ──
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2800);
+}
+
+// ── REVEAL ──
+const rvObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold:.08 });
+document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+// ── INIT ──
+applyConfig();
+</script>
+
+<!-- ADMIN PANEL -->
+<div class="adm-overlay" id="adm-overlay">
+  <div class="adm-panel">
+    <div class="adm-head">
+      <span class="adm-title">Configuracoes</span>
+      <button class="adm-close" onclick="closeAdmin()">fechar</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="adm-login" id="adm-login">
+      <h3>Acesso Restrito</h3>
+      <p>Digite a senha para acessar as configuracoes do site.</p>
+      <input type="password" id="adm-pass" placeholder="senha" onkeydown="if(event.key==='Enter')admLogin()">
+      <button class="btn btn-dk" onclick="admLogin()">Entrar</button>
+    </div>
+
+    <!-- PAINEL (hidden until login) -->
+    <div id="adm-content" style="display:none;flex-direction:column;flex:1;">
+      <div class="adm-tabs">
+        <button class="adm-tab on" onclick="admTab('apps')">Apps</button>
+        <button class="adm-tab" onclick="admTab('digital')">Digitais</button>
+        <button class="adm-tab" onclick="admTab('fisico')">Fisicos</button>
+        <button class="adm-tab" onclick="admTab('ebooks')">E-books</button>
+        <button class="adm-tab" onclick="admTab('gratuitos')">Gratuitos</button>
+        <button class="adm-tab" onclick="admTab('pagamento')">Pagamento</button>
+        <button class="adm-tab" onclick="admTab('senha')">Seguranca</button>
+      </div>
+      <div class="adm-body" id="adm-body">
+
+        <!-- APPS -->
+        <div class="adm-tp on" id="admt-apps">
+          <div class="adm-section">
+            <div class="adm-s-title">FlashStudy</div>
+            <div class="adm-row">
+              <label>Arquivo ou URL do app</label>
+              <span class="adm-hint">Ex: flashcards.html ou https://meuapp.com</span>
+              <input type="text" id="cfg-app-flash" placeholder="flashcards.html">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">QuizStudy</div>
+            <div class="adm-row">
+              <label>Arquivo ou URL do app</label>
+              <input type="text" id="cfg-app-quiz" placeholder="quiz.html">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Meditacao Guiada</div>
+            <div class="adm-row">
+              <label>Arquivo ou URL</label>
+              <input type="text" id="cfg-app-med" placeholder="meditacao.html ou URL externa">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Registro de Habitos</div>
+            <div class="adm-row">
+              <label>Arquivo ou URL</label>
+              <input type="text" id="cfg-app-hab" placeholder="habitos.html ou URL externa">
+            </div>
+          </div>
+        </div>
+
+        <!-- DIGITAIS -->
+        <div class="adm-tp" id="admt-digital">
+          <div class="adm-section">
+            <div class="adm-s-title">Caderno de Praxis Pedagogica — R$ 29,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento (Hotmart, Kiwify, etc.)</label>
+              <input type="url" id="cfg-prod-praxis" placeholder="https://pay.hotmart.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Vozes da Educacao — R$ 34,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento</label>
+              <input type="url" id="cfg-prod-vozes" placeholder="https://pay.hotmart.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Educacao e Espiritualidade — R$ 24,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento (pague quanto puder)</label>
+              <input type="url" id="cfg-prod-espirit" placeholder="https://pay.hotmart.com/...">
+            </div>
+          </div>
+        </div>
+
+        <!-- FISICOS -->
+        <div class="adm-tp" id="admt-fisico">
+          <div class="adm-section">
+            <div class="adm-s-title">Caderno Reflexivo Substractum — R$ 89,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento</label>
+              <input type="url" id="cfg-prod-caderno" placeholder="https://pay.hotmart.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Kit Formacao Integral — R$ 149,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento</label>
+              <input type="url" id="cfg-prod-kit" placeholder="https://pay.hotmart.com/...">
+            </div>
+          </div>
+        </div>
+
+        <!-- E-BOOKS -->
+        <div class="adm-tp" id="admt-ebooks">
+          <div class="adm-section">
+            <div class="adm-s-title">O Silencio que Educa — Vol.1 — R$ 19,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento</label>
+              <input type="url" id="cfg-eb-silencio" placeholder="https://pay.hotmart.com/...">
+            </div>
+            <div class="adm-row">
+              <label>Link do arquivo (PDF/ePub para entrega)</label>
+              <span class="adm-hint">URL do arquivo apos pagamento (Google Drive, Dropbox...)</span>
+              <input type="url" id="cfg-eb-silencio-file" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Praxis: Quando Pensar Vira Acao — Vol.2 — R$ 19,90</div>
+            <div class="adm-row">
+              <label>Link de pagamento</label>
+              <input type="url" id="cfg-eb-praxis" placeholder="https://pay.hotmart.com/...">
+            </div>
+            <div class="adm-row">
+              <label>Link do arquivo</label>
+              <input type="url" id="cfg-eb-praxis-file" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Autoconhecimento e Docencia — Vol.3</div>
+            <div class="adm-row">
+              <label>Link da lista de espera (form ou pagina)</label>
+              <input type="url" id="cfg-eb-auto" placeholder="https://forms.gle/... ou Mailchimp">
+            </div>
+          </div>
+        </div>
+
+        <!-- GRATUITOS -->
+        <div class="adm-tp" id="admt-gratuitos">
+          <div class="adm-section">
+            <div class="adm-s-title">Plano de Aula Reflexivo</div>
+            <div class="adm-row">
+              <label>Link do arquivo (enviado apos cadastro)</label>
+              <input type="url" id="cfg-free-plano" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">30 Perguntas que Abrem o Ano</div>
+            <div class="adm-row">
+              <label>Link do arquivo</label>
+              <input type="url" id="cfg-free-30p" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Manifesto Substractum</div>
+            <div class="adm-row">
+              <label>Link direto para download</label>
+              <input type="url" id="cfg-free-manifesto" placeholder="https://drive.google.com/...">
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGAMENTO -->
+        <div class="adm-tp" id="admt-pagamento">
+          <div class="adm-section">
+            <div class="adm-s-title">Plataforma de pagamento</div>
+            <div class="adm-row">
+              <label>Gateway principal</label>
+              <select id="cfg-gateway">
+                <option value="hotmart">Hotmart</option>
+                <option value="kiwify">Kiwify</option>
+                <option value="mercadopago">Mercado Pago</option>
+                <option value="pagseguro">PagSeguro</option>
+                <option value="custom">Link personalizado por produto</option>
+              </select>
+            </div>
+            <div class="adm-row">
+              <label>E-mail do vendedor (para os formularios)</label>
+              <input type="email" id="cfg-email-vendedor" placeholder="meire@meiregomes.com.br">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Newsletter</div>
+            <div class="adm-row">
+              <label>URL do formulario de inscricao</label>
+              <span class="adm-hint">Mailchimp, ConvertKit, Brevo ou outro. Cole o link do form embed ou da landing page.</span>
+              <input type="url" id="cfg-nl-url" placeholder="https://mailchimp.com/... ou https://convertkit.com/...">
+            </div>
+          </div>
+          <div class="adm-section">
+            <div class="adm-s-title">Status dos links</div>
+            <div id="cfg-status" style="font-size:.78rem;color:var(--muted);line-height:2;">Salve as configuracoes para ver o status.</div>
+          </div>
+        </div>
+
+        <!-- SENHA -->
+        <div class="adm-tp" id="admt-senha">
+          <div class="adm-section">
+            <div class="adm-s-title">Alterar senha de acesso</div>
+            <div class="adm-row">
+              <label>Senha atual</label>
+              <input type="password" id="cfg-pass-atual" placeholder="••••••••">
+            </div>
+            <div class="adm-row">
+              <label>Nova senha</label>
+              <input type="password" id="cfg-pass-nova" placeholder="Minimo 6 caracteres">
+            </div>
+            <div class="adm-row">
+              <label>Confirmar nova senha</label>
+              <input type="password" id="cfg-pass-conf" placeholder="Repita a nova senha">
+            </div>
+            <button class="btn btn-out" onclick="changePass()" style="margin-top:4px;">Alterar senha</button>
+          </div>
+        </div>
+
+      </div><!-- /adm-body -->
+      <div class="adm-foot">
+        <button class="btn btn-out" onclick="closeAdmin()">Cancelar</button>
+        <button class="btn btn-dk" onclick="saveConfig()">Salvar configuracoes</button>
+      </div>
+    </div><!-- /adm-content -->
+  </div>
+</div>
+
+</body>
+</html>

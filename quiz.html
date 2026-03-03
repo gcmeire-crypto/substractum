@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuizStudy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0a08;--s1:#161310;--s2:#1e1a14;--s3:#262018;
+  --amber:#d4a843;--amb-lt:#f0c96a;--amb-dim:rgba(212,168,67,.12);
+  --green:#4a8c5c;--grn-dim:rgba(74,140,92,.15);--grn-lt:#6ab87e;
+  --red:#8c4a4a;--red-dim:rgba(140,74,74,.18);--red-lt:#e08080;
+  --blue:#4a6a8c;--blu-dim:rgba(74,106,140,.18);--blu-lt:#80a8e0;
+  --text:#e8e0cc;--text-dk:#2a2418;--muted:#7a7060;--bd:#2a2418;--bd2:#362e22;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.35;}
+
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:rgba(12,10,8,.93);backdrop-filter:blur(14px);z-index:100;}
+.logo{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--amber);letter-spacing:-.02em;}
+.logo em{font-style:italic;color:var(--text);}
+
+.btn{padding:7px 15px;border-radius:4px;border:1px solid var(--bd);background:transparent;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.btn:hover{background:var(--bd2);}
+.btn.prim{background:var(--amber);border-color:var(--amber);color:var(--text-dk);font-weight:600;}
+.btn.prim:hover{background:var(--amb-lt);}
+.btn.ok{border-color:var(--green);color:var(--grn-lt);}.btn.ok:hover{background:var(--grn-dim);}
+.btn.dng{border-color:var(--red);color:var(--red-lt);}.btn.dng:hover{background:var(--red-dim);}
+.btn.sm{padding:5px 10px;font-size:.72rem;}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+
+.pg{display:none;}.pg.on{display:block;}
+
+/* HOME */
+#pg-home{padding:36px 40px;max-width:1100px;margin:0 auto;}
+.xp-banner{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:20px 28px;margin-bottom:28px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.xp-badge{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--amber),var(--amb-lt));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--text-dk);flex-shrink:0;}
+.xp-info{flex:1;min-width:160px;}
+.xp-name{font-family:'Playfair Display',serif;font-size:.95rem;margin-bottom:5px;}
+.xp-track{height:5px;background:var(--bd2);border-radius:3px;overflow:hidden;margin-bottom:5px;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--amb-lt));border-radius:3px;transition:width .6s;}
+.xp-sub{font-size:.7rem;color:var(--muted);}
+.xp-tots{display:flex;gap:18px;flex-wrap:wrap;}
+.xp-tot{font-size:.72rem;color:var(--muted);}.xp-tot strong{color:var(--text);font-weight:500;}
+.stat-row{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.stat{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:14px 20px;flex:1;min-width:90px;}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.65rem;color:var(--amber);line-height:1;}
+.stat-l{color:var(--muted);font-size:.7rem;margin-top:3px;}
+.quizzes{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.qcard{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:22px;position:relative;overflow:hidden;transition:all .22s;}
+.qcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--amber),var(--amb-lt));opacity:0;transition:.22s;}
+.qcard:hover{border-color:rgba(212,168,67,.35);transform:translateY(-2px);}
+.qcard:hover::before{opacity:1;}
+.qcard-ico{font-size:1.8rem;margin-bottom:10px;}
+.qcard-name{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:3px;}
+.qcard-meta{color:var(--muted);font-size:.72rem;margin-bottom:3px;}
+.qcard-score{font-size:.68rem;color:var(--amber);margin-bottom:14px;}
+.qcard-acts{display:flex;gap:5px;}
+.qcard-acts .btn{flex:1;text-align:center;padding:5px 4px;font-size:.7rem;}
+.add-qcard{border:1px dashed var(--bd);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);cursor:pointer;min-height:140px;transition:all .2s;}
+.add-qcard:hover{border-color:var(--amber);color:var(--amber);}
+.add-qcard-ico{font-size:2rem;}
+
+/* PLAY */
+#pg-play{padding:0;display:none;flex-direction:column;min-height:calc(100vh - 59px);}
+#pg-play.on{display:flex;}
+.play-top{padding:18px 40px 0;max-width:680px;margin:0 auto;width:100%;}
+.play-nav{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.play-qname{font-family:'Playfair Display',serif;font-size:1.15rem;}
+.play-strip{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.pl-pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:.76rem;font-weight:600;border:1px solid;}
+.pl-co{background:var(--grn-dim);border-color:var(--green);color:var(--grn-lt);}
+.pl-wr{background:var(--red-dim);border-color:var(--red);color:var(--red-lt);}
+.pl-sk{background:var(--blu-dim);border-color:var(--blue);color:var(--blu-lt);}
+.pl-xp{background:var(--amb-dim);border-color:var(--amber);color:var(--amb-lt);margin-left:auto;}
+.pl-timer{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--amber);padding:5px 12px;border:1px solid var(--bd);border-radius:20px;}
+.pl-timer.warn{color:var(--red-lt);border-color:var(--red);animation:pulse .5s infinite alternate;}
+@keyframes pulse{from{opacity:1}to{opacity:.6}}
+.prog-bar{height:4px;background:var(--bd2);border-radius:3px;overflow:hidden;margin-bottom:4px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--amb-lt));border-radius:3px;transition:width .35s;}
+.prog-txt{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-bottom:18px;}
+.play-main{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 40px 40px;max-width:680px;margin:0 auto;width:100%;}
+.q-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:36px;width:100%;margin-bottom:20px;animation:slideIn .3s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)scale(.98)}to{opacity:1;transform:none}}
+.q-card-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.q-card-text{font-family:'Playfair Display',serif;font-size:1.45rem;line-height:1.45;}
+.opts{display:flex;flex-direction:column;gap:9px;width:100%;}
+.opt{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--s1);border:1px solid var(--bd);border-radius:8px;cursor:pointer;transition:all .18s;text-align:left;width:100%;}
+.opt:hover:not(.disabled){background:var(--s2);border-color:var(--bd2);}
+.opt.correct{border-color:var(--green);background:var(--grn-dim);pointer-events:none;}
+.opt.wrong{border-color:var(--red);background:var(--red-dim);pointer-events:none;}
+.opt.revealed{pointer-events:none;}
+.opt-key{width:28px;height:28px;border-radius:5px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600;color:var(--muted);flex-shrink:0;transition:all .18s;font-family:'Playfair Display',serif;}
+.opt.selected .opt-key,.opt.correct .opt-key{background:var(--green);border-color:var(--green);color:#fff;}
+.opt.wrong .opt-key{background:var(--red);border-color:var(--red);color:#fff;}
+.opt-text{font-size:.88rem;flex:1;line-height:1.45;}
+.explanation{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:16px 18px;margin-top:12px;display:none;animation:slideIn .25s ease;}
+.explanation.on{display:block;}
+.exp-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;}
+.exp-text{font-size:.85rem;color:var(--text);line-height:1.6;}
+.play-actions{display:flex;gap:10px;width:100%;margin-top:12px;}
+.play-actions .btn{flex:1;}
+
+/* RESULT */
+#pg-result{padding:0;display:none;flex-direction:column;align-items:center;min-height:calc(100vh - 59px);}
+#pg-result.on{display:flex;}
+.result-wrap{max-width:560px;width:100%;padding:48px 24px;text-align:center;}
+.result-ico{font-size:3rem;margin-bottom:14px;animation:popIn .5s cubic-bezier(.17,.67,.32,1.5);}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.result-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:300;margin-bottom:6px;}
+.result-sub{font-size:.9rem;color:var(--muted);margin-bottom:6px;}
+.result-xp{font-family:'Playfair Display',serif;color:var(--amber);font-size:1rem;margin-bottom:28px;}
+.result-score{font-family:'Playfair Display',serif;font-size:4rem;color:var(--amber);line-height:1;margin-bottom:8px;}
+.result-pct{font-size:.9rem;color:var(--muted);margin-bottom:24px;}
+.result-grid{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.rg{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:14px 20px;min-width:100px;}
+.rg-n{font-family:'Playfair Display',serif;font-size:1.5rem;}
+.rg-n.co{color:var(--grn-lt);}.rg-n.wr{color:var(--red-lt);}.rg-n.sk{color:var(--blu-lt);}.rg-n.xp{color:var(--amber);}
+.rg-l{font-size:.68rem;color:var(--muted);margin-top:2px;}
+.result-review{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:20px;text-align:left;margin-bottom:28px;}
+.rv-title{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.rv-item{padding:12px 0;border-bottom:1px solid var(--bd);display:flex;gap:12px;align-items:flex-start;}
+.rv-item:last-child{border-bottom:none;}
+.rv-icon{width:20px;flex-shrink:0;font-size:.9rem;margin-top:1px;}
+.rv-q{font-size:.82rem;color:var(--text);line-height:1.4;margin-bottom:3px;}
+.rv-ans{font-size:.75rem;color:var(--muted);}.rv-co{color:var(--grn-lt)!important;}.rv-wr{color:var(--red-lt)!important;}
+.result-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+/* XP POP */
+.xppop{position:fixed;top:68px;right:18px;background:var(--s2);border:1px solid var(--amber);border-radius:8px;padding:8px 16px;color:var(--amber);font-family:'Playfair Display',serif;font-size:1rem;z-index:400;opacity:0;transform:translateY(-6px);transition:all .25s;pointer-events:none;}
+.xppop.on{opacity:1;transform:translateY(0);}
+
+/* OVERLAY / MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s;}
+.overlay.on{opacity:1;pointer-events:all;}
+.modal{background:var(--s1);border:1px solid var(--bd2);border-radius:12px;padding:30px;width:100%;max-width:520px;transform:translateY(12px);transition:transform .22s;max-height:calc(100vh - 40px);overflow-y:auto;}
+.overlay.on .modal{transform:translateY(0);}
+.mh{font-family:'Playfair Display',serif;font-size:1.25rem;margin-bottom:6px;}
+.msub{font-size:.8rem;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+.mfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:13px;}
+.field label{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.field input,.field select,.field textarea{background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--amber);}
+.field textarea{resize:vertical;min-height:110px;}
+
+/* AI MODAL specific */
+.emoji-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.eo{width:30px;height:30px;border:1px solid var(--bd);border-radius:4px;background:transparent;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;}
+.eo:hover,.eo.sel{background:var(--bd2);border-color:var(--amber);}
+.ai-loader{display:none;flex-direction:column;align-items:center;gap:10px;padding:24px;color:var(--muted);font-size:.85rem;}
+.ai-loader.on{display:flex;}
+.spin{width:28px;height:28px;border:2px solid var(--bd2);border-top-color:var(--amber);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.preview-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;margin:8px 0;}
+.preview-item{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px 13px;display:flex;gap:8px;align-items:flex-start;}
+.preview-item input[type=checkbox]{accent-color:var(--amber);width:14px;height:14px;flex-shrink:0;margin-top:2px;}
+.pv-q{font-size:.82rem;font-weight:500;margin-bottom:2px;}
+.pv-a{font-size:.73rem;color:var(--amber);}
+.icount{font-size:.76rem;color:var(--amber);font-weight:500;margin-bottom:4px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(4px);background:var(--s2);border:1px solid var(--amber);color:var(--text);padding:9px 20px;border-radius:6px;font-size:.8rem;z-index:9998;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:600px){
+  header{padding:14px 18px;}
+  #pg-home{padding:20px 14px;}
+  .play-top,.play-main{padding-left:16px;padding-right:16px;}
+  .q-card-text{font-size:1.15rem;}
+  .result-wrap{padding:36px 16px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Quiz<em>Study</em></div>
+  <button class="btn prim" onclick="openNewQuiz()">✨ Gerar Quiz com IA</button>
+</header>
+
+<!-- HOME -->
+<div id="pg-home" class="pg on">
+  <div class="xp-banner" id="xp-banner"></div>
+  <div class="stat-row" id="stat-row"></div>
+  <div class="quizzes" id="quizzes-grid"></div>
+</div>
+
+<!-- PLAY -->
+<div id="pg-play" class="pg">
+  <div class="play-top">
+    <div class="play-nav">
+      <button class="btn sm" onclick="confirmExit()">← Sair</button>
+      <span class="play-qname" id="play-qname"></span>
+      <div id="play-timer-el" class="pl-timer" style="display:none">⏱ 30</div>
+    </div>
+    <div class="play-strip">
+      <div class="pl-pill pl-co"><span id="lv-co">0</span> Corretas</div>
+      <div class="pl-pill pl-wr"><span id="lv-wr">0</span> Erradas</div>
+      <div class="pl-pill pl-sk"><span id="lv-sk">0</span> Puladas</div>
+      <div class="pl-pill pl-xp"><span id="lv-xp">0 XP</span></div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="prog-txt"><span>Progresso</span><span id="prog-txt">0/0</span></div>
+  </div>
+  <div class="play-main" id="play-main"></div>
+</div>
+
+<!-- RESULT -->
+<div id="pg-result" class="pg">
+  <div class="result-wrap">
+    <div class="result-ico" id="r-ico">🎯</div>
+    <h2 class="result-title" id="r-title">Quiz concluído!</h2>
+    <p class="result-sub" id="r-sub"></p>
+    <p class="result-xp" id="r-xp"></p>
+    <div class="result-score" id="r-score">0/0</div>
+    <div class="result-pct" id="r-pct"></div>
+    <div class="result-grid" id="r-grid"></div>
+    <div class="result-review" id="r-review"></div>
+    <div class="result-btns">
+      <button class="btn prim" onclick="restartQuiz()">Refazer</button>
+      <button class="btn ok" onclick="reviewMistakes()">Ver erros</button>
+      <button class="btn" onclick="goHome()">Início</button>
+    </div>
+  </div>
+</div>
+
+<div class="xppop" id="xppop"></div>
+
+<!-- MODAL: Gerar Quiz com IA -->
+<div class="overlay" id="m-gen">
+  <div class="modal">
+    <div class="mh">Gerar Quiz com IA</div>
+    <p class="msub">Cole qualquer texto — anotações, artigo, capítulo, resumo — e a IA cria as questões automaticamente com alternativas e gabarito.</p>
+
+    <div id="gen-form">
+      <div class="field">
+        <label>Nome do quiz</label>
+        <input type="text" id="fi-qname" placeholder="Ex: Pedagogia Crítica" maxlength="60">
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div class="field" style="flex:1">
+          <label>Ícone</label>
+          <div class="emoji-row" id="emoji-row"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="field">
+          <label>Quantidade de questões</label>
+          <select id="fi-qty">
+            <option value="5">5 questões</option>
+            <option value="8">8 questões</option>
+            <option value="10" selected>10 questões</option>
+            <option value="15">15 questões</option>
+            <option value="20">20 questões</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tempo por questão</label>
+          <select id="fi-timer">
+            <option value="0">Sem tempo</option>
+            <option value="20">20 segundos</option>
+            <option value="30" selected>30 segundos</option>
+            <option value="45">45 segundos</option>
+            <option value="60">1 minuto</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Dificuldade</label>
+          <select id="fi-diff">
+            <option value="facil">Fácil (+3 XP)</option>
+            <option value="medio" selected>Médio (+2 XP)</option>
+            <option value="dificil">Difícil (+1 XP)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Idioma das questões</label>
+          <select id="fi-lang">
+            <option value="português brasileiro" selected>Português</option>
+            <option value="inglês">Inglês</option>
+            <option value="espanhol">Espanhol</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Cole o conteúdo</label>
+        <textarea id="fi-content" placeholder="Cole aqui: resumo, artigo, anotações, capítulo de livro, texto qualquer...&#10;&#10;A IA vai criar questões de múltipla escolha com gabarito e explicações automaticamente."></textarea>
+      </div>
+      <div class="mfoot" style="margin-top:10px;">
+        <button class="btn" onclick="closeM('m-gen')">Cancelar</button>
+        <button class="btn prim" onclick="generateQuiz()">✨ Gerar questões</button>
+      </div>
+    </div>
+
+    <div class="ai-loader" id="ai-loader">
+      <div class="spin"></div>
+      <span>Analisando conteúdo e criando questões...</span>
+    </div>
+
+    <div id="gen-preview" style="display:none">
+      <div class="icount" id="gen-count"></div>
+      <div class="preview-list" id="gen-list"></div>
+      <div class="mfoot">
+        <button class="btn" onclick="backToForm()">← Voltar</button>
+        <button class="btn prim" onclick="saveGeneratedQuiz()">Salvar e jogar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Sair do quiz -->
+<div class="overlay" id="m-exit">
+  <div class="modal" style="max-width:360px;text-align:center;">
+    <div class="mh" style="text-align:center;">Sair do quiz?</div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:20px;">Seu progresso nesta sessão não será salvo.</p>
+    <div class="mfoot" style="justify-content:center;">
+      <button class="btn" onclick="closeM('m-exit')">Continuar</button>
+      <button class="btn dng" onclick="doExit()">Sair</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const EMOJIS=['📚','🧠','🔬','💡','🌍','📐','🎯','⚗️','🖊️','🔭','🧬','💻','🎵','🏛️','🌱','📖','⚡','🌿','🦋','🔑','🧩','⭐','🎓','🏆'];
+const XP_MAP={facil:3,medio:2,dificil:1};
+const XPL=100;
+
+let ST={
+  quizzes: JSON.parse(localStorage.getItem('qs_v2')||'null') || [],
+  totalXP: parseInt(localStorage.getItem('qs_xp')||'0'),
+  selEmoji:'🎯',
+  _genData: null,
+  playId:null, queue:[], idx:0,
+  scores:{co:0,wr:0,sk:0}, sessXP:0,
+  answered:false, timerVal:0, timerInt:null,
+  answers:[],
+};
+
+function save(){
+  localStorage.setItem('qs_v2',JSON.stringify(ST.quizzes));
+  localStorage.setItem('qs_xp',ST.totalXP);
+}
+function uid(){return 'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+function lvl(xp){return Math.floor(xp/XPL)+1;}
+function xpIn(xp){return xp%XPL;}
+function lvlName(l){return['Iniciante','Curioso','Aprendiz','Estudante','Dedicado','Avançado','Mestre','Sábio','Mentor','Iluminado'][Math.min(l-1,9)];}
+
+function goPage(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function goHome(){goPage('pg-home');renderHome();}
+
+// ── HOME ──
+function renderHome(){
+  const l=lvl(ST.totalXP),xi=xpIn(ST.totalXP),pct=(xi/XPL)*100;
+  const totalPlays=ST.quizzes.reduce((s,q)=>s+(q.totalPlays||0),0);
+  document.getElementById('xp-banner').innerHTML=`
+    <div class="xp-badge">${l}</div>
+    <div class="xp-info">
+      <div class="xp-name">${lvlName(l)}</div>
+      <div class="xp-track"><div class="xp-fill" style="width:${pct}%"></div></div>
+      <div class="xp-sub">${xi} / ${XPL} XP para o próximo nível</div>
+    </div>
+    <div class="xp-tots">
+      <div class="xp-tot">Total: <strong>${ST.totalXP} XP</strong></div>
+      <div class="xp-tot">Partidas: <strong>${totalPlays}</strong></div>
+      <div class="xp-tot">Nível: <strong>${l}</strong></div>
+    </div>`;
+  const totalQ=ST.quizzes.reduce((s,q)=>s+q.questions.length,0);
+  document.getElementById('stat-row').innerHTML=`
+    <div class="stat"><div class="stat-n">${ST.quizzes.length}</div><div class="stat-l">Quizzes</div></div>
+    <div class="stat"><div class="stat-n">${totalQ}</div><div class="stat-l">Questões</div></div>
+    <div class="stat"><div class="stat-n">${ST.totalXP}</div><div class="stat-l">XP Total</div></div>
+    <div class="stat"><div class="stat-n">${totalPlays}</div><div class="stat-l">Partidas</div></div>`;
+  const grid=document.getElementById('quizzes-grid');
+  grid.innerHTML='';
+  if(!ST.quizzes.length){
+    grid.innerHTML=`<div class="add-qcard" onclick="openNewQuiz()" style="grid-column:1/-1;min-height:200px;">
+      <div class="add-qcard-ico">✨</div>
+      <div style="font-size:.9rem;font-weight:500;">Gerar primeiro quiz com IA</div>
+      <div style="font-size:.76rem;color:var(--muted);margin-top:4px;">Cole qualquer texto e a IA cria as questões</div>
+    </div>`;
+    return;
+  }
+  ST.quizzes.forEach(quiz=>{
+    const n=quiz.questions.length,best=quiz.bestScore||0;
+    const pctB=n>0?Math.round(best/n*100):0;
+    const div=document.createElement('div');
+    div.className='qcard';
+    div.innerHTML=`
+      <div class="qcard-ico">${quiz.icon}</div>
+      <div class="qcard-name">${quiz.name}</div>
+      <div class="qcard-meta">${n} questão${n!==1?'s':''}${quiz.timer?' · ⏱'+quiz.timer+'s':''} · ${['Fácil','Médio','Difícil'][['facil','medio','dificil'].indexOf(quiz.diff)]||'Médio'}</div>
+      <div class="qcard-score">${quiz.totalPlays?'Melhor: '+best+'/'+n+' ('+pctB+'%)':'Nunca jogado'} · ${quiz.xp||0} XP</div>
+      <div class="qcard-acts">
+        <button class="btn prim" onclick="startPlay('${quiz.id}');event.stopPropagation()">▶ Jogar</button>
+        <button class="btn dng sm" onclick="deleteQuiz('${quiz.id}');event.stopPropagation()">✕</button>
+      </div>`;
+    grid.appendChild(div);
+  });
+  const add=document.createElement('div');
+  add.className='add-qcard';
+  add.innerHTML='<div class="add-qcard-ico">✨</div><div>Novo Quiz com IA</div>';
+  add.onclick=openNewQuiz;
+  grid.appendChild(add);
+}
+
+function deleteQuiz(qid){
+  if(!confirm('Excluir este quiz?'))return;
+  ST.quizzes=ST.quizzes.filter(q=>q.id!==qid);
+  save();renderHome();
+}
+
+// ── EMOJI ──
+function renderEmoji(){
+  document.getElementById('emoji-row').innerHTML=EMOJIS.map(e=>
+    `<button class="eo${e===ST.selEmoji?' sel':''}" onclick="pickEmoji('${e}')">${e}</button>`
+  ).join('');
+}
+function pickEmoji(e){ST.selEmoji=e;renderEmoji();}
+
+// ── AI GENERATE ──
+function openNewQuiz(){
+  ST.selEmoji='🎯';
+  document.getElementById('fi-qname').value='';
+  document.getElementById('fi-content').value='';
+  document.getElementById('fi-qty').value='10';
+  document.getElementById('fi-timer').value='30';
+  document.getElementById('fi-diff').value='medio';
+  document.getElementById('gen-form').style.display='block';
+  document.getElementById('gen-preview').style.display='none';
+  document.getElementById('ai-loader').classList.remove('on');
+  renderEmoji();
+  openM('m-gen');
+}
+
+function backToForm(){
+  document.getElementById('gen-form').style.display='block';
+  document.getElementById('gen-preview').style.display='none';
+}
+
+async function generateQuiz(){
+  const content=document.getElementById('fi-content').value.trim();
+  if(content.length<30){toast('Cole um texto maior para a IA gerar questões.');return;}
+  const qty=document.getElementById('fi-qty').value;
+  const lang=document.getElementById('fi-lang').value;
+  const diff=document.getElementById('fi-diff').value;
+  const diffLabel={'facil':'fácil (conceituais e diretas)','medio':'médio (exige compreensão)','dificil':'difícil (análise e síntese)'}[diff];
+
+  document.getElementById('gen-form').style.display='none';
+  document.getElementById('ai-loader').classList.add('on');
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:2500,
+        messages:[{
+          role:'user',
+          content:`Analise o texto abaixo e crie exatamente ${qty} questões de múltipla escolha em ${lang}, com dificuldade ${diffLabel}.
+
+REGRAS OBRIGATÓRIAS:
+- Cada questão deve ter exatamente 4 alternativas (A, B, C, D)
+- Apenas uma alternativa é correta
+- As alternativas incorretas devem ser plausíveis (não óbvias)
+- Inclua uma explicação breve da resposta correta
+- Responda APENAS com JSON puro, sem markdown
+
+FORMATO JSON:
+[{"q":"enunciado da questão","opts":["alternativa A","alternativa B","alternativa C","alternativa D"],"correct":0,"exp":"explicação da resposta correta"}]
+
+O campo "correct" é o índice (0=A, 1=B, 2=C, 3=D).
+
+TEXTO:
+${content}`
+        }]
+      })
+    });
+    const data=await res.json();
+    const raw=(data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+    const qs=JSON.parse(raw);
+    if(!Array.isArray(qs)||!qs.length) throw new Error('Resposta inválida');
+    ST._genData=qs;
+    showPreview(qs);
+  }catch(e){
+    toast('Erro ao gerar questões. Tente novamente.');
+    console.error(e);
+    document.getElementById('gen-form').style.display='block';
+  }finally{
+    document.getElementById('ai-loader').classList.remove('on');
+  }
+}
+
+function showPreview(qs){
+  document.getElementById('gen-count').textContent=qs.length+' questões geradas';
+  document.getElementById('gen-list').innerHTML=qs.map((q,i)=>`
+    <div class="preview-item">
+      <input type="checkbox" class="gen-chk" data-i="${i}" checked>
+      <div>
+        <div class="pv-q">${q.q}</div>
+        <div class="pv-a">✓ ${q.opts[q.correct]}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('gen-preview').style.display='block';
+}
+
+function saveGeneratedQuiz(){
+  const name=document.getElementById('fi-qname').value.trim()||'Quiz gerado pela IA';
+  const selected=[];
+  document.querySelectorAll('.gen-chk:checked').forEach(cb=>{
+    selected.push(ST._genData[+cb.dataset.i]);
+  });
+  if(!selected.length){toast('Selecione ao menos 1 questão.');return;}
+  const quiz={
+    id:uid(), name, icon:ST.selEmoji,
+    timer:parseInt(document.getElementById('fi-timer').value)||0,
+    diff:document.getElementById('fi-diff').value,
+    questions:selected.map(q=>({id:uid(),text:q.q,opts:q.opts,correct:q.correct,exp:q.exp||''})),
+    history:{}, xp:0, totalPlays:0, bestScore:0,
+  };
+  ST.quizzes.push(quiz);
+  save();
+  closeM('m-gen');
+  toast('Quiz salvo! Boa sorte.');
+  // auto-start
+  setTimeout(()=>startPlay(quiz.id),400);
+}
+
+// ── PLAY ──
+function startPlay(qid){
+  const quiz=ST.quizzes.find(q=>q.id===qid);
+  if(!quiz||!quiz.questions.length){toast('Este quiz não tem questões!');return;}
+  ST.playId=qid;
+  ST.queue=[...quiz.questions].sort(()=>Math.random()-.5);
+  ST.idx=0;
+  ST.scores={co:0,wr:0,sk:0};
+  ST.sessXP=0; ST.answered=false; ST.answers=[];
+  clearInterval(ST.timerInt);
+  document.getElementById('play-qname').textContent=quiz.name;
+  updateLive();
+  goPage('pg-play');
+  showPlayCard();
+}
+
+function showPlayCard(){
+  clearInterval(ST.timerInt);
+  if(ST.idx>=ST.queue.length){showResult();return;}
+  const q=ST.queue[ST.idx];
+  const quiz=ST.quizzes.find(qz=>qz.id===ST.playId);
+  const tot=ST.queue.length;
+  document.getElementById('prog-fill').style.width=(ST.idx/tot*100)+'%';
+  document.getElementById('prog-txt').textContent=ST.idx+' / '+tot;
+  ST.answered=false;
+  const timerSecs=quiz?.timer||0;
+  const timerEl=document.getElementById('play-timer-el');
+  const main=document.getElementById('play-main');
+  timerEl.style.display=timerSecs?'':'none';
+  if(timerSecs){ST.timerVal=timerSecs;timerEl.textContent='⏱ '+ST.timerVal;timerEl.classList.remove('warn');}
+  main.innerHTML=`
+    <div class="q-card">
+      <div class="q-card-label">Questão ${ST.idx+1} de ${tot}</div>
+      <p class="q-card-text">${q.text}</p>
+    </div>
+    <div class="opts" id="opts-wrap">
+      ${q.opts.map((opt,i)=>`
+        <button class="opt" id="opt-${i}" onclick="selectOpt(${i})">
+          <span class="opt-key">${['A','B','C','D'][i]}</span>
+          <span class="opt-text">${opt}</span>
+        </button>`).join('')}
+    </div>
+    <div class="explanation" id="explanation"></div>
+    <div class="play-actions">
+      <button class="btn" id="btn-skip" onclick="skipQ()">Pular</button>
+      <button class="btn prim" id="btn-next" onclick="nextQ()" disabled>Próxima →</button>
+    </div>`;
+  if(timerSecs){
+    ST.timerInt=setInterval(()=>{
+      ST.timerVal--;
+      timerEl.textContent='⏱ '+ST.timerVal;
+      if(ST.timerVal<=5) timerEl.classList.add('warn');
+      if(ST.timerVal<=0){clearInterval(ST.timerInt);autoTimeOut();}
+    },1000);
+  }
+}
+
+function selectOpt(i){
+  if(ST.answered)return;
+  ST.answered=true;
+  clearInterval(ST.timerInt);
+  document.getElementById('play-timer-el').classList.remove('warn');
+  const q=ST.queue[ST.idx];
+  const quiz=ST.quizzes.find(qz=>qz.id===ST.playId);
+  const correct=q.correct, isRight=i===correct;
+  document.querySelectorAll('.opt').forEach((el,j)=>{
+    el.classList.add('revealed');
+    if(j===correct) el.classList.add('correct');
+    if(j===i&&!isRight) el.classList.add('wrong');
+    if(j===i) el.classList.add('selected');
+  });
+  if(isRight){
+    ST.scores.co++;
+    const xpEarned=XP_MAP[quiz?.diff||'medio'];
+    ST.sessXP+=xpEarned; ST.totalXP+=xpEarned;
+    if(quiz) quiz.xp=(quiz.xp||0)+xpEarned;
+    xpPop(xpEarned);
+  } else {
+    ST.scores.wr++;
+  }
+  ST.answers.push({idx:ST.idx,correct:isRight,chosen:i,q});
+  updateLive(); save();
+  if(q.exp){
+    const exEl=document.getElementById('explanation');
+    exEl.innerHTML=`<div class="exp-label">${isRight?'✓ Correto':'✗ Incorreto'} — Explicação</div><div class="exp-text">${q.exp}</div>`;
+    exEl.classList.add('on');
+  }
+  document.getElementById('btn-next').disabled=false;
+  document.getElementById('btn-skip').disabled=true;
+}
+
+function autoTimeOut(){
+  if(ST.answered)return;
+  ST.answered=true; ST.scores.sk++;
+  const q=ST.queue[ST.idx];
+  ST.answers.push({idx:ST.idx,correct:false,chosen:-1,q,timedOut:true});
+  document.querySelectorAll('.opt').forEach((el,j)=>{
+    el.classList.add('revealed');
+    if(j===q.correct) el.classList.add('correct');
+  });
+  const exEl=document.getElementById('explanation');
+  exEl.innerHTML=`<div class="exp-label">⏰ Tempo esgotado</div><div class="exp-text">${q.exp||'A resposta correta era a opção '+['A','B','C','D'][q.correct]+'.'}</div>`;
+  exEl.classList.add('on');
+  document.getElementById('btn-next').disabled=false;
+  document.getElementById('btn-skip').disabled=true;
+  updateLive();
+}
+
+function skipQ(){
+  if(ST.answered)return;
+  clearInterval(ST.timerInt);
+  ST.scores.sk++;
+  ST.answers.push({idx:ST.idx,correct:false,chosen:-1,q:ST.queue[ST.idx],skipped:true});
+  updateLive(); ST.idx++; showPlayCard();
+}
+
+function nextQ(){ST.idx++;showPlayCard();}
+
+function updateLive(){
+  document.getElementById('lv-co').textContent=ST.scores.co;
+  document.getElementById('lv-wr').textContent=ST.scores.wr;
+  document.getElementById('lv-sk').textContent=ST.scores.sk;
+  document.getElementById('lv-xp').textContent=ST.sessXP+' XP';
+}
+
+// ── RESULT ──
+function showResult(){
+  clearInterval(ST.timerInt);
+  const quiz=ST.quizzes.find(q=>q.id===ST.playId);
+  if(quiz){
+    quiz.totalPlays=(quiz.totalPlays||0)+1;
+    if(ST.scores.co>(quiz.bestScore||0)) quiz.bestScore=ST.scores.co;
+  }
+  save();
+  const tot=ST.queue.length,pct=tot>0?Math.round(ST.scores.co/tot*100):0;
+  const ico=pct>=90?'🏆':pct>=70?'⭐':pct>=50?'🎯':'📚';
+  const titles=['Perfeito!','Excelente!','Muito bem!','Bom trabalho!','Continue praticando!'];
+  document.getElementById('r-ico').textContent=ico;
+  document.getElementById('r-title').textContent=titles[pct>=90?0:pct>=80?1:pct>=65?2:pct>=50?3:4];
+  document.getElementById('r-sub').textContent=(quiz?.name||'Quiz')+' concluído com '+pct+'% de acerto.';
+  document.getElementById('r-xp').textContent='+'+ST.sessXP+' XP conquistados nesta sessão';
+  document.getElementById('r-score').textContent=ST.scores.co+'/'+tot;
+  document.getElementById('r-pct').textContent=pct+'% de acerto';
+  document.getElementById('r-grid').innerHTML=`
+    <div class="rg"><div class="rg-n co">${ST.scores.co}</div><div class="rg-l">Corretas</div></div>
+    <div class="rg"><div class="rg-n wr">${ST.scores.wr}</div><div class="rg-l">Erradas</div></div>
+    <div class="rg"><div class="rg-n sk">${ST.scores.sk}</div><div class="rg-l">Puladas</div></div>
+    <div class="rg"><div class="rg-n xp">+${ST.sessXP}</div><div class="rg-l">XP</div></div>`;
+  document.getElementById('r-review').innerHTML=`<div class="rv-title">Revisão das questões</div>`+
+    ST.answers.map(a=>`
+      <div class="rv-item">
+        <span class="rv-icon">${a.correct?'✓':a.skipped||a.timedOut?'⏭':'✗'}</span>
+        <div>
+          <div class="rv-q">${a.q.text}</div>
+          <div class="rv-ans ${a.correct?'rv-co':a.skipped?'':'rv-wr'}">
+            ${a.correct?'Correto — '+a.q.opts[a.q.correct]:a.skipped?'Pulada — resposta: '+a.q.opts[a.q.correct]:a.timedOut?'Tempo esgotado — resposta: '+a.q.opts[a.q.correct]:'Errado ('+['A','B','C','D'][a.chosen]+') — correto: '+a.q.opts[a.q.correct]}
+          </div>
+        </div>
+      </div>`).join('');
+  goPage('pg-result');
+}
+
+function restartQuiz(){startPlay(ST.playId);}
+function reviewMistakes(){
+  const wrong=ST.answers.filter(a=>!a.correct);
+  if(!wrong.length){toast('Você não errou nenhuma questão!');return;}
+  const quiz=ST.quizzes.find(q=>q.id===ST.playId);
+  ST.queue=wrong.map(a=>a.q);
+  ST.idx=0; ST.scores={co:0,wr:0,sk:0}; ST.sessXP=0; ST.answered=false; ST.answers=[];
+  document.getElementById('play-qname').textContent=(quiz?.name||'Quiz')+' — Erros';
+  updateLive(); goPage('pg-play'); showPlayCard();
+}
+
+function xpPop(n){
+  const p=document.getElementById('xppop');
+  p.textContent='+'+n+' XP'; p.classList.add('on');
+  clearTimeout(p._t); p._t=setTimeout(()=>p.classList.remove('on'),1500);
+}
+
+function confirmExit(){openM('m-exit');}
+function doExit(){closeM('m-exit');clearInterval(ST.timerInt);goHome();}
+
+function openM(id){document.getElementById(id).classList.add('on');}
+function closeM(id){document.getElementById(id).classList.remove('on');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') document.querySelectorAll('.overlay.on').forEach(o=>o.classList.remove('on'));
+  if(!document.getElementById('pg-play').classList.contains('on')) return;
+  if(document.querySelector('.overlay.on')) return;
+  if(['1','2','3','4'].includes(e.key)&&!ST.answered) selectOpt(parseInt(e.key)-1);
+  if((e.key==='Enter'||e.key===' ')&&ST.answered&&!document.getElementById('btn-next').disabled){e.preventDefault();nextQ();}
+  if(e.key==='s'&&!ST.answered) skipQ();
+});
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('on'),2800);
+}
+
+renderEmoji();
+renderHome();
+</script>
+</body>
+</html>
