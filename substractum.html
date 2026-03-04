@@ -4,28 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Substractum</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --w:    #F4F1ED;
-  --c:    #EAE4DC;
-  --b:    #DED7CD;
-  --s:    #C5BFB8;
-  --p2:   #6E645A;
-  --p3:   #A69F95;
-  --ink:  #38332E;
-  --muted:#A69F95;
-  --bd:   rgba(56,51,46,.11);
-  --bds:  rgba(56,51,46,.06);
+  --w:    #F4F1EC;
+  --c:    #EDE9E2;
+  --b:    #E5E0D8;
+  --s:    #D6D6D6;
+  --p2:   #6E7F6A;
+  --p3:   #8A9E86;
+  --ink:  #3A3A3A;
+  --muted:#7A7A7A;
+  --bd:   rgba(58,58,58,.1);
+  --bds:  rgba(58,58,58,.055);
+  --sage: #6E7F6A;
+  --sage2:#5A6B56;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--w);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+body{background:var(--w);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
 
 /* ── NAV ── */
 nav{position:fixed;inset:0 0 auto;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(244,241,237,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--bds);z-index:200;transition:border-color .3s;}
 nav.sc{border-color:var(--bd);}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);text-decoration:none;letter-spacing:.04em;}
+.nav-logo{font-family:'Lora',serif;font-size:1.15rem;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.04em;}
 .nav-links{display:flex;gap:28px;align-items:center;}
 .nav-links a{font-size:.7rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
 .nav-links a:hover{color:var(--ink);}
@@ -38,10 +40,10 @@ nav.sc{border-color:var(--bd);}
 .hero-l{padding:80px 60px 80px 48px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--bds);}
 .hero-r{padding:80px 48px 80px 60px;background:var(--b);display:flex;flex-direction:column;justify-content:center;}
 .h-tag{font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;opacity:0;animation:fu .8s ease .1s forwards;}
-.h-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,7vw,6rem);font-weight:300;line-height:1.05;letter-spacing:-.01em;color:var(--ink);margin-bottom:20px;opacity:0;animation:fu .9s ease .25s forwards;}
+.h-title{font-family:'Lora',serif;font-size:clamp(3.2rem,7vw,6rem);font-weight:300;line-height:1.05;letter-spacing:-.01em;color:var(--ink);margin-bottom:20px;opacity:0;animation:fu .9s ease .25s forwards;}
 .h-title em{font-style:italic;color:var(--p2);}
-.h-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--muted);margin-bottom:44px;opacity:0;animation:fu .9s ease .4s forwards;}
-.h-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;line-height:1.9;color:var(--p2);margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--bds);opacity:0;animation:fu .9s ease .55s forwards;}
+.h-sub{font-family:'Lora',serif;font-style:italic;font-size:1.05rem;color:var(--muted);margin-bottom:44px;opacity:0;animation:fu .9s ease .4s forwards;}
+.h-text{font-family:'Lora',serif;font-size:1.1rem;font-weight:300;line-height:1.9;color:var(--p2);margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--bds);opacity:0;animation:fu .9s ease .55s forwards;}
 .h-nav{display:flex;gap:28px;flex-wrap:wrap;opacity:0;animation:fu .9s ease .7s forwards;}
 .h-nav a{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);text-decoration:none;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;}
 .h-nav a:hover{color:var(--ink);border-color:var(--ink);}
@@ -53,21 +55,21 @@ nav.sc{border-color:var(--bd);}
 .sl-item:nth-child(2){animation-delay:.55s;}
 .sl-item:nth-child(3){animation-delay:.7s;}
 .sl-item:nth-child(4){animation-delay:.85s;}
-.sl-num{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:var(--muted);width:20px;flex-shrink:0;padding-top:2px;}
-.sl-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;color:var(--ink);margin-bottom:3px;}
+.sl-num{font-family:'Lora',serif;font-size:.88rem;font-style:italic;color:var(--muted);width:20px;flex-shrink:0;padding-top:2px;}
+.sl-name{font-family:'Lora',serif;font-size:1.25rem;font-weight:300;color:var(--ink);margin-bottom:3px;}
 .sl-desc{font-size:.76rem;color:var(--muted);line-height:1.5;}
 
 /* ── LAYOUT ── */
 .section{padding:88px 0;}
 .section.alt{background:var(--b);}
-.section.dark{background:var(--ink);}
+.section.dark{background:var(--b);}
 .wrap{max-width:1120px;margin:0 auto;padding:0 48px;}
 hr.line{border:none;border-top:1px solid var(--bds);}
 .s-tag{display:block;font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
-.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:14px;}
+.s-title{font-family:'Lora',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:14px;}
 .s-title em{font-style:italic;color:var(--p2);}
 .s-title.inv{color:var(--w);}
-.s-desc{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.8;color:var(--muted);}
+.s-desc{font-family:'Lora',serif;font-size:1.05rem;font-weight:300;line-height:1.8;color:var(--muted);}
 .s-head{margin-bottom:52px;}
 .div-line{width:48px;height:1px;background:var(--bd);margin:0 0 20px;}
 
@@ -81,23 +83,23 @@ hr.line{border:none;border-top:1px solid var(--bds);}
 .c-tag{display:block;font-size:.63rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
 .c-badge{display:inline-block;font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--bd);border-radius:1px;margin-bottom:12px;color:var(--muted);}
 .c-badge.free{border-color:var(--p2);color:var(--p2);}
-.c-badge.wip{border-color:rgba(180,130,60,.4);color:rgba(180,130,60,.9);background:rgba(180,130,60,.06);}
+.c-badge.wip{border-color:var(--bd);color:var(--muted);background:rgba(58,58,58,.04);}
 .wip-overlay{position:relative;}
 .wip-overlay::after{content:'Em construção';position:absolute;inset:0;background:rgba(244,241,237,.82);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);backdrop-filter:blur(1px);}
 .cell.wip{position:relative;overflow:hidden;}
-.cell.wip::before{content:'Em construção';position:absolute;top:12px;right:-22px;background:rgba(180,130,60,.13);border:1px solid rgba(180,130,60,.3);color:rgba(150,100,40,.9);font-size:.55rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:3px 34px;transform:rotate(30deg);white-space:nowrap;}
-.c-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);line-height:1.35;margin-bottom:10px;}
+.cell.wip::before{content:'Em construção';position:absolute;top:12px;right:-22px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.55rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:3px 34px;transform:rotate(30deg);white-space:nowrap;}
+.c-title{font-family:'Lora',serif;font-size:1.2rem;font-weight:300;color:var(--ink);line-height:1.35;margin-bottom:10px;}
 .c-title em{font-style:italic;color:var(--p2);}
 .c-body{font-size:.84rem;color:var(--muted);line-height:1.65;margin-bottom:20px;}
-.c-price{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;display:block;margin-bottom:3px;}
+.c-price{font-family:'Lora',serif;font-size:1.5rem;font-weight:300;display:block;margin-bottom:3px;}
 .c-pnote{font-size:.7rem;color:var(--muted);display:block;margin-bottom:18px;}
-.c-link{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);text-decoration:none;cursor:pointer;background:none;border:none;padding:0;display:inline-flex;align-items:center;gap:6px;transition:gap .2s,color .2s;}
+.c-link{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);text-decoration:none;cursor:pointer;background:none;border:none;padding:0;display:inline-flex;align-items:center;gap:6px;transition:gap .2s,color .2s;}
 .c-link:hover{gap:12px;color:var(--ink);}
 
 /* ── BUTTONS ── */
-.btn{display:inline-block;font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:10px 24px;border-radius:1px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;}
-.btn-dk{background:var(--ink);color:var(--w);border-color:var(--ink);}
-.btn-dk:hover{background:var(--p2);}
+.btn{display:inline-block;font-family:'Inter',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:10px 24px;border-radius:1px;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none;}
+.btn-dk{background:var(--sage);color:white;border-color:var(--sage);}
+.btn-dk:hover{background:var(--sage2);}
 .btn-out{background:transparent;color:var(--ink);border-color:var(--bd);}
 .btn-out:hover{background:var(--c);border-color:var(--p3);}
 .btn-inv{background:var(--w);color:var(--ink);}
@@ -105,9 +107,9 @@ hr.line{border:none;border-top:1px solid var(--bds);}
 
 /* ── TABS ── */
 .tab-bar{display:flex;border-bottom:1px solid var(--bds);margin-bottom:44px;}
-.tb{font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:1px solid transparent;padding:12px 22px 11px;cursor:pointer;transition:all .2s;margin-bottom:-1px;}
+.tb{font-family:'Inter',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-bottom:1px solid transparent;padding:12px 22px 11px;cursor:pointer;transition:all .2s;margin-bottom:-1px;}
 .tb:hover{color:var(--ink);}
-.tb.on{color:var(--ink);border-bottom-color:var(--p2);}
+.tb.on{color:var(--ink);border-bottom-color:var(--sage);}
 .tp{display:none;}
 .tp.on{display:block;}
 
@@ -116,17 +118,17 @@ hr.line{border:none;border-top:1px solid var(--bds);}
 .diary-editor{background:var(--w);}
 .diary-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 26px;border-bottom:1px solid var(--bds);background:var(--b);}
 .db-btns{display:flex;gap:6px;}
-.db-btn{font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .15s;}
+.db-btn{font-family:'Inter',sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .15s;}
 .db-btn:hover{background:var(--c);color:var(--ink);}
-.diary-date{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:var(--muted);}
+.diary-date{font-family:'Lora',serif;font-size:.88rem;font-style:italic;color:var(--muted);}
 .diary-body{padding:32px 36px;}
-.d-title{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--ink);border:none;outline:none;background:transparent;padding-bottom:14px;border-bottom:1px solid var(--bds);margin-bottom:18px;}
+.d-title{width:100%;font-family:'Lora',serif;font-size:1.5rem;font-weight:300;color:var(--ink);border:none;outline:none;background:transparent;padding-bottom:14px;border-bottom:1px solid var(--bds);margin-bottom:18px;}
 .d-title::placeholder{color:var(--s);font-style:italic;}
-.d-body{width:100%;min-height:240px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.95;color:var(--p2);border:none;outline:none;background:transparent;resize:vertical;}
+.d-body{width:100%;min-height:240px;font-family:'Lora',serif;font-size:1.05rem;font-weight:300;line-height:1.95;color:var(--p2);border:none;outline:none;background:transparent;resize:vertical;}
 .d-body::placeholder{color:var(--s);font-style:italic;}
 .d-moods{display:flex;gap:7px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--bds);align-items:center;}
 .mood-l{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:4px;}
-.mood{font-family:'Jost',sans-serif;font-size:.68rem;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .13s;letter-spacing:.06em;}
+.mood{font-family:'Inter',sans-serif;font-size:.68rem;color:var(--muted);background:none;border:1px solid var(--bd);border-radius:1px;padding:4px 11px;cursor:pointer;transition:all .13s;letter-spacing:.06em;}
 .mood:hover,.mood.on{background:var(--b);border-color:var(--p2);color:var(--ink);}
 .diary-foot{padding:14px 36px;border-top:1px solid var(--bds);background:var(--b);display:flex;justify-content:flex-end;gap:8px;}
 .diary-side{background:var(--c);}
@@ -135,10 +137,10 @@ hr.line{border:none;border-top:1px solid var(--bds);}
 .entry{padding:16px 22px;border-bottom:1px solid var(--bds);cursor:pointer;transition:background .15s;}
 .entry:hover{background:var(--b);}
 .entry-date{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s);margin-bottom:3px;}
-.entry-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--ink);margin-bottom:2px;}
+.entry-title{font-family:'Lora',serif;font-size:.95rem;color:var(--ink);margin-bottom:2px;}
 .entry-prev{font-size:.74rem;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
 .d-empty{padding:36px 22px;text-align:center;}
-.d-empty p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--muted);line-height:1.7;}
+.d-empty p{font-family:'Lora',serif;font-style:italic;font-size:.95rem;color:var(--muted);line-height:1.7;}
 
 /* ── APPS ── */
 .app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bds);border:1px solid var(--bds);}
@@ -147,7 +149,7 @@ hr.line{border:none;border-top:1px solid var(--bds);}
 .app-cell.inst{background:var(--c);}
 .app-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--p2);margin-right:6px;vertical-align:middle;}
 .app-st{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--p2);}
-.app-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--ink);margin:10px 0 8px;}
+.app-name{font-family:'Lora',serif;font-size:1.2rem;font-weight:300;color:var(--ink);margin:10px 0 8px;}
 .app-desc{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:22px;}
 .app-acts{display:flex;gap:8px;flex-wrap:wrap;}
 .app-slot{border:1px dashed var(--bd);border-radius:1px;background:transparent;}
@@ -156,64 +158,63 @@ hr.line{border:none;border-top:1px solid var(--bds);}
 
 /* ── EBOOK HIGHLIGHT ── */
 .ebook-feature{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bds);margin-bottom:1px;}
-.eb-cover{background:var(--ink);padding:56px 48px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;min-height:320px;}
-.eb-cover::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px);}
-.eb-vol{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--p3);margin-bottom:12px;}
-.eb-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.2;color:var(--w);margin-bottom:8px;}
-.eb-title em{font-style:italic;color:var(--p3);}
-.eb-pages{font-size:.75rem;color:var(--p3);margin-bottom:24px;}
-.eb-price-big{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--w);}
+.eb-cover{background:var(--b);padding:56px 48px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;min-height:280px;border:1px solid var(--bds);}
+.eb-vol{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.eb-title{font-family:'Lora',serif;font-size:2rem;font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:8px;}
+.eb-title em{font-style:italic;font-weight:400;color:var(--p2);}
+.eb-pages{font-size:.75rem;color:var(--muted);margin-bottom:24px;}
+.eb-price-big{font-family:'Lora',serif;font-size:1.8rem;color:var(--ink);}
 .eb-info{background:var(--b);padding:56px 48px;display:flex;flex-direction:column;justify-content:center;}
 .eb-info .s-tag{margin-bottom:10px;}
-.eb-body{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;line-height:1.85;color:var(--p2);margin-bottom:28px;}
+.eb-body{font-family:'Lora',serif;font-size:1.05rem;font-weight:300;line-height:1.85;color:var(--p2);margin-bottom:28px;}
 .eb-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
 .eb-chip{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--bd);color:var(--muted);}
 
 /* ── NEWSLETTER ── */
 .nl-grid{display:grid;grid-template-columns:1fr 1fr;}
-.nl-l{background:var(--ink);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
-.nl-l .s-tag{color:var(--p3);margin-bottom:14px;}
-.nl-l .s-title{color:var(--w);margin-bottom:10px;}
-.nl-l p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--p3);line-height:1.7;}
+.nl-l{background:var(--b);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
+.nl-l .s-tag{color:var(--muted);margin-bottom:14px;}
+.nl-l .s-title{color:var(--ink);margin-bottom:10px;}
+.nl-l p{font-family:'Lora',serif;font-style:italic;font-size:1rem;color:var(--muted);line-height:1.7;}
 .nl-r{background:var(--b);padding:64px 56px;display:flex;flex-direction:column;justify-content:center;}
 .nl-form{display:flex;flex-direction:column;gap:10px;}
-.nl-in{padding:12px 16px;background:rgba(244,241,237,.6);border:1px solid rgba(56,51,46,.14);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.nl-in{padding:12px 16px;background:rgba(244,241,237,.6);border:1px solid rgba(56,51,46,.14);border-radius:1px;font-family:'Inter',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
 .nl-in::placeholder{color:var(--muted);}
 .nl-in:focus{border-color:rgba(56,51,46,.3);background:rgba(244,241,237,.85);}
 .nl-note{font-size:.68rem;color:var(--p2);line-height:1.5;margin-top:4px;}
 
 /* ── FOOTER ── */
-footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
+footer{background:var(--b);color:var(--muted);border-top:1px solid var(--bds);padding:48px 0 24px;}
 .ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);}
-.ft-logo{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;font-style:italic;color:var(--w);margin-bottom:10px;}
-.ft-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--p2);line-height:1.6;max-width:200px;}
-.ft-h{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--p2);margin-bottom:16px;}
-.ft-col a{display:block;font-size:.8rem;color:var(--p2);text-decoration:none;margin-bottom:9px;transition:color .2s;}
-.ft-col a:hover{color:var(--w);}
-.ft-bot{padding-top:24px;display:flex;justify-content:space-between;font-size:.68rem;letter-spacing:.06em;color:rgba(166,159,149,.4);flex-wrap:wrap;gap:8px;}
+.ft-logo{font-family:'Lora',serif;font-size:1.1rem;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.ft-tag{font-family:'Lora',serif;font-style:italic;font-size:.84rem;color:var(--muted);line-height:1.6;max-width:200px;}
+.ft-h{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.ft-col a{display:block;font-size:.78rem;font-weight:300;color:var(--muted);text-decoration:none;margin-bottom:8px;transition:color .2s;}
+.ft-col a:hover{color:var(--ink);}
+.ft-bot{padding-top:18px;display:flex;justify-content:space-between;font-size:.62rem;letter-spacing:.06em;color:var(--s);flex-wrap:wrap;gap:6px;}
 
 /* ── MODAL ── */
 .overlay{position:fixed;inset:0;background:rgba(56,51,46,.5);backdrop-filter:blur(4px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
 .overlay.on{opacity:1;pointer-events:all;}
 .modal{background:var(--w);border:1px solid var(--bd);max-width:460px;width:100%;padding:44px;position:relative;transform:translateY(12px);transition:transform .25s;max-height:calc(100vh - 40px);overflow-y:auto;}
 .overlay.on .modal{transform:translateY(0);}
-.mx{position:absolute;top:16px;right:20px;background:none;border:none;font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.1em;color:var(--muted);cursor:pointer;transition:color .2s;text-transform:uppercase;}
+.mx{position:absolute;top:16px;right:20px;background:none;border:none;font-family:'Inter',sans-serif;font-size:.68rem;letter-spacing:.1em;color:var(--muted);cursor:pointer;transition:color .2s;text-transform:uppercase;}
 .mx:hover{color:var(--ink);}
 .m-tag{display:block;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-.m-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:8px;}
+.m-title{font-family:'Lora',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:8px;}
 .m-sub{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:24px;}
 .field{margin-bottom:13px;}
 .field label{display:block;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
-.field input,.field select{width:100%;padding:10px 14px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.field input,.field select{width:100%;padding:10px 14px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Inter',sans-serif;font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;}
 .field input:focus,.field select:focus{border-color:var(--p2);}
 .m-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--bds);border-bottom:1px solid var(--bds);margin-bottom:18px;}
 .m-total-l{font-size:.75rem;color:var(--muted);}
-.m-total-p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--ink);}
+.m-total-p{font-family:'Lora',serif;font-size:1.35rem;color:var(--ink);}
 .m-sec{font-size:.65rem;letter-spacing:.06em;text-align:center;color:var(--muted);margin-top:10px;}
 .m-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--w);padding:10px 24px;border-radius:1px;font-family:'Jost',sans-serif;font-size:.76rem;letter-spacing:.06em;z-index:999;opacity:0;pointer-events:none;transition:all .28s;white-space:nowrap;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(6px);background:var(--ink);color:var(--w);padding:10px 24px;border-radius:1px;font-family:'Inter',sans-serif;font-size:.76rem;letter-spacing:.06em;z-index:999;opacity:0;pointer-events:none;transition:all .28s;white-space:nowrap;}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* ── REVEAL ── */
@@ -258,11 +259,11 @@ footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
 .adm-panel{background:var(--w);width:520px;height:100vh;overflow-y:auto;border-left:1px solid var(--bd);transform:translateX(40px);transition:transform .28s;display:flex;flex-direction:column;}
 .adm-overlay.on .adm-panel{transform:translateX(0);}
 .adm-head{padding:24px 28px 20px;border-bottom:1px solid var(--bds);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--w);z-index:2;}
-.adm-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;}
-.adm-close{background:none;border:none;cursor:pointer;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:'Jost',sans-serif;transition:color .2s;}
+.adm-title{font-family:'Lora',serif;font-size:1.2rem;font-weight:300;}
+.adm-close{background:none;border:none;cursor:pointer;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:'Inter',sans-serif;transition:color .2s;}
 .adm-close:hover{color:var(--ink);}
 .adm-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--bds);flex-shrink:0;}
-.adm-tab{padding:10px 18px;background:none;border:none;border-bottom:2px solid transparent;font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;margin-bottom:-1px;}
+.adm-tab{padding:10px 18px;background:none;border:none;border-bottom:2px solid transparent;font-family:'Inter',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;margin-bottom:-1px;}
 .adm-tab.on{color:var(--ink);border-bottom-color:var(--p2);}
 .adm-body{flex:1;overflow-y:auto;padding:28px;}
 .adm-section{margin-bottom:28px;}
@@ -270,7 +271,7 @@ footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
 .adm-row{margin-bottom:14px;}
 .adm-row label{display:block;font-size:.68rem;color:var(--p2);margin-bottom:5px;font-weight:500;}
 .adm-row .adm-hint{display:block;font-size:.64rem;color:var(--muted);margin-bottom:5px;line-height:1.4;}
-.adm-row input,.adm-row select{width:100%;padding:9px 12px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.82rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.adm-row input,.adm-row select{width:100%;padding:9px 12px;background:white;border:1px solid var(--bd);border-radius:1px;font-family:'Inter',sans-serif;font-size:.82rem;color:var(--ink);outline:none;transition:border-color .2s;}
 .adm-row input:focus,.adm-row select:focus{border-color:var(--p2);}
 .adm-row input.ok{border-color:rgba(74,140,92,.4);background:rgba(74,140,92,.03);}
 .adm-foot{padding:18px 28px;border-top:1px solid var(--bds);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:var(--w);}
@@ -280,9 +281,9 @@ footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
 .adm-badge.empty{border-color:rgba(200,140,60,.4);color:rgba(200,140,60,.8);background:rgba(200,140,60,.04);}
 /* login */
 .adm-login{padding:48px 28px;display:flex;flex-direction:column;align-items:center;gap:16px;flex:1;justify-content:center;}
-.adm-login h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--ink);}
+.adm-login h3{font-family:'Lora',serif;font-size:1.4rem;font-weight:300;color:var(--ink);}
 .adm-login p{font-size:.8rem;color:var(--muted);text-align:center;line-height:1.6;}
-.adm-login input{width:100%;max-width:280px;padding:10px 14px;border:1px solid var(--bd);border-radius:1px;font-family:'Jost',sans-serif;font-size:.85rem;color:var(--ink);outline:none;text-align:center;letter-spacing:.1em;background:white;}
+.adm-login input{width:100%;max-width:280px;padding:10px 14px;border:1px solid var(--bd);border-radius:1px;font-family:'Inter',sans-serif;font-size:.85rem;color:var(--ink);outline:none;text-align:center;letter-spacing:.1em;background:white;}
 .adm-login input:focus{border-color:var(--p2);}
 </style>
 </head>
@@ -299,7 +300,7 @@ footer{background:var(--ink);color:var(--p3);padding:56px 0 28px;}
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
     <button class="ntog" id="ntog" aria-label="Menu"><span></span><span></span><span></span></button>
-    <button class="admin-btn" id="admin-btn" title="Configuracoes" onclick="openAdmin()" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--muted);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Jost',sans-serif;transition:color .2s;">&#9881;</button>
+    <button class="admin-btn" id="admin-btn" title="Configuracoes" onclick="openAdmin()" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--muted);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Inter',sans-serif;transition:color .2s;">&#9881;</button>
   </div>
 </nav>
 
@@ -364,7 +365,7 @@ Escreva livremente..."></textarea>
         </div>
         <div class="diary-foot">
           <button class="btn btn-out" onclick="clearDiary()">Descartar</button>
-          <button class="btn btn-dk" onclick="saveDiary()">Salvar reflexao</button>
+          <button class="btn btn-dk" onclick="saveDiary()" style="background:var(--sage);border-color:var(--sage);color:white;">Salvar reflexão</button>
         </div>
       </div>
       <div class="diary-side">
@@ -411,7 +412,7 @@ Escreva livremente..."></textarea>
       </div>
 
       <div class="app-cell" style="position:relative;overflow:hidden;">
-        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
         <div class="app-name" style="color:var(--muted);">Planner</div>
         <p class="app-desc">Organize sua semana com intencionalidade. Metas, habitos e reflexoes integrados em um unico espaco de planejamento.</p>
         <div class="app-acts">
@@ -420,7 +421,7 @@ Escreva livremente..."></textarea>
       </div>
 
       <div class="app-cell" style="position:relative;overflow:hidden;">
-        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
         <div class="app-name" style="color:var(--muted);">Meditacao Guiada</div>
         <p class="app-desc">Praticas contemplativas de 5 a 20 minutos alinhadas com os temas do Substractum. Para iniciar o dia com presenca.</p>
         <div class="app-acts">
@@ -453,32 +454,32 @@ Escreva livremente..."></textarea>
     <div class="tp on rv" id="tp-dig">
       <div class="g3">
         <div class="cell onb" style="position:relative;overflow:hidden;">
-          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
           <span class="c-tag">Apostila — PDF</span>
           <span class="c-badge wip">Em construcao</span>
           <div class="c-title">Caderno de <em>Praxis Pedagogica</em></div>
           <p class="c-body">Guia reflexivo para educadores integrarem teoria, espiritualidade e pratica. 48 paginas com atividades e perguntas geradoras.</p>
-          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-badge wip">Em construcao</span>
           <span class="c-pnote">Disponivel em breve</span>
           <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
         </div>
         <div class="cell onb" style="position:relative;overflow:hidden;">
-          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
           <span class="c-tag">Jogo — Imprimivel</span>
           <span class="c-badge wip">Em construcao</span>
           <div class="c-title"><em>Vozes da Educacao</em></div>
           <p class="c-body">Baralho com 60 cartas de perguntas filosoficas para dinamicas em grupo, formacao docente e rodas de conversa reflexiva.</p>
-          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-badge wip">Em construcao</span>
           <span class="c-pnote">Disponivel em breve</span>
           <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
         </div>
         <div class="cell onb" style="position:relative;overflow:hidden;">
-          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
           <span class="c-tag">Material Formativo</span>
           <span class="c-badge wip">Em construcao</span>
           <div class="c-title">Educacao e <em>Espiritualidade</em></div>
           <p class="c-body">Apostila sobre a integracao entre dimensao espiritual e pratica pedagogica, com referencias e roteiro de estudo.</p>
-          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-badge wip">Em construcao</span>
           <span class="c-pnote">Disponivel em breve</span>
           <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
         </div>
@@ -489,27 +490,27 @@ Escreva livremente..."></textarea>
     <div class="tp rv" id="tp-fis">
       <div class="g3">
         <div class="cell onb" style="position:relative;overflow:hidden;">
-          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
           <span class="c-tag">Caderno — Impresso</span>
           <span class="c-badge wip">Em construcao</span>
           <div class="c-title">Caderno Reflexivo <em>Substractum</em></div>
           <p class="c-body">Caderno encadernado com pautas, espacos para reflexao e citacoes ao longo das paginas. Papel polen, capa dura em linho.</p>
-          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-badge wip">Em construcao</span>
           <span class="c-pnote">Disponivel em breve</span>
           <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
         </div>
         <div class="cell onb" style="position:relative;overflow:hidden;">
-          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
           <span class="c-tag">Kit Completo</span>
           <span class="c-badge wip">Em construcao</span>
           <div class="c-title"><em>Kit Formacao Integral</em></div>
           <p class="c-body">Caderno fisico + apostila digital + jogo de cartas imprimivel + trilha formativa online. O kit para formadores.</p>
-          <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+          <span class="c-badge wip">Em construcao</span>
           <span class="c-pnote">Disponivel em breve</span>
           <button class="c-link" style="color:var(--muted);cursor:default;letter-spacing:.1em;font-size:.65rem;">Em construcao &bull;&bull;&bull;</button>
         </div>
         <div class="cell onb" style="position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;">
-          <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+          <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
           <span class="c-badge wip" style="margin-bottom:12px;">Em construcao</span>
           <div class="c-title" style="color:var(--muted);font-style:italic;">Mais produtos em desenvolvimento</div>
           <p class="c-body">Novos materiais fisicos em preparacao. Entre na lista de espera para ser avisada em primeira mao.</p>
@@ -567,7 +568,7 @@ Escreva livremente..."></textarea>
     <!-- EBOOK DESTAQUE — EM CONSTRUCAO -->
     <div class="ebook-feature rv">
       <div class="eb-cover" style="position:relative;overflow:hidden;">
-        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
         <div class="eb-vol">Serie Substractum &mdash; Vol. 1</div>
         <div class="eb-title">O Silencio<br><em>que Educa</em></div>
         <div class="eb-pages">Pedagogia &middot; Espiritualidade &middot; Presenca</div>
@@ -590,24 +591,24 @@ Escreva livremente..."></textarea>
     <!-- OUTROS EBOOKS — EM CONSTRUCAO -->
     <div class="g2 rv" style="margin-top:1px;">
       <div class="cell" style="position:relative;overflow:hidden;">
-        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
         <span class="c-tag">Vol. 2</span>
         <span class="c-badge wip">Em construcao</span>
         <div class="c-title">Praxis: <em>Quando Pensar Vira Acao</em></div>
         <p class="c-body">A teoria da praxis aplicada ao cotidiano educativo. Como superar a dicotomia entre reflexao e acao.</p>
-        <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+        <span class="c-badge wip">Em construcao</span>
         <span class="c-pnote">Disponivel em breve</span>
-        <button class="c-link" onclick="openM('m-nl','Praxis: Quando Pensar Vira Acao','','')" style="color:var(--muted);font-size:.65rem;letter-spacing:.1em;">Avisar quando sair &rarr;</button>
+        <button class="c-link" onclick="openM('m-nl','Praxis: Quando Pensar Vira Acao','','')">Avisar quando sair</button>
       </div>
       <div class="cell" style="position:relative;overflow:hidden;">
-        <div style="position:absolute;top:14px;right:-24px;background:rgba(180,130,60,.1);border:1px solid rgba(180,130,60,.28);color:rgba(150,100,40,.8);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
+        <div style="position:absolute;top:14px;right:-24px;background:rgba(58,58,58,.07);border:1px solid rgba(58,58,58,.15);color:var(--muted);font-size:.5rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 36px;transform:rotate(30deg);white-space:nowrap;">Em construcao</div>
         <span class="c-tag">Vol. 3</span>
         <span class="c-badge wip">Em construcao</span>
         <div class="c-title">Autoconhecimento <em>e Docencia</em></div>
         <p class="c-body">Para o educador que percebe que a sala de aula e tambem um espelho. Sobre identidade, vocacao e a arte de ensinar sendo quem se e.</p>
-        <span class="c-price" style="font-size:1rem;color:var(--muted);">Em construcao</span>
+        <span class="c-badge wip">Em construcao</span>
         <span class="c-pnote">Disponivel em breve</span>
-        <button class="c-link" onclick="openM('m-nl','Autoconhecimento e Docencia','','')" style="color:var(--muted);font-size:.65rem;letter-spacing:.1em;">Avisar quando sair &rarr;</button>
+        <button class="c-link" onclick="openM('m-nl','Autoconhecimento e Docencia','','')">Avisar quando sair</button>
       </div>
     </div>
   </div>
@@ -618,15 +619,15 @@ Escreva livremente..."></textarea>
 <div id="newsletter">
   <div class="nl-grid rv">
     <div class="nl-l">
-      <span class="s-tag" style="color:var(--p3);">Newsletter semanal</span>
-      <h2 class="s-title" style="color:var(--w);">Uma reflexao<br><em>por semana</em></h2>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--p3);margin-top:10px;line-height:1.7;">Textos, recursos gratuitos e convites a interioridade. Sem frequencia excessiva, sem spam.</p>
+      <span class="s-tag" style="color:var(--muted);">Newsletter semanal</span>
+      <h2 class="s-title" style="color:var(--ink);">Uma reflexao<br><em>por semana</em></h2>
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:1rem;color:var(--muted);margin-top:10px;line-height:1.7;">Textos, recursos gratuitos e convites a interioridade. Sem frequencia excessiva, sem spam.</p>
     </div>
     <div class="nl-r">
       <div class="nl-form">
         <input class="nl-in" type="text" id="nl-nome" placeholder="Seu nome">
         <input class="nl-in" type="email" id="nl-email" placeholder="seu@email.com">
-        <button class="btn btn-dk" onclick="subNl()">Assinar gratuitamente</button>
+        <button class="btn btn-dk" onclick="subNl()" style="background:var(--sage);border-color:var(--sage);color:white;">Assinar gratuitamente</button>
         <p class="nl-note">Seus dados nao serao compartilhados. Cancelamento a qualquer momento.</p>
       </div>
     </div>
